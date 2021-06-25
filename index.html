@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://example.com/index.html">
@@ -13,125 +27,245 @@
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Hexo</title>
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
 
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+          <div class="content index posts-expand">
+            
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/26/article-title/">
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-article-title" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/06/26/article-title/" class="article-date">
-  <time class="dt-published" datetime="2021-06-25T16:17:44.000Z" itemprop="datePublished">2021-06-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/06/26/article-title/">article title</a>
-    </h1>
-  
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
 
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/26/article-title/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-06-26 00:17:44 / Modified: 01:40:10" itemprop="dateCreated datePublished" datetime="2021-06-26T00:17:44+08:00">2021-06-26</time>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        
+          <h3 id="Java核心技术一卷学习笔记（1）"><a href="#Java核心技术一卷学习笔记（1）" class="headerlink" title="Java核心技术一卷学习笔记（1）"></a>Java核心技术一卷学习笔记（1）</h3><p>课内关于Java学习的内容安排过于少且仓促，俗话说大学都是师傅领进门，修行靠个人，为加强Java语言的编程以及Debug能力，用Java核心技术卷一二以及深入理解Java虚拟机来补充相应知识空缺。</p>
+<h3 id="第一章-Java程序设计概述"><a href="#第一章-Java程序设计概述" class="headerlink" title="第一章 Java程序设计概述"></a>第一章 Java程序设计概述</h3><p>本章是对Java语言的引入介绍，这里放上Java程序设计者对于其设计初衷以及完成情况的白皮书 <a href="www.oracle.com/technetwork/java/langenv-140151.html">Java white paper</a><br>关于关键数术语的概述 <a target="_blank" rel="noopener" href="http://horstmann.com/corejava/java-an-overview/7Gosling.pdf">key words</a> </p>
+<p>Java的十一个关键术语为：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">### 简单性</span></span><br><span class="line"></span><br><span class="line">此处主要是相对C++语言来说，Java的设计者们希望构建一个无需深奥的专业训练就可以进行编程的系统，且符合当今的标准惯例，Java提出了C++中很多较少使用，且难以处理的、容易被混淆的特性。</span><br><span class="line"></span><br><span class="line">Java语法可以理解为C++语法的一个纯净版本，没有头文件，指针操作，结构，联合，操作符重载，虚基类等待。当然也有一些不适当特性的存在，比如switch语法在Java没有什么改变。</span><br><span class="line"></span><br><span class="line">简单的另一个方面便是小，Java设计者希望Java可以支持开发能够在小型机器上独立运行的软件，在发布时，基本的解释器以及类支持大约为40KB，加上标准类库以及线上支持，大约需要增加170KB，这在当时已经是一个不错的成就。</span><br><span class="line"></span><br><span class="line"><span class="section">## Java的面向对象</span></span><br><span class="line"></span><br><span class="line">在设计者开发Java语言时，面向对象技术已经很成熟，Java面向对象的特性与C++旗鼓相当，Java与其不同点在于多重继承，Java中使用了更简单的接口概念。Java也提供了更丰富的运行时自省功能。</span><br><span class="line"></span><br><span class="line"><span class="section">## 分布式</span></span><br><span class="line"></span><br><span class="line">Java由一个丰富的例程库支持处理像HTTP和FTP类的TCP/IP协议。</span><br><span class="line"></span><br><span class="line">Java应用程序可通过URL打开和访问网络上的对象。</span><br><span class="line"></span><br><span class="line"><span class="section">## 健壮性</span></span><br><span class="line"></span><br><span class="line">Java因为取消了指针的使用，采用指针模型，消除了重写内存和损坏数据的可能性。</span><br><span class="line"></span><br><span class="line"><span class="section">## 安全性</span></span><br><span class="line"></span><br><span class="line">从一开始Java就可以防范类似于运行时堆栈溢出（蠕虫和病毒常用手段），破坏自己的进程空间之外的内存，未经授权读写文件等问题。 </span><br><span class="line"></span><br><span class="line">不可信代码在一个沙河环境中执行，不会影响主系统。</span><br><span class="line"></span><br><span class="line"><span class="section">## 体系结构中立</span></span><br><span class="line"></span><br><span class="line">因为Java虚拟机的存在，编译器生成一个体系结构中立的目标文件格式，可在多种处理器上运行。</span><br><span class="line"></span><br><span class="line"><span class="section">## 可移植性</span></span><br><span class="line"></span><br><span class="line">在Java中，数值类型有固定的字节数，消除了代码移植时的主要问题，字符串通过Unicode格式存储。</span><br><span class="line"></span><br><span class="line"><span class="section">## 解释性</span></span><br><span class="line"></span><br><span class="line">Java解释器可以在任何抑制了解释器的机器上直接执行Java字节码。</span><br><span class="line"></span><br><span class="line"><span class="section">## 高性能</span></span><br><span class="line"></span><br><span class="line">字节码可以在运行时动态的转换成对应运行这个应用特定CPU的机器码</span><br><span class="line"></span><br><span class="line"><span class="section">## 多线程</span></span><br><span class="line"></span><br><span class="line">Java是第一个支持并发设计的主流语言。</span><br><span class="line"></span><br><span class="line"><span class="section">## 动态性</span></span><br><span class="line"></span><br><span class="line">Java库中可以自由添加新方法和实例变量，而对客户端没影响。</span><br></pre></td></tr></table></figure>
+
+<h3 id="Java语言发展简史"><a href="#Java语言发展简史" class="headerlink" title="Java语言发展简史"></a>Java语言发展简史</h3><p>Java的历史要追溯到1991年，由Patrick Naughton和James Gosling（一个全能的计算机奇才，Sun公司会士）带领的Sun公司的工程师小组想要设计一种小型的计算机语言，主要用于像有线电视转换盒这类消费设备。由于这些消费设备的处理能力和内存都很有限，所以语言必须非常小且能够生成非常紧凑的代码。另外，由于不同的厂商会选择不同的中央处理器（CPU），因此很重要的一点是这种语言不应与任何特定的体系结构绑定。这个项目被命名为“Green”。</p>
+<p>代码短小、紧凑且与平台无关，这些要求促使开发团队设计出一个可移植的语言，可以为虚拟机生成中间代码。</p>
+<p>不过，Sun公司的人都有UNIX的应用背景。因此，所开发的语言以C++为基础，而不是Lisp、Smalltalk或Pascal。不过，就像Gosling在专访中谈道：“毕竟，语言只是实现目标的工具，而不是目标本身。”Gosling把这种语言称为“Oak”（这么起名大概是因为他非常喜欢自己办公室窗外的一棵橡树）。Sun公司的人后来发现，Oak是一种已有的计算机语言的名字，于是，将其改名为Java。事实证明这是一个很有灵感的选择。</p>
+<p>1992年，Green项目发布了它的第一个产品，称之为“*7”。这个产品可以提供非常智能的远程控制。遗憾的是，Sun公司对生产这个产品并不感兴趣，Green项目组的人员必须找出其他的方法来将他们的技术推向市场。然而，仍然没有任何一家标准消费品电子公司对此感兴趣。于是，Green项目组投标了一个设计有线电视盒的项目，它能提供视频点播等新型有线服务，但他们没能拿到这个合同（有趣的是，得到这个项目的公司的领导恰恰是开创Netscape公司的Jim Clark。Netscape公司后来对Java的成功给予了很大的帮助）。</p>
+<p>Green项目（这时换了一个新名字—“First Person公司”）在1993年一整年以及1994年的上半年，一直在苦苦寻求买家购买他们的技术。然而，一个也没有找到（Patrick Naughton—项目组的创始人之一，也是完成大多数营销工作的人，声称为了销售这项技术，已累计飞行了300000英里）。1994年First Person公司解散了。</p>
+<p>当这一切在Sun公司发生的时候，Internet的万维网也在日渐发展壮大。万维网的关键是浏览器把超文本页面转换到屏幕上。1994年大多数人都在使用Mosaic，这是1993年出自伊利诺伊大学超级计算中心的一个非商业化的Web浏览器（Mosaic的一部分是由Marc Andreessen编写的。当时，他作为一名参加半工半读项目的本科生，编写了这个软件，每小时的薪水只有6.85美元。他后来成了Netscape公司的创始人之一和技术总监，可谓名利双收）。</p>
+<p>在接受SunWorld采访的时候，Gosling说，在1994年中期，Java语言的开发者意识到：“我们能够建立一个相当酷的浏览器。在客户/服务器主流框架中，浏览器恰好需要我们已经完成的一些工作：体系结构中立、实时、可靠、安全—这些问题在工作站环境并不太重要，所以，我们决定开发浏览器。”</p>
+<p>实际的浏览器是由Patrick Naughton和Jonathan Payne开发的，并演变为HotJava浏览器。HotJava浏览器采用Java编写，以炫耀Java语言超强的能力。这个浏览器能够在网页中执行内嵌的Java代码。这一“技术证明”在1995年5月23日的SunWorld’95大会上展示，同时引发了人们延续至今的对Java的狂热追逐。</p>
+<p>1996年年初，Sun发布了Java的第1个版本。人们很快地意识到Java 1.0不能用来进行真正的应用开发。的确，可以使用Java 1.0来实现在画布上随机跳动的神经质的文本applet，但它却没有提供打印功能。坦率地说，Java 1.0的确没有为其黄金时期的到来做好准备。后来的Java 1.1弥补了其中的大多明显的缺陷，大大改进了反射能力，并为GUI编程增加了新的事件处理模型。不过它仍然有很大的局限性。</p>
+<p>1998年JavaOne会议的头号新闻是即将发布Java 1.2版。这个版本将早期玩具式的GUI和图形工具包代之以复杂而且可伸缩的工具包。在1998年12月Java 1.2发布仅3天之后，Sun公司市场部将它改名为更加吸引人的“Java 2标准版软件开发包1.2版”。</p>
+<p>除了“标准版”（Standard Edition）之外，Sun公司还推出了两个其他的版本：一个是用于手机等嵌入式设备的“微型版”（Micro Edition）；另一个是用于服务器端处理的“企业版”（Enterprise Edition）。本书主要介绍标准版。</p>
+<p>标准版的1.3和1.4版本对最初的Java 2版本做出了增量式的改进，提供了不断扩展的标准类库，提高了性能，当然，还修正了一些bug。在此期间，原先对Java applet和客户端应用的炒作逐渐消退，但Java则成为服务器端应用的首选平台。</p>
+<p>5.0版是自1.1版以来第一个对Java语言做出重大改进的版本（这一版本原来定为1.5版，在2004年的JavaOne会议之后，版本号直接升至5.0）。经过了多年的研究，这个版本添加了泛型类型（generic type，大致相当于C++的模板），其挑战性在于添加这一特性而不需要对虚拟机做出任何修改。另外，受到C#的启发，还增加了几个很有用的语言特性：“for each”循环、自动装箱和注解。</p>
+<p>版本6（没有后缀.0）于2006年年末发布。同样，这个版本没有对语言方面再进行修改，而是做了其他性能改进，并增强了类库。</p>
+<p>随着数据中心越来越依赖于商业硬件而不是专用服务器，Sun公司终于沦陷，于2009年被Oracle收购。Java的开发停滞了很长一段时间。直到2011年Oracle发布了Java的一个新版本—Java 7，其中只做了一些简单的改进。</p>
+<p>2014年，Java 8终于发布，在近20年中这个版本发生的改变最大。Java 8包含了一种“函数式”编程方式，可以很容易地表述并发执行的计算。所有编程语言都必须与时俱进，Java在这方面显示出了非凡的能力。</p>
+<p>Java 9的主要特性要一直追溯到2008年。那时，Java平台的首席工程师Mark Reinhold开始着力分解这个庞大的Java平台。为此引入了模块，模块是提供一个特定功能的自包含的代码单元。设计和实现一个适用于Java平台的模块系统前后用了11年，而它是否也适用于Java应用和类库还有待观察。Java 9于2017年发布，它提供了另外一些吸引人的特性，我们将在本书中介绍这些特性。</p>
+<p>从2018年开始，每6个月就会发布一个Java版本，以支持更快地引入新特性。某些版本（如Java 11）设计为长期支持的版本。</p>
+<p>此部分先到这里。</p>
+
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/06/26/article-title/" data-id="ckqcjg46c0000agv8cso8bi1d" data-title="article title" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/06/26/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2021-06-25T16:07:59.144Z" itemprop="datePublished">2021-06-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/06/26/hello-world/">Hello World</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/26/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/26/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-06-26 00:07:59" itemprop="dateCreated datePublished" datetime="2021-06-26T00:07:59+08:00">2021-06-26</time>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
@@ -147,103 +281,171 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/06/26/hello-world/" data-id="ckqcj47ul00009wv886jm89dq" data-title="Hello World" class="article-share-link">Share</a>
-      
-      
-      
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-</article>
-
-
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/muse.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/06/26/article-title/">article title</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/26/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+<script src="/js/next-boot.js"></script>
 
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
 
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

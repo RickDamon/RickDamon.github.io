@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, RickDamon&#39;s blogs">
+    <meta name="keywords" content="Java_learning_2, RickDamon&#39;s blogs">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | RickDamon&#39;s blogs</title>
+    <title>Java_learning_2 | RickDamon&#39;s blogs</title>
     <link rel="icon" type="image/png" href="/RickDamon/RickDamon.github.io/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/RickDamon/RickDamon.github.io/libs/awesome/css/all.css">
@@ -313,12 +313,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/RickDamon/RickDamon.github.io/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/RickDamon/RickDamon.github.io/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">Java_learning_2</h1>
                 </div>
             </div>
         </div>
@@ -470,19 +470,74 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+                <h3 id="Java核心技术卷一-学习笔记（2）"><a href="#Java核心技术卷一-学习笔记（2）" class="headerlink" title="Java核心技术卷一 学习笔记（2）"></a>Java核心技术卷一 学习笔记（2）</h3><p>在书中的第二章节是Java编程环境的搭建以及jdk的下载，ide的配置等，这些内容基本没有什么好说的，直接看第三章的Java基本的程序设计结构，这章的内</p>
+<p>容实际上是比较关键的，虽然看似较为简单，但涉及到了java语言的基本规范，编译过程，数据类型等，这些东西每个语言都有所区别，不能因为有一定基础</p>
+<p>就跳过或略读。</p>
+<h2 id="最简单的Java程序分析"><a href="#最简单的Java程序分析" class="headerlink" title="最简单的Java程序分析"></a>最简单的Java程序分析</h2><p>下面贴一最简单的Java程序，只发送一条消息到控制台</p>
+ <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">public class FirstSample
+{
+    public static void main(String[] args)
+    {
+         System.out.println("We will not use 'hello world!' ");
+    }
+}   
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个程序虽然很简单，但如我们所知，所有Java程序都有此结构，现在我们逐行来细细研究一下：</p>
+<h2 id="代码规范"><a href="#代码规范" class="headerlink" title="代码规范"></a>代码规范</h2><p>关键字public称为访问修饰符（access modifier），用于控制程序的其他部分对这段代码的访问级别，和C++中类中的定义是十分相似的。而关键字class表明</p>
+<p>了Java程序中全部内容都包含在类中，在Java语言中，类是构建所有Java程序和applet的构建块，Java的全部内容都需放在类中。</p>
+<p>class后跟类名。Java中类名的定义必须由字母开头，后面可以跟字母和数字的组合，长度没有什么限制，但不能用Java的保留字。</p>
+<p>Java类的标准命名规范为<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%AA%86%E9%A9%BC%E5%91%BD%E5%90%8D%E6%B3%95/7794053?fr=aladdin">骆驼命名法</a> </p>
+<p>Java中源代码的文件名必须与公共类的名字相同，并且使用.java作为扩展名。</p>
+<h2 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h2><p>在编译过程中，以上面程序为例，在编译这段代码之后会得到一个包含这个类字节码的文件，java编译器会将字节码文件命名为FirstSample.class，并存储在</p>
+<p>源文件的同一目录下，编译完后可以使用 java FirstSample运行此程序，当然运行结果会是一段我们输入的字符。</p>
+<h2 id="java中的一些规范"><a href="#java中的一些规范" class="headerlink" title="java中的一些规范"></a>java中的一些规范</h2><p>运行已编译的程序时，Java虚拟机总是会从指定的类中的main方法的代码开始执行，所以在类的源文件中必须有一个main方法，且根据(Java语言规范)[<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/specs],main%E6%96%B9%E6%B3%95%E5%BF%85%E9%A1%BB%E5%A3%B0%E6%98%8E%E4%B8%BApublic%E3%80%82">http://docs.oracle.com/javase/specs],main方法必须声明为public。</a></p>
+<p>且在Java语言中，和在C++中一样，用大括号来划分程序部分。</p>
+<p>作为学习过C++程序的一员，对Java类的理解应该会好理解一下，Java的所有函数都是某个类的方法。因此，Java的main方法必须有一个shell类。</p>
+<p>Java中的main方法必须是静态的，void类型表示没有返回值，所以不用返回退出码。</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">public static void main(String[] args)
+   {
+        System.out.println("We will not use 'hello world!' ");
+   }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>现在对这个语句进行研究：</p>
+<p>在这里我们使用了System.out对象且调用了它的println方法。注意，点号（.）用于调用方法，Java中通用的调用为object.method(parameters)。和C++一</p>
+<p>样，都是用双引号界定字符串。注释也是很类似的。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Java中有八种基本的数据类型，其中4种整型，2种浮点类型，一种字符类型char，和判断值boolean类型。</p>
+<h1 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h1><p>Java中提供了四种整形，即int，short，long，byte，其中int类型最为常用，而要表达地球人口这样的较大数就需要用到long类型，而byte和short常用于特<br>定的场合，比如底层文件处理或者存储空间很宝贵的大数据。</p>
+<p>在C和C++中，int和long等类型的大小与目标平台相关。而Java中所有数值类型所占字节数与平台无关。且Java没有任何unsigned的int，long，short或byte<br>类型。</p>
+<h1 id="浮点类型"><a href="#浮点类型" class="headerlink" title="浮点类型"></a>浮点类型</h1><p>Java中有两种浮点类型为float和double分别占4字节和8字节。double所表示的数值精度为float的两倍。</p>
+<p>浮点数不适用于无法接受舍入误差的金融运算，如果在数值计算中不允许有任何舍入误差，应使用BigDecimal类。</p>
+<h1 id="char类型"><a href="#char类型" class="headerlink" title="char类型"></a>char类型</h1><p>此类型原本用于表示单个字符，不过在如今有些Unicode字符可以用一个char值来描述，有些则需两个char值。</p>
+<p>char类型的字面量值要用单引号括起来，例如’A’为编码值为65的字符常量。与”A”不同，这是一个包含字符A的字符串。</p>
+<h1 id="Unicode和char类型"><a href="#Unicode和char类型" class="headerlink" title="Unicode和char类型"></a>Unicode和char类型</h1><p>Unicode打破了传统的字符编码机制的限制，在其出现之前各国有许多不同的标准，就产生了两个问题：</p>
+<p>1.对于任意给定的代码值，在不同编码方案下可能对应不同的字母；</p>
+<p>2.采用大字符集的语言其编码长度可能有所不同。</p>
+<p>设计Unicode的初衷便是要解决这些问题。当时人们认为两个字节的代码宽度足以对世界上任何语言的所有字符进行编码，但最终还是因为大量的汉语系文字<br>中的表意文字，目前16位的char类型已无法满足描述所有Unicode字符的需要。</p>
+<h1 id="boolean类型"><a href="#boolean类型" class="headerlink" title="boolean类型"></a>boolean类型</h1><p>包括两个值true和false，来判定逻辑条件，整型和布尔值不能进行相互转换。</p>
+<h2 id="变量与常量"><a href="#变量与常量" class="headerlink" title="变量与常量"></a>变量与常量</h2><p>和C++类似，Java也用变量来存储值，常量就是值不变的变量，通常会用final修饰。</p>
+<h1 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h1><p>当变量的取值只在一个有限的集合内，可以自定义枚举类型。枚举类型包括有限个命名的值。</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">
+enum Size { SMALL , MEDIUM , LARGE , EXRA_LARGE};
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>之后会进行枚举类的详细介绍。</p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><h1 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h1><p>此处与其他语言类似，而要注意使用strictfp关键字标记的方法必须使用严格的浮点运算来生成可再生的结果。</p>
+<h1 id="数学函数与常量"><a href="#数学函数与常量" class="headerlink" title="数学函数与常量"></a>数学函数与常量</h1><p>在Math类中，包含了各种各样的数学函数。在编写不同类型的程序时，可能需要的函数也不同。</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">
+double x = 4 ;
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+double y = Math.sqrt(x) ;
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+System.out.println(y) ; //prints 2.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上位Math应用的举例。使用更多其中的功能可参考Java对应版本的API文档。</p>
+<h1 id="数值类型间的转换"><a href="#数值类型间的转换" class="headerlink" title="数值类型间的转换"></a>数值类型间的转换</h1><p>当用一个二元运算符连接两个值时，要将两操作数转为一种类型再进行计算。</p>
+<h1 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h1><p>有时将double转为int时会丢失信息，这种转换要通过强制类型转换（cast）来完成，强制类型转换语法：</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">
+double x = 4.99 ;
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+int n = (int) x ;
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="结合复制和运算符"><a href="#结合复制和运算符" class="headerlink" title="结合复制和运算符"></a>结合复制和运算符</h1><p>此处与C++类似，举个栗子，x+=4；大家大概就明白意思了。</p>
 
                 
             </div>
@@ -509,7 +564,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/RickDamon/RickDamon.github.io/RickDamon/RickDamon.github.io/2021/06/26/hello-world/">https://github.com/RickDamon/RickDamon.github.io/RickDamon/RickDamon.github.io/2021/06/26/hello-world/</a>
+                    <a href="https://github.com/RickDamon/RickDamon.github.io/RickDamon/RickDamon.github.io/2021/06/26/java-learning-2/">https://github.com/RickDamon/RickDamon.github.io/RickDamon/RickDamon.github.io/2021/06/26/java-learning-2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -718,13 +773,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/RickDamon/RickDamon.github.io/2021/06/26/article-title/">
+                <a href="/RickDamon/RickDamon.github.io/2021/06/26/hello-world/">
                     <div class="card-image">
                         
                         
-                        <img src="/RickDamon/RickDamon.github.io/medias/featureimages/11.jpg" class="responsive-img" alt="Java_learning_1">
+                        <img src="/RickDamon/RickDamon.github.io/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
                         
-                        <span class="card-title">Java_learning_1</span>
+                        <span class="card-title">Hello World</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -752,7 +807,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
                 <a href="/RickDamon/RickDamon.github.io/2021/06/26/java-learning-2/">
@@ -782,6 +837,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>

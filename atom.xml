@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>RickDamon &#39;s blog</title>
+  <title>RickDamon&#39;s blogs</title>
   
+  <subtitle>Welcome!</subtitle>
+  <link href="https://github.com/RickDamon/RickDamon.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/atom.xml" rel="self"/>
-  
-  <link href="http://example.com/"/>
+  <link href="https://github.com/RickDamon/RickDamon.github.io/"/>
   <updated>2021-06-25T17:55:22.999Z</updated>
-  <id>http://example.com/</id>
+  <id>https://github.com/RickDamon/RickDamon.github.io/</id>
   
   <author>
     <name>RickDamon</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Java_learning_1</title>
-    <link href="http://example.com/2021/06/26/article-title/"/>
-    <id>http://example.com/2021/06/26/article-title/</id>
+    <link href="https://github.com/RickDamon/RickDamon.github.io/2021/06/26/article-title/"/>
+    <id>https://github.com/RickDamon/RickDamon.github.io/2021/06/26/article-title/</id>
     <published>2021-06-25T16:17:44.074Z</published>
     <updated>2021-06-25T17:55:22.999Z</updated>
     
@@ -39,8 +39,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://example.com/2021/06/26/hello-world/"/>
-    <id>http://example.com/2021/06/26/hello-world/</id>
+    <link href="https://github.com/RickDamon/RickDamon.github.io/2021/06/26/hello-world/"/>
+    <id>https://github.com/RickDamon/RickDamon.github.io/2021/06/26/hello-world/</id>
     <published>2021-06-25T16:07:59.144Z</published>
     <updated>2021-06-25T16:07:59.144Z</updated>
     
@@ -50,6 +50,27 @@
         
         
     <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Java_learning_2</title>
+    <link href="https://github.com/RickDamon/RickDamon.github.io/2021/06/26/java-learning-2/"/>
+    <id>https://github.com/RickDamon/RickDamon.github.io/2021/06/26/java-learning-2/</id>
+    <published>2021-06-25T16:00:00.000Z</published>
+    <updated>2021-06-26T06:57:56.207Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;Java核心技术卷一-学习笔记（2）&quot;&gt;&lt;a href=&quot;#Java核心技术卷一-学习笔记（2）&quot; class=&quot;headerlink&quot; title=&quot;Java核心技术卷一 学习笔记（2）&quot;&gt;&lt;/a&gt;Java核心技术卷一</summary>
         
       
     

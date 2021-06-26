@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-06-25T17:55:22.999Z</updated>
+  <updated>2021-06-26T09:47:15.779Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>Java_learning_1</title>
-    <link href="http://example.com/2021/06/26/article-title/"/>
-    <id>http://example.com/2021/06/26/article-title/</id>
+    <link href="http://example.com/2021/06/26/java-learning-1/"/>
+    <id>http://example.com/2021/06/26/java-learning-1/</id>
     <published>2021-06-25T16:17:44.074Z</published>
-    <updated>2021-06-25T17:55:22.999Z</updated>
+    <updated>2021-06-26T09:47:15.779Z</updated>
     
     
       
@@ -63,7 +63,7 @@
     <link href="http://example.com/2021/06/26/java-learning-2/"/>
     <id>http://example.com/2021/06/26/java-learning-2/</id>
     <published>2021-06-25T16:00:00.000Z</published>
-    <updated>2021-06-26T06:57:56.207Z</updated>
+    <updated>2021-06-26T09:52:17.477Z</updated>
     
     
       

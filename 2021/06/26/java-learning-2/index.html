@@ -470,9 +470,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="Java核心技术卷一-学习笔记（2）"><a href="#Java核心技术卷一-学习笔记（2）" class="headerlink" title="Java核心技术卷一 学习笔记（2）"></a>Java核心技术卷一 学习笔记（2）</h3><p>在书中的第二章节是Java编程环境的搭建以及jdk的下载，ide的配置等，这些内容基本没有什么好说的，直接看第三章的Java基本的程序设计结构，这章的内</p>
-<p>容实际上是比较关键的，虽然看似较为简单，但涉及到了java语言的基本规范，编译过程，数据类型等，这些东西每个语言都有所区别，不能因为有一定基础</p>
-<p>就跳过或略读。</p>
+                <h3 id="Java核心技术卷一-学习笔记（2）"><a href="#Java核心技术卷一-学习笔记（2）" class="headerlink" title="Java核心技术卷一 学习笔记（2）"></a>Java核心技术卷一 学习笔记（2）</h3><p>在书中的第二章节是Java编程环境的搭建以及jdk的下载，ide的配置等，这些内容基本没有什么好说的，直接看第三章的Java基本的程序设计结构，这章的内容实际上是比较关键的，虽然看似较为简单，但涉及到了java语言的基本规范，编译过程，数据类型等，这些东西每个语言都有所区别，不能因为有一定基础就跳过或略读。</p>
 <h2 id="最简单的Java程序分析"><a href="#最简单的Java程序分析" class="headerlink" title="最简单的Java程序分析"></a>最简单的Java程序分析</h2><p>下面贴一最简单的Java程序，只发送一条消息到控制台</p>
  <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">public class FirstSample
 {
@@ -483,15 +481,14 @@
 }   
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这个程序虽然很简单，但如我们所知，所有Java程序都有此结构，现在我们逐行来细细研究一下：</p>
-<h2 id="代码规范"><a href="#代码规范" class="headerlink" title="代码规范"></a>代码规范</h2><p>关键字public称为访问修饰符（access modifier），用于控制程序的其他部分对这段代码的访问级别，和C++中类中的定义是十分相似的。而关键字class表明</p>
-<p>了Java程序中全部内容都包含在类中，在Java语言中，类是构建所有Java程序和applet的构建块，Java的全部内容都需放在类中。</p>
+<h2 id="代码规范"><a href="#代码规范" class="headerlink" title="代码规范"></a>代码规范</h2><p>关键字public称为访问修饰符（access modifier），用于控制程序的其他部分对这段代码的访问级别，和C++中类中的定义是十分相似的。而关键字class表明<br>了Java程序中全部内容都包含在类中，在Java语言中，类是构建所有Java程序和applet的构建块，Java的全部内容都需放在类中。</p>
 <p>class后跟类名。Java中类名的定义必须由字母开头，后面可以跟字母和数字的组合，长度没有什么限制，但不能用Java的保留字。</p>
 <p>Java类的标准命名规范为<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%AA%86%E9%A9%BC%E5%91%BD%E5%90%8D%E6%B3%95/7794053?fr=aladdin">骆驼命名法</a> </p>
 <p>Java中源代码的文件名必须与公共类的名字相同，并且使用.java作为扩展名。</p>
-<h2 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h2><p>在编译过程中，以上面程序为例，在编译这段代码之后会得到一个包含这个类字节码的文件，java编译器会将字节码文件命名为FirstSample.class，并存储在</p>
-<p>源文件的同一目录下，编译完后可以使用 java FirstSample运行此程序，当然运行结果会是一段我们输入的字符。</p>
-<h2 id="java中的一些规范"><a href="#java中的一些规范" class="headerlink" title="java中的一些规范"></a>java中的一些规范</h2><p>运行已编译的程序时，Java虚拟机总是会从指定的类中的main方法的代码开始执行，所以在类的源文件中必须有一个main方法，且根据(Java语言规范)[<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/specs],main%E6%96%B9%E6%B3%95%E5%BF%85%E9%A1%BB%E5%A3%B0%E6%98%8E%E4%B8%BApublic%E3%80%82">http://docs.oracle.com/javase/specs],main方法必须声明为public。</a></p>
-<p>且在Java语言中，和在C++中一样，用大括号来划分程序部分。</p>
+<h2 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h2><p>在编译过程中，以上面程序为例，在编译这段代码之后会得到一个包含这个类字节码的文件，java编译器会将字节码文件命名为FirstSample.class，并存储在源文件的同一目录下，编译完后可以使用 java FirstSample运行此程序，当然运行结果会是一段我们输入的字符。</p>
+<h2 id="java中的一些规范"><a href="#java中的一些规范" class="headerlink" title="java中的一些规范"></a>java中的一些规范</h2><p>运行已编译的程序时，Java虚拟机总是会从指定的类中的main方法的代码开始执行，所以在类的源文件中必须有一个main方法，且根据(Java语言规范)[<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/specs]%E3%80%82">http://docs.oracle.com/javase/specs]。</a></p>
+<p>main方法必须声明为public。</p>
+<p>在Java语言中，和在C++中一样，用大括号来划分程序部分。</p>
 <p>作为学习过C++程序的一员，对Java类的理解应该会好理解一下，Java的所有函数都是某个类的方法。因此，Java的main方法必须有一个shell类。</p>
 <p>Java中的main方法必须是静态的，void类型表示没有返回值，所以不用返回退出码。</p>
 <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">public static void main(String[] args)
@@ -499,11 +496,10 @@
         System.out.println("We will not use 'hello world!' ");
    }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>现在对这个语句进行研究：</p>
-<p>在这里我们使用了System.out对象且调用了它的println方法。注意，点号（.）用于调用方法，Java中通用的调用为object.method(parameters)。和C++一</p>
-<p>样，都是用双引号界定字符串。注释也是很类似的。</p>
+<p>在这里我们使用了System.out对象且调用了它的println方法。注意，点号（.）用于调用方法，Java中通用的调用为object.method(parameters)。和C++一样，都是用双引号界定字符串。注释也是很类似的。</p>
 <h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Java中有八种基本的数据类型，其中4种整型，2种浮点类型，一种字符类型char，和判断值boolean类型。</p>
-<h1 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h1><p>Java中提供了四种整形，即int，short，long，byte，其中int类型最为常用，而要表达地球人口这样的较大数就需要用到long类型，而byte和short常用于特<br>定的场合，比如底层文件处理或者存储空间很宝贵的大数据。</p>
-<p>在C和C++中，int和long等类型的大小与目标平台相关。而Java中所有数值类型所占字节数与平台无关。且Java没有任何unsigned的int，long，short或byte<br>类型。</p>
+<h1 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h1><p>Java中提供了四种整型，即int，short，long，byte，其中int类型最为常用，而要表达地球人口这样的较大数就需要用到long类型，而byte和short常用于特定的场合，比如底层文件处理或者存储空间很宝贵的大数据。</p>
+<p>在C和C++中，int和long等类型的大小与目标平台相关。而Java中所有数值类型所占字节数与平台无关。且Java没有任何unsigned的int，long，short或byte类型。</p>
 <h1 id="浮点类型"><a href="#浮点类型" class="headerlink" title="浮点类型"></a>浮点类型</h1><p>Java中有两种浮点类型为float和double分别占4字节和8字节。double所表示的数值精度为float的两倍。</p>
 <p>浮点数不适用于无法接受舍入误差的金融运算，如果在数值计算中不允许有任何舍入误差，应使用BigDecimal类。</p>
 <h1 id="char类型"><a href="#char类型" class="headerlink" title="char类型"></a>char类型</h1><p>此类型原本用于表示单个字符，不过在如今有些Unicode字符可以用一个char值来描述，有些则需两个char值。</p>

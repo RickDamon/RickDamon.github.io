@@ -473,8 +473,21 @@
                 <h3 id="Java核心技术一卷学习笔记（1）"><a href="#Java核心技术一卷学习笔记（1）" class="headerlink" title="Java核心技术一卷学习笔记（1）"></a>Java核心技术一卷学习笔记（1）</h3><p>课内关于Java学习的内容安排过于少且仓促，俗话说大学都是师傅领进门，修行靠个人，为加强Java语言的编程以及Debug能力，用Java核心技术卷一二以及深入理解Java虚拟机来补充相应知识空缺。</p>
 <h3 id="第一章-Java程序设计概述"><a href="#第一章-Java程序设计概述" class="headerlink" title="第一章 Java程序设计概述"></a>第一章 Java程序设计概述</h3><p>本章是对Java语言的引入介绍，这里放上Java程序设计者对于其设计初衷以及完成情况的白皮书 <a href="www.oracle.com/technetwork/java/langenv-140151.html">Java white paper</a><br>关于关键数术语的概述 <a target="_blank" rel="noopener" href="http://horstmann.com/corejava/java-an-overview/7Gosling.pdf">key words</a> </p>
 <p>Java的十一个关键术语为：</p>
-<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">### 简单性</span></span><br><span class="line"></span><br><span class="line">此处主要是相对C++语言来说，Java的设计者们希望构建一个无需深奥的专业训练就可以进行编程的系统，且符合当今的标准惯例，Java提出了C++中很多较少使用，且难以处理的、容易被混淆的特性。</span><br><span class="line"></span><br><span class="line">Java语法可以理解为C++语法的一个纯净版本，没有头文件，指针操作，结构，联合，操作符重载，虚基类等待。当然也有一些不适当特性的存在，比如switch语法在Java没有什么改变。</span><br><span class="line"></span><br><span class="line">简单的另一个方面便是小，Java设计者希望Java可以支持开发能够在小型机器上独立运行的软件，在发布时，基本的解释器以及类支持大约为40KB，加上标准类库以及线上支持，大约需要增加170KB，这在当时已经是一个不错的成就。</span><br><span class="line"></span><br><span class="line"><span class="section">## Java的面向对象</span></span><br><span class="line"></span><br><span class="line">在设计者开发Java语言时，面向对象技术已经很成熟，Java面向对象的特性与C++旗鼓相当，Java与其不同点在于多重继承，Java中使用了更简单的接口概念。Java也提供了更丰富的运行时自省功能。</span><br><span class="line"></span><br><span class="line"><span class="section">## 分布式</span></span><br><span class="line"></span><br><span class="line">Java由一个丰富的例程库支持处理像HTTP和FTP类的TCP/IP协议。</span><br><span class="line"></span><br><span class="line">Java应用程序可通过URL打开和访问网络上的对象。</span><br><span class="line"></span><br><span class="line"><span class="section">## 健壮性</span></span><br><span class="line"></span><br><span class="line">Java因为取消了指针的使用，采用指针模型，消除了重写内存和损坏数据的可能性。</span><br><span class="line"></span><br><span class="line"><span class="section">## 安全性</span></span><br><span class="line"></span><br><span class="line">从一开始Java就可以防范类似于运行时堆栈溢出（蠕虫和病毒常用手段），破坏自己的进程空间之外的内存，未经授权读写文件等问题。 </span><br><span class="line"></span><br><span class="line">不可信代码在一个沙河环境中执行，不会影响主系统。</span><br><span class="line"></span><br><span class="line"><span class="section">## 体系结构中立</span></span><br><span class="line"></span><br><span class="line">因为Java虚拟机的存在，编译器生成一个体系结构中立的目标文件格式，可在多种处理器上运行。</span><br><span class="line"></span><br><span class="line"><span class="section">## 可移植性</span></span><br><span class="line"></span><br><span class="line">在Java中，数值类型有固定的字节数，消除了代码移植时的主要问题，字符串通过Unicode格式存储。</span><br><span class="line"></span><br><span class="line"><span class="section">## 解释性</span></span><br><span class="line"></span><br><span class="line">Java解释器可以在任何抑制了解释器的机器上直接执行Java字节码。</span><br><span class="line"></span><br><span class="line"><span class="section">## 高性能</span></span><br><span class="line"></span><br><span class="line">字节码可以在运行时动态的转换成对应运行这个应用特定CPU的机器码</span><br><span class="line"></span><br><span class="line"><span class="section">## 多线程</span></span><br><span class="line"></span><br><span class="line">Java是第一个支持并发设计的主流语言。</span><br><span class="line"></span><br><span class="line"><span class="section">## 动态性</span></span><br><span class="line"></span><br><span class="line">Java库中可以自由添加新方法和实例变量，而对客户端没影响。</span><br></pre></td></tr></tbody></table></figure>
-
+<h1 id="简单性"><a href="#简单性" class="headerlink" title="简单性"></a>简单性</h1><p>此处主要是相对C++语言来说，Java的设计者们希望构建一个无需深奥的专业训练就可以进行编程的系统，且符合当今的标准惯例，Java提出了C++中很多较少使用，且难以处理的、容易被混淆的特性。</p>
+<p>Java语法可以理解为C++语法的一个纯净版本，没有头文件，指针操作，结构，联合，操作符重载，虚基类等待。当然也有一些不适当特性的存在，比如switch语法在Java没有什么改变。</p>
+<p>简单的另一个方面便是小，Java设计者希望Java可以支持开发能够在小型机器上独立运行的软件，在发布时，基本的解释器以及类支持大约为40KB，加上标准类库以及线上支持，大约需要增加170KB，这在当时已经是一个不错的成就。</p>
+<h1 id="Java的面向对象"><a href="#Java的面向对象" class="headerlink" title="Java的面向对象"></a>Java的面向对象</h1><p>在设计者开发Java语言时，面向对象技术已经很成熟，Java面向对象的特性与C++旗鼓相当，Java与其不同点在于多重继承，Java中使用了更简单的接口概念。Java也提供了更丰富的运行时自省功能。</p>
+<h1 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h1><p>Java由一个丰富的例程库支持处理像HTTP和FTP类的TCP/IP协议。</p>
+<p>Java应用程序可通过URL打开和访问网络上的对象。</p>
+<h1 id="健壮性"><a href="#健壮性" class="headerlink" title="健壮性"></a>健壮性</h1><p>Java因为取消了指针的使用，采用指针模型，消除了重写内存和损坏数据的可能性。</p>
+<h1 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h1><p>从一开始Java就可以防范类似于运行时堆栈溢出（蠕虫和病毒常用手段），破坏自己的进程空间之外的内存，未经授权读写文件等问题。 </p>
+<p>不可信代码在一个沙河环境中执行，不会影响主系统。</p>
+<h1 id="体系结构中立"><a href="#体系结构中立" class="headerlink" title="体系结构中立"></a>体系结构中立</h1><p>因为Java虚拟机的存在，编译器生成一个体系结构中立的目标文件格式，可在多种处理器上运行。</p>
+<h1 id="可移植性"><a href="#可移植性" class="headerlink" title="可移植性"></a>可移植性</h1><p>在Java中，数值类型有固定的字节数，消除了代码移植时的主要问题，字符串通过Unicode格式存储。</p>
+<h1 id="解释性"><a href="#解释性" class="headerlink" title="解释性"></a>解释性</h1><p>Java解释器可以在任何抑制了解释器的机器上直接执行Java字节码。</p>
+<h1 id="高性能"><a href="#高性能" class="headerlink" title="高性能"></a>高性能</h1><p>字节码可以在运行时动态的转换成对应运行这个应用特定CPU的机器码</p>
+<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p>Java是第一个支持并发设计的主流语言。</p>
+<h1 id="动态性"><a href="#动态性" class="headerlink" title="动态性"></a>动态性</h1><p>Java库中可以自由添加新方法和实例变量，而对客户端没影响。</p>
 <h3 id="Java语言发展简史"><a href="#Java语言发展简史" class="headerlink" title="Java语言发展简史"></a>Java语言发展简史</h3><p>Java的历史要追溯到1991年，由Patrick Naughton和James Gosling（一个全能的计算机奇才，Sun公司会士）带领的Sun公司的工程师小组想要设计一种小型的计算机语言，主要用于像有线电视转换盒这类消费设备。由于这些消费设备的处理能力和内存都很有限，所以语言必须非常小且能够生成非常紧凑的代码。另外，由于不同的厂商会选择不同的中央处理器（CPU），因此很重要的一点是这种语言不应与任何特定的体系结构绑定。这个项目被命名为“Green”。</p>
 <p>代码短小、紧凑且与平台无关，这些要求促使开发团队设计出一个可移植的语言，可以为虚拟机生成中间代码。</p>
 <p>不过，Sun公司的人都有UNIX的应用背景。因此，所开发的语言以C++为基础，而不是Lisp、Smalltalk或Pascal。不过，就像Gosling在专访中谈道：“毕竟，语言只是实现目标的工具，而不是目标本身。”Gosling把这种语言称为“Oak”（这么起名大概是因为他非常喜欢自己办公室窗外的一棵橡树）。Sun公司的人后来发现，Oak是一种已有的计算机语言的名字，于是，将其改名为Java。事实证明这是一个很有灵感的选择。</p>
@@ -520,7 +533,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/06/26/article-title/">http://example.com/2021/06/26/article-title/</a>
+                    <a href="http://example.com/2021/06/26/java-learning-1/">http://example.com/2021/06/26/java-learning-1/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -730,7 +743,7 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2021/06/26/article-title/">
+                <a href="/2021/06/26/java-learning-1/">
                     <div class="card-image">
                         
                         

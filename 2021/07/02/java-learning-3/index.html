@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java_learning_1, RickDamon&#39;s blogs">
+    <meta name="keywords" content="Java_learning_3, RickDamon&#39;s blogs">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java_learning_1 | RickDamon&#39;s blogs</title>
+    <title>Java_learning_3 | RickDamon&#39;s blogs</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -313,12 +313,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java_learning_1</h1>
+                    <h1 class="description center-align post-title">Java_learning_3</h1>
                 </div>
             </div>
         </div>
@@ -446,7 +446,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-06-26
+                    2021-07-02
                 </div>
                 
 
@@ -470,43 +470,151 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="Java核心技术一卷学习笔记（1）"><a href="#Java核心技术一卷学习笔记（1）" class="headerlink" title="Java核心技术一卷学习笔记（1）"></a>Java核心技术一卷学习笔记（1）</h3><p>课内关于Java学习的内容安排过于少且仓促，俗话说大学都是师傅领进门，修行靠个人，为加强Java语言的编程以及Debug能力，用Java核心技术卷一二以及深入理解Java虚拟机来补充相应知识空缺。</p>
-<h3 id="第一章-Java程序设计概述"><a href="#第一章-Java程序设计概述" class="headerlink" title="第一章 Java程序设计概述"></a>第一章 Java程序设计概述</h3><p>本章是对Java语言的引入介绍，这里放上Java程序设计者对于其设计初衷以及完成情况的白皮书 <a href="www.oracle.com/technetwork/java/langenv-140151.html">Java white paper</a><br>关于关键数术语的概述 <a target="_blank" rel="noopener" href="http://horstmann.com/corejava/java-an-overview/7Gosling.pdf">key words</a> </p>
-<p>Java的十一个关键术语为：</p>
-<h1 id="简单性"><a href="#简单性" class="headerlink" title="简单性"></a>简单性</h1><p>此处主要是相对C++语言来说，Java的设计者们希望构建一个无需深奥的专业训练就可以进行编程的系统，且符合当今的标准惯例，Java提出了C++中很多较少使用，且难以处理的、容易被混淆的特性。</p>
-<p>Java语法可以理解为C++语法的一个纯净版本，没有头文件，指针操作，结构，联合，操作符重载，虚基类等待。当然也有一些不适当特性的存在，比如switch语法在Java没有什么改变。</p>
-<p>简单的另一个方面便是小，Java设计者希望Java可以支持开发能够在小型机器上独立运行的软件，在发布时，基本的解释器以及类支持大约为40KB，加上标准类库以及线上支持，大约需要增加170KB，这在当时已经是一个不错的成就。</p>
-<h1 id="Java的面向对象"><a href="#Java的面向对象" class="headerlink" title="Java的面向对象"></a>Java的面向对象</h1><p>在设计者开发Java语言时，面向对象技术已经很成熟，Java面向对象的特性与C++旗鼓相当，Java与其不同点在于多重继承，Java中使用了更简单的接口概念。Java也提供了更丰富的运行时自省功能。</p>
-<h1 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h1><p>Java由一个丰富的例程库支持处理像HTTP和FTP类的TCP/IP协议。</p>
-<p>Java应用程序可通过URL打开和访问网络上的对象。</p>
-<h1 id="健壮性"><a href="#健壮性" class="headerlink" title="健壮性"></a>健壮性</h1><p>Java因为取消了指针的使用，采用指针模型，消除了重写内存和损坏数据的可能性。</p>
-<h1 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h1><p>从一开始Java就可以防范类似于运行时堆栈溢出（蠕虫和病毒常用手段），破坏自己的进程空间之外的内存，未经授权读写文件等问题。 </p>
-<p>不可信代码在一个沙河环境中执行，不会影响主系统。</p>
-<h1 id="体系结构中立"><a href="#体系结构中立" class="headerlink" title="体系结构中立"></a>体系结构中立</h1><p>因为Java虚拟机的存在，编译器生成一个体系结构中立的目标文件格式，可在多种处理器上运行。</p>
-<h1 id="可移植性"><a href="#可移植性" class="headerlink" title="可移植性"></a>可移植性</h1><p>在Java中，数值类型有固定的字节数，消除了代码移植时的主要问题，字符串通过Unicode格式存储。</p>
-<h1 id="解释性"><a href="#解释性" class="headerlink" title="解释性"></a>解释性</h1><p>Java解释器可以在任何抑制了解释器的机器上直接执行Java字节码。</p>
-<h1 id="高性能"><a href="#高性能" class="headerlink" title="高性能"></a>高性能</h1><p>字节码可以在运行时动态的转换成对应运行这个应用特定CPU的机器码</p>
-<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p>Java是第一个支持并发设计的主流语言。</p>
-<h1 id="动态性"><a href="#动态性" class="headerlink" title="动态性"></a>动态性</h1><p>Java库中可以自由添加新方法和实例变量，而对客户端没影响。</p>
-<h3 id="Java语言发展简史"><a href="#Java语言发展简史" class="headerlink" title="Java语言发展简史"></a>Java语言发展简史</h3><p>Java的历史要追溯到1991年，由Patrick Naughton和James Gosling（一个全能的计算机奇才，Sun公司会士）带领的Sun公司的工程师小组想要设计一种小型的计算机语言，主要用于像有线电视转换盒这类消费设备。由于这些消费设备的处理能力和内存都很有限，所以语言必须非常小且能够生成非常紧凑的代码。另外，由于不同的厂商会选择不同的中央处理器（CPU），因此很重要的一点是这种语言不应与任何特定的体系结构绑定。这个项目被命名为“Green”。</p>
-<p>代码短小、紧凑且与平台无关，这些要求促使开发团队设计出一个可移植的语言，可以为虚拟机生成中间代码。</p>
-<p>不过，Sun公司的人都有UNIX的应用背景。因此，所开发的语言以C++为基础，而不是Lisp、Smalltalk或Pascal。不过，就像Gosling在专访中谈道：“毕竟，语言只是实现目标的工具，而不是目标本身。”Gosling把这种语言称为“Oak”（这么起名大概是因为他非常喜欢自己办公室窗外的一棵橡树）。Sun公司的人后来发现，Oak是一种已有的计算机语言的名字，于是，将其改名为Java。事实证明这是一个很有灵感的选择。</p>
-<p>1992年，Green项目发布了它的第一个产品，称之为“*7”。这个产品可以提供非常智能的远程控制。遗憾的是，Sun公司对生产这个产品并不感兴趣，Green项目组的人员必须找出其他的方法来将他们的技术推向市场。然而，仍然没有任何一家标准消费品电子公司对此感兴趣。于是，Green项目组投标了一个设计有线电视盒的项目，它能提供视频点播等新型有线服务，但他们没能拿到这个合同（有趣的是，得到这个项目的公司的领导恰恰是开创Netscape公司的Jim Clark。Netscape公司后来对Java的成功给予了很大的帮助）。</p>
-<p>Green项目（这时换了一个新名字—“First Person公司”）在1993年一整年以及1994年的上半年，一直在苦苦寻求买家购买他们的技术。然而，一个也没有找到（Patrick Naughton—项目组的创始人之一，也是完成大多数营销工作的人，声称为了销售这项技术，已累计飞行了300000英里）。1994年First Person公司解散了。</p>
-<p>当这一切在Sun公司发生的时候，Internet的万维网也在日渐发展壮大。万维网的关键是浏览器把超文本页面转换到屏幕上。1994年大多数人都在使用Mosaic，这是1993年出自伊利诺伊大学超级计算中心的一个非商业化的Web浏览器（Mosaic的一部分是由Marc Andreessen编写的。当时，他作为一名参加半工半读项目的本科生，编写了这个软件，每小时的薪水只有6.85美元。他后来成了Netscape公司的创始人之一和技术总监，可谓名利双收）。</p>
-<p>在接受SunWorld采访的时候，Gosling说，在1994年中期，Java语言的开发者意识到：“我们能够建立一个相当酷的浏览器。在客户/服务器主流框架中，浏览器恰好需要我们已经完成的一些工作：体系结构中立、实时、可靠、安全—这些问题在工作站环境并不太重要，所以，我们决定开发浏览器。”</p>
-<p>实际的浏览器是由Patrick Naughton和Jonathan Payne开发的，并演变为HotJava浏览器。HotJava浏览器采用Java编写，以炫耀Java语言超强的能力。这个浏览器能够在网页中执行内嵌的Java代码。这一“技术证明”在1995年5月23日的SunWorld’95大会上展示，同时引发了人们延续至今的对Java的狂热追逐。</p>
-<p>1996年年初，Sun发布了Java的第1个版本。人们很快地意识到Java 1.0不能用来进行真正的应用开发。的确，可以使用Java 1.0来实现在画布上随机跳动的神经质的文本applet，但它却没有提供打印功能。坦率地说，Java 1.0的确没有为其黄金时期的到来做好准备。后来的Java 1.1弥补了其中的大多明显的缺陷，大大改进了反射能力，并为GUI编程增加了新的事件处理模型。不过它仍然有很大的局限性。</p>
-<p>1998年JavaOne会议的头号新闻是即将发布Java 1.2版。这个版本将早期玩具式的GUI和图形工具包代之以复杂而且可伸缩的工具包。在1998年12月Java 1.2发布仅3天之后，Sun公司市场部将它改名为更加吸引人的“Java 2标准版软件开发包1.2版”。</p>
-<p>除了“标准版”（Standard Edition）之外，Sun公司还推出了两个其他的版本：一个是用于手机等嵌入式设备的“微型版”（Micro Edition）；另一个是用于服务器端处理的“企业版”（Enterprise Edition）。本书主要介绍标准版。</p>
-<p>标准版的1.3和1.4版本对最初的Java 2版本做出了增量式的改进，提供了不断扩展的标准类库，提高了性能，当然，还修正了一些bug。在此期间，原先对Java applet和客户端应用的炒作逐渐消退，但Java则成为服务器端应用的首选平台。</p>
-<p>5.0版是自1.1版以来第一个对Java语言做出重大改进的版本（这一版本原来定为1.5版，在2004年的JavaOne会议之后，版本号直接升至5.0）。经过了多年的研究，这个版本添加了泛型类型（generic type，大致相当于C++的模板），其挑战性在于添加这一特性而不需要对虚拟机做出任何修改。另外，受到C#的启发，还增加了几个很有用的语言特性：“for each”循环、自动装箱和注解。</p>
-<p>版本6（没有后缀.0）于2006年年末发布。同样，这个版本没有对语言方面再进行修改，而是做了其他性能改进，并增强了类库。</p>
-<p>随着数据中心越来越依赖于商业硬件而不是专用服务器，Sun公司终于沦陷，于2009年被Oracle收购。Java的开发停滞了很长一段时间。直到2011年Oracle发布了Java的一个新版本—Java 7，其中只做了一些简单的改进。</p>
-<p>2014年，Java 8终于发布，在近20年中这个版本发生的改变最大。Java 8包含了一种“函数式”编程方式，可以很容易地表述并发执行的计算。所有编程语言都必须与时俱进，Java在这方面显示出了非凡的能力。</p>
-<p>Java 9的主要特性要一直追溯到2008年。那时，Java平台的首席工程师Mark Reinhold开始着力分解这个庞大的Java平台。为此引入了模块，模块是提供一个特定功能的自包含的代码单元。设计和实现一个适用于Java平台的模块系统前后用了11年，而它是否也适用于Java应用和类库还有待观察。Java 9于2017年发布，它提供了另外一些吸引人的特性，我们将在本书中介绍这些特性。</p>
-<p>从2018年开始，每6个月就会发布一个Java版本，以支持更快地引入新特性。某些版本（如Java 11）设计为长期支持的版本。</p>
-<p>此部分先到这里。</p>
+                <h3 id="Java核心技术卷一-学习笔记（3）"><a href="#Java核心技术卷一-学习笔记（3）" class="headerlink" title="Java核心技术卷一 学习笔记（3）"></a>Java核心技术卷一 学习笔记（3）</h3><p>本次的内容主要为Java中的对象和类，对于有经验的C++程序员来说，对本文不会感到陌生，但毕竟语言存在着很多不同之处，仍需对本章的内容进行较为详细的阅读。</p>
+<h2 id="面向对象程序设计的概述"><a href="#面向对象程序设计的概述" class="headerlink" title="面向对象程序设计的概述"></a>面向对象程序设计的概述</h2><h1 id="类"><a href="#类" class="headerlink" title="类"></a>类</h1><p>类是构造对象的模板或者蓝图，可以将类想象成做曲奇饼的模具，将对象想象为曲奇饼。由类构造对象的过程则称之为创建类的实例。</p>
+<p>在前文中由看到，用Java编写的所有的代码都是位于某个类中，标准的Java库中提供了几千个类，可用于各种目的，如用户界面设计、日历、日期和网络编程等，当然这些类不可能满足所有的需要，所以还是需要创建一些自己的类，来描述我们应用程序所对应问题的对象。</p>
+<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>封装是一个处理对象的重要概念，从形式上而言，封装就是将数据和行为组合在一个包里，并对对象的使用者隐藏具体的实现方式，对象的数据称为实例字段，操作数据的过程称之为方法，作为一个类的实例，特定对象都有一组特定的实例字段值，这些值的集合就是这个对象当前的状态。实现封装的关键在于，不能让类中的方法直接访问其他类的实例字段，程序只能通过对象的方法与对象数据进行交互。</p>
+<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><p>事实上，所有的Java类都源自于一个超类，就是Object，所有的其他类都扩展自这个类。在扩展一个已有的类时，这个扩展后的新类拥有被扩展的类的全部属性以及方法，你只需在新类中提供适用于这个新类的新方法和数据字段即可。通过扩展一个类来建立另外一个类的过程我们称之为继承。</p>
+<h1 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h1><p>首先，我们要清楚对象的三个主要特性：<br>1.对象的行为——可以对对象完成哪些操作，应用哪些方法？<br>2.对象的状态——当调用那些方法时，对象的响应如何?<br>3.对象的标识——如何区分具有相同行为与状态的不同对象？</p>
+<p>对象的这些关键特性会彼此相互影响。对象的行为是用可调用的方法来定义的。每个对象都保存描述当前状况的讯息，这就是对象的状态。而状态不能完全的描述一个对象，每个对象都有唯一的标识。</p>
+<h1 id="类之间的关系"><a href="#类之间的关系" class="headerlink" title="类之间的关系"></a>类之间的关系</h1><p>在类之间最常见的关系有依赖（uses-a），聚合（has-a）和继承（is-a）关系。<br>如果一个类的方法使用或操纵另一个类的对象，我们就称之为一个类依赖于另一个类。我们在设计程序时，应尽量可能的将相互依赖的类减至最少，用软件工程的术语就是减少类之间的耦合。<br>聚合很容易理解，意味着类A的对象包含类B的对象。<br>继承则表示一个更特殊的类与一个较为一般的类间的关系，一般情况下，特殊的类会继承于较为一般的类。</p>
+<h2 id="使用Java中预定义的类"><a href="#使用Java中预定义的类" class="headerlink" title="使用Java中预定义的类"></a>使用Java中预定义的类</h2><p>实际上在Java语言中，没有类你将寸步难行，我们曾在前几节提到Math类，我们可以直接使用Math类中的方法，而忽略他是如何实现的，其中Math.random方法，不必了解他的具体实现，只需知道方法名和参数即可，这便是封装的关键所在，所有的类都是这样。</p>
+<p>#对象与对象变量</p>
+<p>使用对象前必须要构造对象并指定他的初始状态，然后对对象应用方法。</p>
+<p>在Java语言中我们需使用构造器构造新实例。构造器实际上是一种特殊的方法，用来构造并初始化对象。我们来构造一个Java中存在的用来表示时间的类Date。如下所示。<br> </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">new Date()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>这个表达式构造了一个新对象，初始化为当前的日期和时间。我们可以将对象直接传递给一个方法。<br> <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">System.out.println(new Date());<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>在上面这个例子中，我们构造的对象仅仅使用了一次，通常你希望你的对象可以多次使用，因此我们需要将其存放在一个变量中。<br> <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">Date birthday = new Date();<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>在对象与对象变量之间有一个重要的区别。<br> <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">Date deadline;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>我们用以上语句定义了一个对象变量deadline，可以用来引用Date类型的对象，但是，变量deadline并不是一个对象，实际上他也没有引用任何对象，此时我们不能在这个变量上使用任何的Date方法。<br> <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">s = deadline.toString()//error;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>以上的语句将产生编译错误<br>我们要初始化对象deadline才能去使用它。<br> <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">deadline = new Date();
+deadline = birthday;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br>我们用了初始化和引用其他对象两种方法让他可以使用。<br>在Java语言中，任何对象的值都是对另一个地方的某个对象的引用。<br>很多人错误的认为Java中的对象变量相当于C++中的引用，实际上C++中并没有null引用，且引用不能赋值，我们可以把Java中的对象变量看作类似于C++中的对象指针。<p></p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">Date birthday = new Date();//Java
+Date* birthday = new Date();//C++<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>而且所有的Java对象都储存在堆中，当一个对象包含另一个对象变量时，他只是包含着另一个堆对象的指针。</p>
+<h1 id="类库中的LocalDate类"><a href="#类库中的LocalDate类" class="headerlink" title="类库中的LocalDate类"></a>类库中的LocalDate类</h1><p>书中使用了LocalDate类对Java预定义类的使用进行了更详细的描述。</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">LocalDate newYearsEve = LocalDate.of(2020, 12 , 31);
+int year = newYearsEve.getYear(); //2020
+int month = newYearsEve.getMonthValue(); //12
+int day = newYearsEve.getDayOfMonth(); //12
+LocalDate aThousandDaysLater = newYearsEve.plusDays(1000);
+year = aThousandDaysLater.getYear() //2022<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们看到上述代码的方法名较为复杂，而实际上在编译器中你只需要打个.各种方法就会自己出来任由你选择，Java丰富的预定义类和方法调用是它能够经久不衰的一大原因。</p>
+<h2 id="用户自定义类"><a href="#用户自定义类" class="headerlink" title="用户自定义类"></a>用户自定义类</h2><p>我们用一个简单的Employee类来对自定义类的使用进行详细的描述。以下代码就行了这个类的构造和使用。</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">import java.time.*;
+
+public class EmployeeTest
+{
+   public static void main(String[] args)
+   {
+      // fill the staff array with three Employee objects
+      Employee[] staff = new Employee[3];
+
+<span class="token code keyword">      staff[0] = new Employee("Carl Cracker", 75000, 1987, 12, 15);
+      staff[1] = new Employee("Harry Hacker", 50000, 1989, 10, 1);
+      staff[2] = new Employee("Tony Tester", 40000, 1990, 3, 15);</span>
+
+<span class="token code keyword">      // raise everyone's salary by 5%
+      for (Employee e : staff)
+         e.raiseSalary(5);</span>
+
+<span class="token code keyword">      // print out information about all Employee objects
+      for (Employee e : staff)
+         System.out.println("name=" + e.getName() + ",salary=" + e.getSalary() + ",hireDay=" 
+            + e.getHireDay());</span>
+   }
+}
+
+class Employee
+{
+   private String name;
+   private double salary;
+   private LocalDate hireDay;
+
+   public Employee(String n, double s, int year, int month, int day)
+   {
+      name = n;
+      salary = s;
+      hireDay = LocalDate.of(year, month, day);
+   }
+
+   public String getName()
+   {
+      return name;
+   }
+
+   public double getSalary()
+   {
+      return salary;
+   }
+
+   public LocalDate getHireDay()
+   {
+      return hireDay;
+   }
+
+   public void raiseSalary(double byPercent)
+   {
+      double raise = salary * byPercent / 100;
+      salary += raise;
+   }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先在这个程序中我们构造了一个Employee数组，填入了三个Employee对象</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">Employee[] staff = new Employee[3];
+
+staff[0] = new Employee("Carl Cracker", 75000, 1987, 12, 15);
+staff[1] = new Employee("Harry Hacker", 50000, 1989, 10, 1);
+staff[2] = new Employee("Tony Tester", 40000, 1990, 3, 15);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来用了Employee类中的raiseSalary方法良心的将每个人的薪水提高5%，用到了foreach循环结构。</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">// raise everyone's salary by 5%
+for (Employee e : staff)
+   e.raiseSalary(5);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>而后调用了getName方法，getSalary方法以及getHireDay方法打印哥哥员工的信息：</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">      // print out information about all Employee objects
+for (Employee e : staff)
+   System.out.println("name=" + e.getName() + ",salary=" + e.getSalary() + ",hireDay=" 
+      <span class="token list punctuation">+</span> e.getHireDay());<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们在这个程序中包含了Employee类和public修饰的EmployeeTest类，其中EmployeeTest包含了main方法。<br>源文件为EmployeeTest.java，文件名必须与public类的名字相匹配，在一个源文件中只能有一个公共类。</p>
+<p>当我们编译这段代码时会产生两个类文件：Employee.class和EmployeeTest.class，可以将程序中baohanmain方法的类名提供给字节码解释器来启动程序。<br>即java EmployeeTest</p>
+<h1 id="分析Employee类"><a href="#分析Employee类" class="headerlink" title="分析Employee类"></a>分析Employee类</h1><p>这个类中包含了一个构造器以及四个方法：</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">public Employee(String n, double s, int year, int month, int day)
+public String getName()
+public double getSalary()
+public LocalDate getHireDay()
+public void raiseSalary(double byPercent)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>类中的方法标记为public，我们上文中说到一个java文件中只能有一个公共类，要与这里的方法区分开。关键字public意味着任何类的任何方法都可以调用这些方法。<br>接下来看类中如何存放要操作的数据：</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">private String name;
+private double salary;
+private LocalDate hireDay;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>关键字private和C++中一样，确保只有类自身的方法能访问这些实例字段。</p>
+<h1 id="构造器分析"><a href="#构造器分析" class="headerlink" title="构造器分析"></a>构造器分析</h1><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">   public Employee(String n, double s, int year, int month, int day)
+{
+   name = n;
+   salary = s;
+   hireDay = LocalDate.of(year, month, day);
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>构造器与类同名，构造器括号中包括了要传入的参数，传入相应参数后在构造器中将会给相应的变量赋值。<br>有几个关键点需要注意：构造器与类同名；每个类可以有一个以上的构造器；构造器可以有任意个参数；构造器无返回值；构造器伴随new一起调用。</p>
+<p>Java构造器的工作方式与C++一样，但是所有的Java对象都是在堆中构造的。</p>
+<p>注意不要在构造器中定义与实例字段相同名字的局部变量<br>例如：</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">   public Employee(String n, double s)
+{
+   String name = n;
+   double salary = s;
+ 
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在这个构造器中声明了局部变量name和salary，这些变量是只可以在构造器内部访问的，会屏蔽掉所有的同名实例字段。</p>
+<h1 id="用var声明局部变量"><a href="#用var声明局部变量" class="headerlink" title="用var声明局部变量"></a>用var声明局部变量</h1><p>我们可以从变量的初始值推导出它的类型，可以用var关键字声明局部变量无须指定类型。</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">Employee harry = new Employee("Harry", 50000, 1989, 12, 31);
+var harry = new Employee("Harry", 50000, 1989, 12, 31);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>上文中的两个代码实现了同样的功能。</p>
+<h2 id="包"><a href="#包" class="headerlink" title="包"></a>包</h2><p>Java中可以使用包将类组织在一个集合中，借助包可以方便的组织自己的代码。</p>
+<h1 id="包名"><a href="#包名" class="headerlink" title="包名"></a>包名</h1><p>使用包的主要原因是确保类名的唯一性，若两程序员都建立了Employee类，只要将他们放在不同的包中，就不会冲突。</p>
+<p>#类的导入</p>
+<p>我们可采用两种方式访问一个包中的公共类，第一种就是完全限定名称，包后面跟着类名。</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">java.time.LocalDate today = java.time.LocalDate.now();<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这显然很繁琐，更常用的就是使用import语句，如我们常见的</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">import java.time.*;
+LocalDate today = LocalDate.now();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="静态导入"><a href="#静态导入" class="headerlink" title="静态导入"></a>静态导入</h1><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">import static java.lang.System.*;
+out.println("haha");<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这种方法并不常用，但是可以使程序更为简洁。</p>
 
                 
             </div>
@@ -533,7 +641,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/06/26/java-learning-1/">http://example.com/2021/06/26/java-learning-1/</a>
+                    <a href="http://example.com/2021/07/02/java-learning-3/">http://example.com/2021/07/02/java-learning-3/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -738,9 +846,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/07/02/java-learning-3/">
                     <div class="card-image">
@@ -758,9 +867,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -769,6 +878,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -779,13 +889,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/06/26/hello-world/">
+                <a href="/2021/06/26/java-learning-1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Java_learning_1">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">Java_learning_1</span>
                     </div>
                 </a>
                 <div class="card-content article-content">

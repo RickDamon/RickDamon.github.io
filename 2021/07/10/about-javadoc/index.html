@@ -475,7 +475,11 @@
 <p>可以为上面各个特性编写注释，注释放置在所描述特性的前面，注释将以/*<em>开始，且以</em>/结束。</p>
 <p>每个/**…*/文档注释包含标记以及之后紧跟着的自由格式文本。标记以@开始，比如@since或@param。</p>
 <p>自由格式文本的第一句应该是一个概要性的句子，javadoc工具自动的将这些句子抽取出来生成概要页。</p>
-<p>在自由格式文本中，可以使用HTML修饰符，如用于强调的<em>…</em>、着重强调的<strong>…</strong>、用于项目符号列表的</p><ul>/<li>及用于包含图像的&lt;img …&gt;等。如要键入宽代码，需使用{@code … }而非<code>...</code>,这样就不用操心对代码中的&lt;进行字符转义了。<p></p>
+<p>在自由格式文本中，可以使用HTML修饰符 例：<br> </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">用于强调的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>em</span><span class="token punctuation">&gt;</span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>em</span><span class="token punctuation">&gt;</span></span>
+着重强调的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>strong</span><span class="token punctuation">&gt;</span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>strong</span><span class="token punctuation">&gt;</span></span>
+用于项目符号列表的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">&gt;</span></span>/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span></span>
+及用于包含图像的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">...</span><span class="token punctuation">&gt;</span></span>等
+如要键入宽代码，需使用{@code ... }而非<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span><span class="token punctuation">&gt;</span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">&gt;</span></span>。这样就不用操心对代码中的&lt;进行字符转义了。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
 <h2 id="类注释"><a href="#类注释" class="headerlink" title="类注释"></a>类注释</h2><p>类注释必须要放在import语句之后和类定义之前。<br>我们举一个例子</p>
  <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">/*<span class="token italic"><span class="token punctuation">*</span><span class="token content">
  </span><span class="token punctuation">*</span></span> A {@code Card} object represents a playing card,such
@@ -528,7 +532,7 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
 <p>若文件处于无名的包中，则运行：</p>
 <p>   javadoc -d docDirectory *.java</p>
 <p>如若在上述操作中省略了 -d docDirectory选项，那么HTML文件就会被提取到当前目录下，这样的结果就是可能比较混乱。</p>
-</li></ul>
+
                 
             </div>
             <hr/>

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-07-10T08:45:51.663Z</updated>
+  <updated>2021-07-17T07:14:57.977Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>whosbug项目的初步认识</title>
+    <link href="http://example.com/2021/07/17/whosbug1/"/>
+    <id>http://example.com/2021/07/17/whosbug1/</id>
+    <published>2021-07-16T16:00:00.000Z</published>
+    <updated>2021-07-17T07:14:57.977Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;目前属于项目开完会进行学前任务的时期，主要是对whosbug已有代码的阅读和补充下编译原理的知识。&lt;/p&gt;
+&lt;p&gt;在会议期间导师主要介绍的项目内容是需要让whosbug适配更多的语言，解决接入大型项目的冷启动(Cold Start)问题以及分片分析问题。&lt;/p&gt;
+&lt;h3</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Java中的文档注释</title>

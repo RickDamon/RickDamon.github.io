@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>whosbug项目的初步认识</title>
+      <link href="/2021/07/17/whosbug1/"/>
+      <url>/2021/07/17/whosbug1/</url>
+      
+        <content type="html"><![CDATA[<p>目前属于项目开完会进行学前任务的时期，主要是对whosbug已有代码的阅读和补充下编译原理的知识。</p><p>在会议期间导师主要介绍的项目内容是需要让whosbug适配更多的语言，解决接入大型项目的冷启动(Cold Start)问题以及分片分析问题。</p><h3 id="AST解析适配更多语言"><a href="#AST解析适配更多语言" class="headerlink" title="AST解析适配更多语言"></a>AST解析适配更多语言</h3><p>项目需要优先适配Cpp，Object C，Swift以及kotlin语言，目前看来已经基本完成了对Java语言的AST解析，antlr4中对语言进行解析首先需要用到g4文件，应是需要多次用到antlr4的官方g4收录库以完成对项目要求语言的适配。</p><ul><li><p><a href="https://github.com/antlr/grammars-v4">antlr4官方g4文件库</a></p></li><li><p><a href="https://github.com/antlr/antlr4">antlr4 github主页</a></p></li></ul><h3 id="Cold-Start"><a href="#Cold-Start" class="headerlink" title="Cold Start"></a>Cold Start</h3><p>冷启动一般指新项目进入内容平台时的问题，目前whosbug主要接入了NewMonkey项目，今后可以根据常用的解决冷启动问题的方式进行处理。</p><h3 id="分片"><a href="#分片" class="headerlink" title="分片"></a>分片</h3><p>分片技术可以提高数据库的性能，在区块链中经常使用。数据分片在某些情况下较为复杂，但whosbug的数据应该都比较偏向结构化，分片以及之后的结果碎片不会过于难以维护。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Java中的文档注释</title>
       <link href="/2021/07/10/about-javadoc/"/>
       <url>/2021/07/10/about-javadoc/</url>

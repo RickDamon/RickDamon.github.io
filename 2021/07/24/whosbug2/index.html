@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="whosbug项目的初步认识, RickDamon&#39;s blogs">
+    <meta name="keywords" content="whosbug2, RickDamon&#39;s blogs">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>whosbug项目的初步认识 | RickDamon&#39;s blogs</title>
+    <title>whosbug2 | RickDamon&#39;s blogs</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -313,12 +313,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">whosbug项目的初步认识</h1>
+                    <h1 class="description center-align post-title">whosbug2</h1>
                 </div>
             </div>
         </div>
@@ -446,7 +446,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-07-17
+                    2021-07-24
                 </div>
                 
 
@@ -470,17 +470,33 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>目前属于项目开完会进行学前任务的时期，主要是对whosbug已有代码的阅读和补充下编译原理的知识。</p>
-<p>在会议期间导师主要介绍的项目内容是需要让whosbug适配更多的语言，解决接入大型项目的冷启动(Cold Start)问题以及分片分析问题。</p>
-<h3 id="AST解析适配更多语言"><a href="#AST解析适配更多语言" class="headerlink" title="AST解析适配更多语言"></a>AST解析适配更多语言</h3><p>项目需要优先适配Cpp，Object C，Swift以及kotlin语言，目前看来已经基本完成了对Java语言的AST解析，antlr4中对语言进行解析首先需要用到g4文件，应是需要多次用到antlr4的官方g4收录库以完成对项目要求语言的适配。</p>
-<ul>
-<li><p><a target="_blank" rel="noopener" href="https://github.com/antlr/grammars-v4">antlr4官方g4文件库</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://github.com/antlr/antlr4">antlr4 github主页</a></p>
-</li>
-</ul>
-<h3 id="Cold-Start"><a href="#Cold-Start" class="headerlink" title="Cold Start"></a>Cold Start</h3><p>冷启动一般指新项目进入内容平台时的问题，目前whosbug主要接入了NewMonkey项目，今后可以根据常用的解决冷启动问题的方式进行处理。</p>
-<h3 id="分片"><a href="#分片" class="headerlink" title="分片"></a>分片</h3><p>分片技术可以提高数据库的性能，在区块链中经常使用。数据分片在某些情况下较为复杂，但whosbug的数据应该都比较偏向结构化，分片以及之后的结果碎片不会过于难以维护。</p>
+                <p>##2021/7/17</p>
+<p>有试着对CPP做一下AST解析以及将whosbug克隆到本地。有遇到如下问题：</p>
+<h3 id="尝试对Cpp的AST解析"><a href="#尝试对Cpp的AST解析" class="headerlink" title="尝试对Cpp的AST解析"></a>尝试对Cpp的AST解析</h3><p>和对Java的一样，首先是用g4文件得到了CPP的Parser以及Lexer的python文件，发现与Java的显著不同的是CPP14Parser中没有compilationUnit，之后会再看看代码研究。</p>
+<h3 id="whosbug"><a href="#whosbug" class="headerlink" title="whosbug"></a>whosbug</h3><p>在进行gitclone后有出现识别不到包的问题，一般情况下遇到这种问题首先是环境配置可能出了状况，但是再三检查下并没有发现不对的地方，最终用imoport sys print(sys.path)发现是没有识别到上级的路径，将whosbug_CI添加到环境变量中得以解决。<br><a target="_blank" rel="noopener" href="http://www.manongjc.com/article/17094.html">解决方法</a></p>
+<p>##2021/7/18</p>
+<h3 id="会议记录"><a href="#会议记录" class="headerlink" title="会议记录"></a>会议记录</h3><p>会议没有导师的参与，我们四个成员讨论了项目的学习内容以及相关困惑，分工问题决定之后再进行分配。</p>
+<h3 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h3><p>对whosbug插件的本地运行，有json文件读不到的问题。将command_line.py中的get_input函数改写得到解决。很奇怪的是，再pycharm中运行依然读不到包，只能选择在gitbash里运行。</p>
+<pre class="line-numbers language-none"><code class="language-none">def get_input():
+    with open("input.json", "r", encoding="UTF-8") as f:
+        return json.load(f)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>被测库使用github中的MarkdownEditors，为java语言主写项目。运行生成了一个Sourcecode文件夹以及res.json文件，分别存放了java代码以及加密密文。</p>
+<h2 id="2021-7-19"><a href="#2021-7-19" class="headerlink" title="2021/7/19"></a>2021/7/19</h2><h3 id="完成whosbug-service的本地部署。"><a href="#完成whosbug-service的本地部署。" class="headerlink" title="完成whosbug-service的本地部署。"></a>完成whosbug-service的本地部署。</h3><p>下载docker的windows版本：</p>
+<p><a target="_blank" rel="noopener" href="https://www.docker.com/">docker官网</a></p>
+<p>检测是否安装成功：</p>
+<p>输入docker –version与docker-compose –version</p>
+<p><img src="/public/dedias/images/test1.jpg" alt="图片"></p>
+<p>linux内核的准备：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10#step-4---download-the-linux-kernel-update-package">windows给的解决方案</a></p>
+<p>成功后docker中的images界面：</p>
+<p><img src="/public/dedias/images/test2.jpg" alt="图片"></p>
+<p>API doc：</p>
+<p><img src="/public/dedias/images/test3.jpg" alt="图片"></p>
+<h2 id="2021-7-20"><a href="#2021-7-20" class="headerlink" title="2021/7/20"></a>2021/7/20</h2><p>登入服务器看了下环境，装了git和docker，把项目代码和一个被测仓库放了进去。</p>
+<p>大家开会讨论了下学习内容和之后的任务分配问题。</p>
+<h2 id="2021-7-21"><a href="#2021-7-21" class="headerlink" title="2021/7/21"></a>2021/7/21</h2><p>了解了一下什么是csrf和django</p>
+<p>读g4生成的python环境下的parser和lexer，根据已有的java文件做了一点cpp的解析。</p>
 
                 
             </div>
@@ -507,7 +523,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/07/17/whosbug1/">http://example.com/2021/07/17/whosbug1/</a>
+                    <a href="http://example.com/2021/07/24/whosbug2/">http://example.com/2021/07/24/whosbug2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -712,9 +728,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/07/24/whosbug2/">
                     <div class="card-image">
@@ -732,9 +749,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-24
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -743,6 +760,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -753,13 +771,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/07/10/about-javadoc/">
+                <a href="/2021/07/17/whosbug1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java中的文档注释">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="whosbug项目的初步认识">
                         
-                        <span class="card-title">Java中的文档注释</span>
+                        <span class="card-title">whosbug项目的初步认识</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -770,7 +788,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-17
                             </span>
                         <span class="publish-author">
                             

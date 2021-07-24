@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-07-17T07:14:57.977Z</updated>
+  <updated>2021-07-24T06:53:38.636Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>whosbug2</title>
+    <link href="http://example.com/2021/07/24/whosbug2/"/>
+    <id>http://example.com/2021/07/24/whosbug2/</id>
+    <published>2021-07-23T16:00:00.000Z</published>
+    <updated>2021-07-24T06:53:38.636Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;##2021/7/17&lt;/p&gt;
+&lt;p&gt;有试着对CPP做一下AST解析以及将whosbug克隆到本地。有遇到如下问题：&lt;/p&gt;
+&lt;h3 id=&quot;尝试对Cpp的AST解析&quot;&gt;&lt;a href=&quot;#尝试对Cpp的AST解析&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>whosbug项目的初步认识</title>

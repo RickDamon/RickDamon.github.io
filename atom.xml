@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-07-24T07:13:32.188Z</updated>
+  <updated>2021-07-31T03:55:04.885Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2021/07/24/whosbug2/"/>
     <id>http://example.com/2021/07/24/whosbug2/</id>
     <published>2021-07-23T16:00:00.000Z</published>
-    <updated>2021-07-24T07:13:32.188Z</updated>
+    <updated>2021-07-31T03:55:04.885Z</updated>
     
     
       
@@ -35,6 +35,8 @@
     
     
     
+    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
+    
   </entry>
   
   <entry>
@@ -42,7 +44,7 @@
     <link href="http://example.com/2021/07/17/whosbug1/"/>
     <id>http://example.com/2021/07/17/whosbug1/</id>
     <published>2021-07-16T16:00:00.000Z</published>
-    <updated>2021-07-17T07:14:57.977Z</updated>
+    <updated>2021-07-31T03:54:51.383Z</updated>
     
     
       
@@ -58,6 +60,8 @@
     
     
     
+    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
+    
   </entry>
   
   <entry>
@@ -65,7 +69,7 @@
     <link href="http://example.com/2021/07/10/about-javadoc/"/>
     <id>http://example.com/2021/07/10/about-javadoc/</id>
     <published>2021-07-09T16:00:00.000Z</published>
-    <updated>2021-07-10T08:45:51.663Z</updated>
+    <updated>2021-07-31T03:54:31.257Z</updated>
     
     
       
@@ -79,6 +83,8 @@
     
     
     
+    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    
   </entry>
   
   <entry>
@@ -86,7 +92,7 @@
     <link href="http://example.com/2021/07/02/java-learning-3/"/>
     <id>http://example.com/2021/07/02/java-learning-3/</id>
     <published>2021-07-01T16:00:00.000Z</published>
-    <updated>2021-07-02T07:42:19.433Z</updated>
+    <updated>2021-07-31T03:54:21.047Z</updated>
     
     
       
@@ -100,6 +106,8 @@
     
     
     
+    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    
   </entry>
   
   <entry>
@@ -107,7 +115,7 @@
     <link href="http://example.com/2021/06/26/java-learning-1/"/>
     <id>http://example.com/2021/06/26/java-learning-1/</id>
     <published>2021-06-25T16:17:44.074Z</published>
-    <updated>2021-06-26T09:47:15.779Z</updated>
+    <updated>2021-07-31T03:54:10.361Z</updated>
     
     
       
@@ -121,6 +129,8 @@
     
     
     
+    <category term="Java" scheme="http://example.com/tags/Java/"/>
+    
   </entry>
   
   <entry>
@@ -128,7 +138,7 @@
     <link href="http://example.com/2021/06/26/java-learning-2/"/>
     <id>http://example.com/2021/06/26/java-learning-2/</id>
     <published>2021-06-25T16:00:00.000Z</published>
-    <updated>2021-06-26T09:52:17.477Z</updated>
+    <updated>2021-07-31T03:54:15.721Z</updated>
     
     
       
@@ -141,6 +151,8 @@
     
     
     
+    
+    <category term="Java" scheme="http://example.com/tags/Java/"/>
     
   </entry>
   

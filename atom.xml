@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-07-31T03:55:04.885Z</updated>
+  <updated>2021-07-31T05:58:40.899Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,18 +17,41 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>whosbug3</title>
+    <link href="http://example.com/2021/07/31/whosbug3/"/>
+    <id>http://example.com/2021/07/31/whosbug3/</id>
+    <published>2021-07-30T16:00:00.000Z</published>
+    <updated>2021-07-31T05:58:40.899Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;项目日志&quot;&gt;&lt;a href=&quot;#项目日志&quot; class=&quot;headerlink&quot; title=&quot;项目日志&quot;&gt;&lt;/a&gt;项目日志&lt;/h1&gt;&lt;h2 id=&quot;7-25&quot;&gt;&lt;a href=&quot;#7-25&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
+    
+  </entry>
+  
+  <entry>
     <title>whosbug2</title>
     <link href="http://example.com/2021/07/24/whosbug2/"/>
     <id>http://example.com/2021/07/24/whosbug2/</id>
     <published>2021-07-23T16:00:00.000Z</published>
-    <updated>2021-07-31T03:55:04.885Z</updated>
+    <updated>2021-07-31T05:59:07.288Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h2 id=&quot;2021-7-17&quot;&gt;&lt;a href=&quot;#2021-7-17&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;h2 id=&quot;项目日志&quot;&gt;&lt;a href=&quot;#项目日志&quot; class=&quot;headerlink&quot; title=&quot;项目日志&quot;&gt;&lt;/a&gt;项目日志&lt;/h2&gt;&lt;h2 id=&quot;2021-7-17&quot;&gt;&lt;a href=&quot;#2021-7-17&quot; class=&quot;headerlink&quot;</summary>
         
       
     
@@ -44,16 +67,14 @@
     <link href="http://example.com/2021/07/17/whosbug1/"/>
     <id>http://example.com/2021/07/17/whosbug1/</id>
     <published>2021-07-16T16:00:00.000Z</published>
-    <updated>2021-07-31T03:54:51.383Z</updated>
+    <updated>2021-07-31T05:59:13.807Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;目前属于项目开完会进行学前任务的时期，主要是对whosbug已有代码的阅读和补充下编译原理的知识。&lt;/p&gt;
-&lt;p&gt;在会议期间导师主要介绍的项目内容是需要让whosbug适配更多的语言，解决接入大型项目的冷启动(Cold Start)问题以及分片分析问题。&lt;/p&gt;
-&lt;h3</summary>
+    <summary type="html">&lt;h2 id=&quot;项目日志&quot;&gt;&lt;a href=&quot;#项目日志&quot; class=&quot;headerlink&quot;</summary>
         
       
     

@@ -1,0 +1,1745 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="whosbug3, RickDamon&#39;s blogs">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>whosbug3 | RickDamon&#39;s blogs</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="RickDamon's blogs" type="application/atom+xml">
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">RickDamon&#39;s blogs</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">RickDamon&#39;s blogs</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/RickDamon/RickDamon.github.io" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/RickDamon/RickDamon.github.io" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">whosbug3</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/whosbug/">
+                                <span class="chip bg-color">whosbug</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-07-31
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="项目日志"><a href="#项目日志" class="headerlink" title="项目日志"></a>项目日志</h1><h2 id="7-25"><a href="#7-25" class="headerlink" title="7/25"></a>7/25</h2><h2 id="ast-processor存在的问题"><a href="#ast-processor存在的问题" class="headerlink" title="ast_processor存在的问题"></a>ast_processor存在的问题</h2><p>在对Cpp解析的过程中发现原本Java解析中的compliationUnit函数在cpp中为translationUnit，说明了ast_processor这个文件还得根据语言适配。</p>
+<h2 id="基本完成对CPP的解析"><a href="#基本完成对CPP的解析" class="headerlink" title="基本完成对CPP的解析"></a>基本完成对CPP的解析</h2><p>不知道是否符合要求，解析结果如下所示：</p>
+<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><pre class="line-numbers language-none"><code class="language-none">#include&lt;iostream&gt;
+#include&lt;stack&gt;
+
+
+using namespace std;
+class CNode
+{
+public:
+    char data;
+    CNode* left;
+    CNode* right;
+    CNode()
+    {
+        left = right = NULL;
+    }
+};
+
+class BiTree : public CNode
+{
+public:
+    CNode* Root;
+    int pos;
+    string strTree;
+    BiTree(string str)
+    {
+        pos = 0;
+        strTree = str;
+        Root = CreateBiTree();
+    }
+    CNode* CreateBiTree(string str,int in,double dou)
+    {
+        CNode* T;
+        char ch;
+        ch = strTree[pos];
+        pos++;
+        if (ch == '0')
+        {
+            T = NULL;
+        }
+        else
+        {
+            T = new CNode();
+            T-&gt;data = ch;
+            T-&gt;left = CreateBiTree();
+            T-&gt;right = CreateBiTree();
+        }
+        return T;
+    }
+    void nonPre()
+    {
+        CNode* T = Root;
+        stack&lt;CNode*&gt;S;
+        while (T || !S.empty())
+        {
+            while (T)
+            {
+                cout &lt;&lt; T-&gt;data;
+                S.push(T);
+                T = T-&gt;left;
+            }
+            if (!S.empty())
+            {
+                T = S.top();
+                S.pop();
+                T = T-&gt;right;
+            }
+        }
+    }
+    void nonPost()
+    {
+        int tag;///0不可访问，1可访问
+        stack&lt;CNode*&gt;S1;///结点
+        stack&lt;int&gt;S2;///tag
+        CNode* T = Root;
+        if (Root == NULL)
+            return;
+        CNode* p = T;
+        do
+        {
+            while (p != NULL)
+            {
+                S1.push(p);
+                S2.push(0);
+                p = p-&gt;left;
+            }
+            if (S1.empty())
+                break;
+            if (p == NULL)
+            {
+                tag = S2.top();
+                if (tag == 0)
+                {
+                    tag = 1;
+                    S2.pop();
+                    S2.push(tag);
+                    p = S1.top()-&gt;right;
+                }
+                else if (tag == 1)
+                {
+                    p = S1.top();
+                    S1.pop();
+                    S2.pop();
+                    cout &lt;&lt; p-&gt;data;
+                    p = NULL;
+                }
+            }
+        } while (!S1.empty());
+    }
+};
+
+int main()
+{
+    int T;
+    cin &gt;&gt; T;
+    while (T--)
+    {
+        string str;
+        cin &gt;&gt; str;
+        BiTree tree(str);
+        tree.nonPost();
+        cout &lt;&lt; endl;
+    }
+    return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><pre class="line-numbers language-none"><code class="language-none">Start line: 12 | End line: 15 | Method name: CNode
+Start line: 24 | End line: 29 | Method name: BiTree
+Start line: 30 | End line: 48 | Method name: CreateBiTree
+Start line: 49 | End line: 68 | Method name: nonPre
+Start line: 69 | End line: 108 | Method name: nonPost
+Start line: 111 | End line: 124 | Method name: main
+2021-07-26 12:51:29 - ast_processor - 12668 - DEBUG : Display all data extracted by AST. 
+{'classes': [{'className': 'CNode', 'depth': 9, 'endLine': 16, 'inheritance': '', 'masterObject': {}, 'startLine': 6},
+             {'className': 'BiTree', 'depth': 9, 'endLine': 109, 'inheritance': ':publicCNode', 'masterObject': {}, 'startLine': 18}],
+ 'methods': [{'depth': 12,
+              'endLine': 15,
+              'masterObject': {'objectName': 'classCNode', 'startLine': 6},
+              'methodName': 'CNode',
+              'params': [],
+              'returnType': 'void',
+              'startLine': 12},
+             {'depth': 12,
+              'endLine': 29,
+              'masterObject': {'objectName': 'classBiTree:publicCNode', 'startLine': 18},
+              'methodName': 'BiTree',
+              'params': [{'paramName:': 'str', 'paramType:': 'string'}],
+              'returnType': 'void',
+              'startLine': 24},
+             {'depth': 12,
+              'endLine': 48,
+              'masterObject': {'objectName': 'classBiTree:publicCNode', 'startLine': 18},
+              'methodName': 'CreateBiTree',
+              'params': [{'paramName:': 'str', 'paramType:': 'string'},
+                         {'paramName:': 'in', 'paramType:': 'int'},
+                         {'paramName:': 'dou', 'paramType:': 'double'}],
+              'returnType': 'CNode',
+              'startLine': 30},
+             {'depth': 12,
+              'endLine': 68,
+              'masterObject': {'objectName': 'classBiTree:publicCNode', 'startLine': 18},
+              'methodName': 'nonPre',
+              'params': [],
+              'returnType': 'void',
+              'startLine': 49},
+             {'depth': 12,
+              'endLine': 108,
+              'masterObject': {'objectName': 'classBiTree:publicCNode', 'startLine': 18},
+              'methodName': 'nonPost',
+              'params': [],
+              'returnType': 'void',
+              'startLine': 69},
+             {'depth': 4,
+              'endLine': 124,
+              'masterObject': {},
+              'methodName': 'main',
+              'params': [{'paramName:': 'str', 'paramType:': ''}],
+              'returnType': 'int',
+              'startLine': 111}],
+ 'namespace': ['std']}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="7-28"><a href="#7-28" class="headerlink" title="7/28"></a>7/28</h2><h2 id="在本地whosbug-CI添加了对cpp的解析功能"><a href="#在本地whosbug-CI添加了对cpp的解析功能" class="headerlink" title="在本地whosbug_CI添加了对cpp的解析功能"></a>在本地whosbug_CI添加了对cpp的解析功能</h2><h2 id="测试仓库：CarND-Kidnapped-Vehicle-Project"><a href="#测试仓库：CarND-Kidnapped-Vehicle-Project" class="headerlink" title="测试仓库：CarND-Kidnapped-Vehicle-Project"></a>测试仓库：CarND-Kidnapped-Vehicle-Project</h2><h2 id="command-line运行结果："><a href="#command-line运行结果：" class="headerlink" title="command_line运行结果："></a>command_line运行结果：</h2><pre class="line-numbers language-none"><code class="language-none">enter WhosbugAssign
+project_id: whosbug_test_1
+release: 1.0.0
+repo_path: D:\testProject\multiple-object-tracking-lidar
+branch_name: D:\testProject\multiple-object-tracking-lidar
+change work path:  D:\testProject\multiple-object-tracking-lidar
+b'&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;504 Gateway Time-out&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;504 Gateway Time-out&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;ias/1.3.5.6_1.17.3&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n'
+last release's commit hash:  None
+new release's commit hash:  f1aec75f7dd46d5f6af3b131be4354822e63c587
+change work path:  D:\whosbug\whosbug_CI\WhosbugAssign
+main.cpp
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+Start line: 79 | End line: 82 | Method name: euclidean_distance
+Start line: 104 | End line: 123 | Method name: findIndexOfMin
+Start line: 124 | End line: 330 | Method name: KFT
+Start line: 331 | End line: 338 | Method name: publish_cloud
+Start line: 341 | End line: 704 | Method name: cloud_cb
+Start line: 709 | End line: 748 | Method name: main
+main.cpp
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+Start line: 79 | End line: 82 | Method name: euclidean_distance
+Start line: 104 | End line: 123 | Method name: findIndexOfMin
+Start line: 124 | End line: 330 | Method name: KFT
+Start line: 331 | End line: 338 | Method name: publish_cloud
+Start line: 341 | End line: 698 | Method name: cloud_cb
+Start line: 703 | End line: 743 | Method name: main
+main.cpp
+main_naive.cpp
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+line 794:37 mismatched input ';' expecting {'}', ','}
+line 832:0 missing '}' at '&lt;EOF&gt;'
+Start line: 79 | End line: 82 | Method name: euclidean_distance
+Start line: 104 | End line: 123 | Method name: findIndexOfMin
+Start line: 124 | End line: 352 | Method name: KFT
+Start line: 353 | End line: 360 | Method name: publish_cloud
+Start line: 363 | End line: 831 | Method name: cloud_cb
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+Start line: 71 | End line: 74 | Method name: euclidean_distance
+Start line: 95 | End line: 244 | Method name: KFT
+Start line: 245 | End line: 252 | Method name: publish_cloud
+Start line: 255 | End line: 559 | Method name: cloud_cb
+Start line: 564 | End line: 603 | Method name: main
+main.cpp
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+line 95:0 no viable alternative at input 'voidKFT(conststd_msgs::Float32MultiArray::ConstPtr&amp;ccs)void'
+line 247:44 mismatched input ';' expecting {'}', ','}
+Start line: 70 | End line: 73 | Method name: euclidean_distance
+Start line: 95 | End line: 225 | Method name: KFT
+Start line: 226 | End line: 233 | Method name: publish_cloud
+Start line: 235 | End line: 547 | Method name: main
+Start line: 552 | End line: 592 | Method name: main
+CKalmanFilter.cpp
+featureDetection.cpp
+main.cpp
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+line 73:0 no viable alternative at input 'Nonewlineatendoffile'
+Start line: 8 | End line: 29 | Method name: ::CKalmanFilter
+Start line: 32 | End line: 34 | Method name: ::~CKalmanFilter
+Start line: 37 | End line: 43 | Method name: CKalmanFilter::predict
+Start line: 46 | End line: 71 | Method name: CKalmanFilter::update
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+Start line: 8 | End line: 19 | Method name: ::featureDetection
+Start line: 21 | End line: 23 | Method name: ::~featureDetection
+Start line: 28 | End line: 69 | Method name: featureDetection::filteringPipeLine
+Start line: 73 | End line: 116 | Method name: featureDetection::houghTransform
+Start line: 121 | End line: 156 | Method name: featureDetection::ransac
+Start line: 159 | End line: 206 | Method name: featureDetection::lineItr
+Start line: 209 | End line: 224 | Method name: featureDetection::findIntersection
+Start line: 227 | End line: 233 | Method name: featureDetection::visualize
+Start line: 236 | End line: 286 | Method name: main
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+ANTLR runtime and generated code versions disagree: 4.9.1!=4.7.1
+Start line: 44 | End line: 47 | Method name: euclidean_distance
+Start line: 68 | End line: 193 | Method name: KFT
+Start line: 196 | End line: 285 | Method name: main
+pid:  whosbug_test_1
+release:  1.0.0
+whosbug analysis done
+
+Process finished with exit code 0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="生成的res-json文件"><a href="#生成的res-json文件" class="headerlink" title="生成的res.json文件"></a>生成的res.json文件</h2><pre class="line-numbers language-none"><code class="language-none">{
+    "objects": [
+        {
+            "commit_time": "2019-04-26T04:57:22-04:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "lUID3iCHQGHBpYizAxiMQjkJy3Z3Dj71d3qacc+AwRxQqFW1hIu2kpZBu3tK+WXFsoprOBlxXNAq8LGY5hWx+w==",
+            "name": "wfknvDHDgHI=",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+FaNpeSO1kQYC2O3OuIU2z2iJRmJ/Wq6w==",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-10T17:13:49-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "kbT65sbEzPzdk9PsPZ4eW+AMNTe6xF1RjiC74LZJANoFZw4hcLbRwLi1UVgYdBduE7zISfTz+GwHLyhAsBBBzw==",
+            "name": "x1UR6F+INMMuhxiefmCcEdt+",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-10T17:13:49-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "l0QbEWFf0Q95N7gEjcXv9IOHwshSUNI05+a0AaFkYBCW5BIzKsLNBNBNwz+ItiysUU7wlCHGqd71UhlS0tsOEw==",
+            "name": "xIvrCzNmE4O0Vit4tEI=",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-10T17:13:49-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "xIasBblPdojdWhpJAb3R+d41IDCUE+yWnRvtNXcnp9tOFSNPRw3PxEfO5+BX3MbOfT5K7haNDwRdzdgEMwQhTQ==",
+            "name": "6ZGL",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-10T17:13:49-05:00",
+            "file_path": "zxbRhapK3iHGnPl7LTA=",
+            "hash": "w3lzf7oXgZTIZrx3VF7pejfATu4YvgLN9MxjHsOQqzpE1JYsLWOp85scnSJBgyNpsbUtETImHy8aI9leUhX5wA==",
+            "name": "x1UR6F+INMMuhxiefmCcEdt+",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-10T17:13:49-05:00",
+            "file_path": "zxbRhapK3iHGnPl7LTA=",
+            "hash": "xID53T07DHvJ3Ze2PvJMzQYLiVGpeCmYRC4gFgG2bjiVC7NVnI8H4Bi8ETfeKHWuMvkKWITHDl0YPOGdbCGp2Q==",
+            "name": "6ZGL",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-10T17:13:49-05:00",
+            "file_path": "zxbRhapK3iHGnPl7LTA=",
+            "hash": "kh9Y6rYs9kDkyhiwqu6e+fcmpwY6YUc+6riUwG5xXPhycatvbBDRjy3TJmC/DXh54a8vwY/W3W9Eb8g16JQP/g==",
+            "name": "0ha9Wc6aQfr4se5YtQ==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-10T17:13:49-05:00",
+            "file_path": "zxbRhapK3iHGnPl7LTA=",
+            "hash": "mqvJSOm88oFYfa7uXOfo8niV38Tq7HwoWmf8rO/05kuWjTTj5MgdZtadorW+qSqSkCiIgC1gmty5/hwYhDh3Gw==",
+            "name": "wfknvDHDgHI=",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-10T17:13:49-05:00",
+            "file_path": "zxbRhapK3iHGnPl7LTA=",
+            "hash": "m5qTfTjg2UUiH98+1o72chAUXkzar3kI88VzCk3Lcct7ljhsYGeqfxzYzm4P9bAsWRsfkaAjDGEFr0bd/2qlFA==",
+            "name": "zxbRhQ==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T21:05:32-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "kbT65sbEzPzdk9PsPZ4eW+AMNTe6xF1RjiC74LZJANoFZw4hcLbRwLi1UVgYdBduE7zISfTz+GwHLyhAsBBBzw==",
+            "name": "x1UR6F+INMMuhxiefmCcEdt+",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T21:05:32-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "xIasBblPdojdWhpJAb3R+d41IDCUE+yWnRvtNXcnp9tOFSNPRw3PxEfO5+BX3MbOfT5K7haNDwRdzdgEMwQhTQ==",
+            "name": "6ZGL",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T21:05:32-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "w3ipktsVGShh74BIRrLyZbEOtxoWZQpcCandTMXujxznsEdnDL21powJkl5geqbMBJ7/7PXgyFVgQeEukdjVIg==",
+            "name": "0ha9Wc6aQfr4se5YtQ==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T21:05:32-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "khJ61sW+vw1i7KWxflH6bpnaV4eQzR9IZn3Tf/zT7KZ1TnUsu8TPvmKopq1ijsfcnCdk+hlqIlPGnOQuD5pSng==",
+            "name": "zxbRhQ==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T21:05:32-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "khJ61sW+vw1i7KWxflH6bpnaV4eQzR9IZn3Tf/zT7KZ1TnUsu8TPvmKopq1ijsfcnCdk+hlqIlPGnOQuD5pSng==",
+            "name": "zxbRhQ==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "4Q1fm25MEphN0VUCXl4HD2k=",
+            "hash": "lRHZoYM7S7HIFsahtVfTjvk8eBMLIEiPaLxXhInhznvOwe65xAUOSC9yp4WrWOhVZQXUbvIqLFPfJcihVMdnnw==",
+            "name": "mFIdf729kyKm1I0GVCnm",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "4Q1fm25MEphN0VUCXl4HD2k=",
+            "hash": "x0HzjjFgDDiMJW4LFHFC/kKLh25zEQB7MIOsEoUSl4T3xsRZ6P6TqsyWBo7jn96YsGhwC/cVZg9USNn9JDX+cQ==",
+            "name": "mFIgCoakBk0yCDFH0Rdp3g==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "4Q1fm25MEphN0VUCXl4HD2k=",
+            "hash": "keBvwEBdgzLsvj3AmOwci0YpbITgQG3qoRs9bdqw/H9Dr+K3b5vry3DXqE/rCrMeVD0epQRxf8XFEJKDZLuPBg==",
+            "name": "4Q1fm25MEphN0VUCXkpzrGYPekb6aA==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "4Q1fm25MEphN0VUCXl4HD2k=",
+            "hash": "xlHweJyMtyPSFmlLIpvE1peeuu85SCZVoo7R33rR3Rp4futA9MqjOwY8bsg40bIMeYJl+WQVy7wmt4mfE4kslw==",
+            "name": "4Q1fm25MEphN0VUCXkpzqZiYBsL/",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "k9e/civny6RcB6QPCs42dlrbmC2aNlNr6rt0hFUkwvSYrYgp5ivJXamTLm9Y05Rdk3MLlz2yeQX6+j1aKRGm9w==",
+            "name": "mFI4WiR21kUm9ed18fqb5g57",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "k4V4/14vb/x/WgO9LjNsALayuiU+ZHaDq6pdmk6bZy9YjJv6pR5SungKBCXlFgsfyu4FhE6sHFLDpJEGpIVKjw==",
+            "name": "mFIgL9ATAnpW3BCe7JQFBZaFfg==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "xxFoJht8y9dJZE2qqQtYBQTu2rOPFcJ3wIDf7qArh2b9HaOmuO5pnU2ZF2KNbMeNgQvyb0IrP0k4ZgJnjfsMWA==",
+            "name": "xIfHu8FKHC3NNTRzccM5n4sxDvq4VlHkLqyW6cMmjWD6CYU=",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "xNGm0lSJ9XRB+zNy1rdZT3WwEmP+DJ7vrqK1nqfUuDtrkkeORNMlzM+rK3gZOc071NJQcJggBLIxjeMauqhPOA==",
+            "name": "xIfHu8FKHC3NNTRzccM5n4sxAJpysuzFG0kVDsYif5M=",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "lUT4J09d+G3d1HPeTIs/IO25oMSDqURzotfpyMXZxmDjv8DrBciacxpNQrIhhIi96rF85TcaeQI2YUgiL3XFiA==",
+            "name": "xIfHu8FKHC3NNTRzccM5n4sxGsowMcgh",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "xNWE4UUKmPq1uUcpjuLQW/f0Cdk7TV/AfxpzmW3isb4c7TRk/H7Do8yQY0n1UKr8mZWVeoMDQXH/zJNGAgGYMQ==",
+            "name": "xIfHu8FKHC3NNTRzccM5n4sxBAWfg/VTFw==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "k4UohCWwBGxLYMJRuOLoBgrCQzLkYpNUAQv6m1ndYqRziyE6t7lP+9G3QBKRNk1VNDek4DNeDMb9+ROvnf96pw==",
+            "name": "xIfHu8FKHC3NNTRzccM5n4sxDvq6nznONrqd939ypRQnfg==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "luhWqGBE5rp/SPvBNZiSDvYp3hW04TnHoarCm0XaDxKbvwtviTS5HEYwOQ3C8nBwpUw3cHR3m26GpqcoNHIWyQ==",
+            "name": "xIfHu8FKHC3NNTRzccM5n4sxHj0kZxrW0/h+",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "xIfHu8FKHC3NNTRzccM5n58Eyo0=",
+            "hash": "lRSYk8j/CsN1zuxzQP2zzOnIoSNMukRS1jPzPDVVXUAGJRVjrnywuzITYN8sUuior8XXWyGJRswGIPdQ5No17w==",
+            "name": "zxbRhQ==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "kbT65sbEzPzdk9PsPZ4eW+AMNTe6xF1RjiC74LZJANoFZw4hcLbRwLi1UVgYdBduE7zISfTz+GwHLyhAsBBBzw==",
+            "name": "x1UR6F+INMMuhxiefmCcEdt+",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "xIasBblPdojdWhpJAb3R+d41IDCUE+yWnRvtNXcnp9tOFSNPRw3PxEfO5+BX3MbOfT5K7haNDwRdzdgEMwQhTQ==",
+            "name": "6ZGL",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        },
+        {
+            "commit_time": "2015-12-07T17:20:12-05:00",
+            "file_path": "zxbRhdsCDns=",
+            "hash": "khJ61sW+vw1i7KWxflH6bpnaV4eQzR9IZn3Tf/zT7KZ1TnUsu8TPvmKopq1ijsfcnCdk+hlqIlPGnOQuD5pSng==",
+            "name": "zxbRhQ==",
+            "old_name": "",
+            "owner": "8p4XZx/FP3KsQIO5PQFV8KuDRxlkcNzZc+EbdSmLLez34IsgvKBiG8FuKbo=",
+            "parent_hash": "",
+            "parent_name": ""
+        }
+    ],
+    "project": {
+        "pid": "1RBnaS7myzjj+BNGrAE="
+    },
+    "release": {
+        "commit_hash": "xNO+n/Qa+eVnNJZxiMtLKx+aBCzJEXNn1lRHRfeiyCXfqxtYLxG3wg==",
+        "release": "k5tG5ZE="
+    }
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="浏览swagger的api"><a href="#浏览swagger的api" class="headerlink" title="浏览swagger的api"></a>浏览swagger的api</h2><h2 id="7-30"><a href="#7-30" class="headerlink" title="7/30"></a>7/30</h2><h3 id="学习关于csrf鉴权问题："><a href="#学习关于csrf鉴权问题：" class="headerlink" title="学习关于csrf鉴权问题："></a>学习关于csrf鉴权问题：</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36019490/article/details/89470407?utm_medium=distribute.wap_relevant.none-task-blog-2~default~searchFromBaidu~default-7.wap_withpaiwithsearchfrombaidu&amp;depth_1-utm_source=distribute.wap_relevant.none-task-blog-2~default~searchFromBaidu~default-7.wap_withpaiwithsearchfrombaidu">csrf</a></p>
+<h3 id="了解学习python中的协程池以及并发"><a href="#了解学习python中的协程池以及并发" class="headerlink" title="了解学习python中的协程池以及并发"></a>了解学习python中的协程池以及并发</h3>
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">RickDamon</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://example.com/2021/07/31/whosbug3/">http://example.com/2021/07/31/whosbug3/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">RickDamon</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/whosbug/">
+                                    <span class="chip bg-color">whosbug</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2021/07/31/whosbug3/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="whosbug3">
+                        
+                        <span class="card-title">whosbug3</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-31
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            RickDamon
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/whosbug/">
+                        <span class="chip bg-color">whosbug</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/07/24/whosbug2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="whosbug2">
+                        
+                        <span class="card-title">whosbug2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            RickDamon
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/whosbug/">
+                        <span class="chip bg-color">whosbug</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">RickDamon</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/RickDamon" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:719196134@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=719196134" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 719196134" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

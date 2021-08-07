@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="whosbug前置学习2, RickDamon&#39;s blogs">
+    <meta name="keywords" content="whosbug前置学习4, RickDamon&#39;s blogs">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>whosbug前置学习2 | RickDamon&#39;s blogs</title>
+    <title>whosbug前置学习4 | RickDamon&#39;s blogs</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -313,12 +313,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">whosbug前置学习2</h1>
+                    <h1 class="description center-align post-title">whosbug前置学习4</h1>
                 </div>
             </div>
         </div>
@@ -450,7 +450,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-07-24
+                    2021-08-07
                 </div>
                 
 
@@ -474,31 +474,152 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="项目日志"><a href="#项目日志" class="headerlink" title="项目日志"></a>项目日志</h2><h2 id="2021-7-17"><a href="#2021-7-17" class="headerlink" title="2021/7/17"></a>2021/7/17</h2><p>有试着对CPP做一下AST解析以及将whosbug克隆到本地。有遇到如下问题：</p>
-<h3 id="尝试对Cpp的AST解析"><a href="#尝试对Cpp的AST解析" class="headerlink" title="尝试对Cpp的AST解析"></a>尝试对Cpp的AST解析</h3><p>和对Java的一样，首先是用g4文件得到了CPP的Parser以及Lexer的python文件，发现与Java的显著不同的是CPP14Parser中没有compilationUnit，之后会再看看代码研究。</p>
-<h3 id="whosbug"><a href="#whosbug" class="headerlink" title="whosbug"></a>whosbug</h3><p>在进行gitclone后有出现识别不到包的问题，一般情况下遇到这种问题首先是环境配置可能出了状况，但是再三检查下并没有发现不对的地方，最终用imoport sys print(sys.path)发现是没有识别到上级的路径，将whosbug_CI添加到环境变量中得以解决。<br><a target="_blank" rel="noopener" href="http://www.manongjc.com/article/17094.html">解决方法</a></p>
-<h2 id="2021-7-18"><a href="#2021-7-18" class="headerlink" title="2021/7/18"></a>2021/7/18</h2><h3 id="会议记录"><a href="#会议记录" class="headerlink" title="会议记录"></a>会议记录</h3><p>会议没有导师的参与，我们四个成员讨论了项目的学习内容以及相关困惑，分工问题决定之后再进行分配。</p>
-<h3 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h3><p>对whosbug插件的本地运行，有json文件读不到的问题。将command_line.py中的get_input函数改写得到解决。很奇怪的是，再pycharm中运行依然读不到包，只能选择在gitbash里运行。</p>
-<pre class="line-numbers language-none"><code class="language-none">def get_input():
-    with open("input.json", "r", encoding="UTF-8") as f:
-        return json.load(f)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+                <h2 id="2021-8-1"><a href="#2021-8-1" class="headerlink" title="2021/8/1"></a>2021/8/1</h2><p>了解学习gevent第三方用于python并发的库</p>
+<h2 id="2021-8-3"><a href="#2021-8-3" class="headerlink" title="2021/8/3"></a>2021/8/3</h2><h3 id="学习写python中的并发"><a href="#学习写python中的并发" class="headerlink" title="学习写python中的并发"></a>学习写python中的并发</h3><h3 id="CSharpLexer-py中存在问题"><a href="#CSharpLexer-py中存在问题" class="headerlink" title="CSharpLexer.py中存在问题"></a>CSharpLexer.py中存在问题</h3><p>他的部分代码使用半java半python的方式（python里面的if用大括号，用++来自增，也使用了不属于python的方法），上面还用了c#的using，stackoverflow里面没有找到合理的解决方式。</p>
+<pre class="line-numbers language-none"><code class="language-none">private int interpolatedStringLevel;
+private Stack&lt;bool&gt; interpolatedVerbatiums = new Stack&lt;bool&gt;();
+private Stack&lt;int&gt; curlyLevels = new Stack&lt;int&gt;();
+private bool verbatium;
 
-<p>被测库使用github中的MarkdownEditors，为java语言主写项目。运行生成了一个Sourcecode文件夹以及res.json文件，分别存放了java代码以及加密密文。</p>
-<h2 id="2021-7-19"><a href="#2021-7-19" class="headerlink" title="2021/7/19"></a>2021/7/19</h2><h3 id="完成whosbug-service的本地部署。"><a href="#完成whosbug-service的本地部署。" class="headerlink" title="完成whosbug-service的本地部署。"></a>完成whosbug-service的本地部署。</h3><p>下载docker的windows版本：</p>
-<p><a target="_blank" rel="noopener" href="https://www.docker.com/">docker官网</a></p>
-<p>检测是否安装成功：</p>
-<p>输入docker –version与docker-compose –version</p>
-<p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/blogimages/test1.png?raw=true" alt="Image"></p>
-<p>linux内核的准备：</p>
-<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10#step-4---download-the-linux-kernel-update-package">windows给的解决方案</a></p>
-<p>成功后docker中的images界面：</p>
-<p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/blogimages/test2.png?raw=true" alt="Image"></p>
-<p>API doc：</p>
-<p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/blogimages/test3.png?raw=true" alt="Image"></p>
-<h2 id="2021-7-20"><a href="#2021-7-20" class="headerlink" title="2021/7/20"></a>2021/7/20</h2><p>登入服务器看了下环境，装了git和docker，把项目代码和一个被测仓库放了进去。</p>
-<p>大家开会讨论了下学习内容和之后的任务分配问题。</p>
-<h2 id="2021-7-21"><a href="#2021-7-21" class="headerlink" title="2021/7/21"></a>2021/7/21</h2><p>了解了一下什么是csrf和django</p>
-<p>读g4生成的python环境下的parser和lexer，根据已有的java文件做了一点cpp的解析。</p>
+
+def action(self, localctx:RuleContext, ruleIndex:int, actionIndex:int):
+    if self._actions is None:
+        actions = dict()
+        actions[121] = self.INTERPOLATED_REGULAR_STRING_START_action
+        actions[122] = self.INTERPOLATED_VERBATIUM_STRING_START_action
+        actions[123] = self.OPEN_BRACE_action
+        actions[124] = self.CLOSE_BRACE_action
+        actions[131] = self.COLON_action
+        actions[171] = self.OPEN_BRACE_INSIDE_action
+        actions[174] = self.DOUBLE_QUOTE_INSIDE_action
+        actions[178] = self.CLOSE_BRACE_INSIDE_action
+        self._actions = actions
+    action = self._actions.get(ruleIndex, None)
+    if action is not None:
+        action(localctx, actionIndex)
+    else:
+        raise Exception("No registered action for:" + str(ruleIndex))
+
+
+def INTERPOLATED_REGULAR_STRING_START_action(self, localctx:RuleContext , actionIndex:int):
+    if actionIndex == 0:
+         interpolatedStringLevel++; interpolatedVerbatiums.Push(false); verbatium = false;
+
+
+def INTERPOLATED_VERBATIUM_STRING_START_action(self, localctx:RuleContext , actionIndex:int):
+    if actionIndex == 1:
+         interpolatedStringLevel++; interpolatedVerbatiums.Push(true); verbatium = true;
+
+
+def OPEN_BRACE_action(self, localctx:RuleContext , actionIndex:int):
+    if actionIndex == 2:
+
+        if (interpolatedStringLevel &gt; 0)
+        {
+            curlyLevels.Push(curlyLevels.Pop() + 1);
+        }
+
+
+def CLOSE_BRACE_action(self, localctx:RuleContext , actionIndex:int):
+    if actionIndex == 3:
+
+        if (interpolatedStringLevel &gt; 0)
+        {
+            curlyLevels.Push(curlyLevels.Pop() - 1);
+            if (curlyLevels.Peek() == 0)
+            {
+                curlyLevels.Pop();
+                Skip();
+                PopMode();
+            }
+        }
+
+
+
+def COLON_action(self, localctx:RuleContext , actionIndex:int):
+    if actionIndex == 4:
+
+        if (interpolatedStringLevel &gt; 0)
+        {
+            int ind = 1;
+            bool switchToFormatString = true;
+            while ((char)InputStream.LA(ind) != '}')
+            {
+                if (InputStream.LA(ind) == ':' || InputStream.LA(ind) == ')')
+                {
+                    switchToFormatString = false;
+                    break;
+                }
+                ind++;
+            }
+            if (switchToFormatString)
+            {
+                Mode(INTERPOLATION_FORMAT);
+            }
+        }
+
+
+
+def OPEN_BRACE_INSIDE_action(self, localctx:RuleContext , actionIndex:int):
+    if actionIndex == 5:
+         curlyLevels.Push(1);
+
+
+def DOUBLE_QUOTE_INSIDE_action(self, localctx:RuleContext , actionIndex:int):
+    if actionIndex == 6:
+         interpolatedStringLevel--; interpolatedVerbatiums.Pop();
+            verbatium = (interpolatedVerbatiums.Count &gt; 0 ? interpolatedVerbatiums.Peek() : false);
+
+
+def CLOSE_BRACE_INSIDE_action(self, localctx:RuleContext , actionIndex:int):
+    if actionIndex == 7:
+         curlyLevels.Pop();
+
+
+def sempred(self, localctx:RuleContext, ruleIndex:int, predIndex:int):
+    if self._predicates is None:
+        preds = dict()
+        preds[172] = self.REGULAR_CHAR_INSIDE_sempred
+        preds[173] = self.VERBATIUM_DOUBLE_QUOTE_INSIDE_sempred
+        preds[175] = self.REGULAR_STRING_INSIDE_sempred
+        preds[176] = self.VERBATIUM_INSIDE_STRING_sempred
+        self._predicates = preds
+    pred = self._predicates.get(ruleIndex, None)
+    if pred is not None:
+        return pred(localctx, predIndex)
+    else:
+        raise Exception("No registered predicate for:" + str(ruleIndex))
+
+def REGULAR_CHAR_INSIDE_sempred(self, localctx:RuleContext, predIndex:int):
+        if predIndex == 0:
+            return  !verbatium
+
+
+def VERBATIUM_DOUBLE_QUOTE_INSIDE_sempred(self, localctx:RuleContext, predIndex:int):
+        if predIndex == 1:
+            return   verbatium
+
+
+def REGULAR_STRING_INSIDE_sempred(self, localctx:RuleContext, predIndex:int):
+        if predIndex == 2:
+            return  !verbatium
+
+
+def VERBATIUM_INSIDE_STRING_sempred(self, localctx:RuleContext, predIndex:int):
+        if predIndex == 3:
+            return   verbatium<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2021-8-4"><a href="#2021-8-4" class="headerlink" title="2021/8/4"></a>2021/8/4</h2><p>修改了之前提到的CSharpLexer中的错误代码，现在基本可以正常使用。</p>
+<p>查看kotlin的相应代码，没有存在类似问题，语言解析方面应该就不会有太大的问题了。</p>
+<p>主要还是并发怎么做的问题，也在学习相应的python第三方库。</p>
+<h2 id="2021-8-6"><a href="#2021-8-6" class="headerlink" title="2021/8/6"></a>2021/8/6</h2><p>将django_request中的腾讯内网网址改成本地部署的服务器端口，注释掉没有使用的关于NewMonkey的函数，在调用到相关函数时服务器报了403错误</p>
+<p>IDE显示：</p>
+<p><img src="/api/project/9144447/files/24720802/imagePreview" alt="图片"></p>
+<p>服务器端：</p>
+<p><img src="/api/project/9144447/files/24720804/imagePreview" alt="图片"></p>
+<p>查看了相关的django文档和stackoverflow的问答：</p>
+<p><a target="_blank" rel="noopener" href="https://www.django-rest-framework.org/api-guide/authentication/#how-authentication-is-determined">文档链接</a></p>
+<p>应该是csrftoken或者post中参数的问题，目前还没有解决。</p>
 
                 
             </div>
@@ -525,7 +646,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/07/24/whosbug2/">http://example.com/2021/07/24/whosbug2/</a>
+                    <a href="http://example.com/2021/08/07/whosbug4/">http://example.com/2021/08/07/whosbug4/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -734,17 +855,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/07/31/whosbug3/">
+                <a href="/2021/08/07/whosbug4/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="whosbug前置学习3">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="whosbug前置学习4">
                         
-                        <span class="card-title">whosbug前置学习3</span>
+                        <span class="card-title">whosbug前置学习4</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -754,9 +876,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-31
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-07
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -765,6 +887,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -783,13 +906,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/07/17/whosbug1/">
+                <a href="/2021/07/31/whosbug3/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="whosbug项目的初步认识">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="whosbug前置学习3">
                         
-                        <span class="card-title">whosbug项目的初步认识</span>
+                        <span class="card-title">whosbug前置学习3</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -800,7 +923,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-31
                             </span>
                         <span class="publish-author">
                             

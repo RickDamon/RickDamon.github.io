@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>whosbug前置学习5</title>
+      <link href="/2021/08/14/whosbug5/"/>
+      <url>/2021/08/14/whosbug5/</url>
+      
+        <content type="html"><![CDATA[<h2 id="2021-8-7"><a href="#2021-8-7" class="headerlink" title="2021/8/7"></a>2021/8/7</h2><p>有通过本地部署服务器的端口 <a href="http://127.0.0.1:8081/api-token-auth/">http://127.0.0.1:8081/api-token-auth/</a> 获取token再在post的内容中加入得到的token，也尝试过在webservice中禁用掉csrftoken的功能，但是但是还是会有403报错。进入127.0.0.1：8081/swagger/ 后发现如果不登录django，直接post也是会被403拒绝掉。</p><p>在code_diff.py文件中尝试使用gevent第三方库做基于协程的并发，发现django和gevent的monkey.patch_all有所冲突。</p><h2 id="2021-8-9"><a href="#2021-8-9" class="headerlink" title="2021/8/9"></a>2021/8/9</h2><p>和小组成员开会对这些天做的内容以及之后工作的方向进行了讨论，尝试找用于swift中用java编写的javaSupport文件，未果，目前来看对swift解析首先得把这个文件用python重写一遍。</p><p>尝试使用gevent并发框架对codediff文件进行并发编程，目前存在很多问题。</p><p>之前做的csharp解析有些问题，进行修改。</p><h2 id="2021-8-12"><a href="#2021-8-12" class="headerlink" title="2021/8/12"></a>2021/8/12</h2><p>试了一下跑大型项目，拉了springboot的仓库，有memory error的问题，改了get_diff里popen的缓冲方式，就不会报错了，也要打一个gevent的猴子补丁，不然速度会相当慢，感觉算是解决了冷启动的问题吧。<br>测试跑了一下午的时间，毕竟3万多的commit，后续主要得对性能做一些优化，隔壁学校是用go重构以及数据结构等的优化，这几天找一下方向，正式开始就开肝吧。</p><p>8/14更新：<br>多拉了几个仓库测试，发现冷启动还是存在问题，之前测试的springboot因为成功一次之后，再次跑这个仓库就不会报错（那次成功的原因现在有点迷了），拉的几个新仓库还是会有memory error，后续还要针对冷启动做一些工作。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> whosbug </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>whosbug前置学习4</title>
       <link href="/2021/08/07/whosbug4/"/>
       <url>/2021/08/07/whosbug4/</url>

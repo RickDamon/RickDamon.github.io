@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-08-07T06:12:22.984Z</updated>
+  <updated>2021-08-14T06:01:58.528Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>whosbug前置学习5</title>
+    <link href="http://example.com/2021/08/14/whosbug5/"/>
+    <id>http://example.com/2021/08/14/whosbug5/</id>
+    <published>2021-08-13T16:00:00.000Z</published>
+    <updated>2021-08-14T06:01:58.528Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;2021-8-7&quot;&gt;&lt;a href=&quot;#2021-8-7&quot; class=&quot;headerlink&quot; title=&quot;2021/8/7&quot;&gt;&lt;/a&gt;2021/8/7&lt;/h2&gt;&lt;p&gt;有通过本地部署服务器的端口 &lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
+    
+  </entry>
   
   <entry>
     <title>whosbug前置学习4</title>

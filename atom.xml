@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-08-21T15:08:28.922Z</updated>
+  <updated>2021-08-30T13:17:36.927Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>whosbug</title>
+    <link href="http://example.com/2021/08/30/guan-yu/"/>
+    <id>http://example.com/2021/08/30/guan-yu/</id>
+    <published>2021-08-29T16:00:00.000Z</published>
+    <updated>2021-08-30T13:17:36.927Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;whosbug项目总结&quot;&gt;&lt;a href=&quot;#whosbug项目总结&quot; class=&quot;headerlink&quot; title=&quot;whosbug项目总结&quot;&gt;&lt;/a&gt;whosbug项目总结&lt;/h3&gt;&lt;p&gt; </summary>
+        
+      
+    
+    
+    
+    
+    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
+    
+  </entry>
   
   <entry>
     <title>缺陷引入分析技术相关之SZZ算法</title>
@@ -36,30 +59,6 @@
     
     
     <category term="技术分享" scheme="http://example.com/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>whosbug</title>
-    <link href="http://example.com/2021/08/15/guan-yu/"/>
-    <id>http://example.com/2021/08/15/guan-yu/</id>
-    <published>2021-08-14T16:00:00.000Z</published>
-    <updated>2021-08-28T16:36:04.431Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;wait&lt;/p&gt;
-</summary>
-        
-      
-    
-    
-    
-    
-    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
     
   </entry>
   

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-08-30T13:17:36.927Z</updated>
+  <updated>2021-09-04T08:12:06.433Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于程序的性能优化-part1</title>
+    <link href="http://example.com/2021/09/04/program-performance-optimization1/"/>
+    <id>http://example.com/2021/09/04/program-performance-optimization1/</id>
+    <published>2021-09-03T16:00:00.000Z</published>
+    <updated>2021-09-04T08:12:06.433Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;h3 id=&quot;编写高效程序需要注意&quot;&gt;&lt;a href=&quot;#编写高效程序需要注意&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="os" scheme="http://example.com/tags/os/"/>
+    
+  </entry>
   
   <entry>
     <title>whosbug</title>

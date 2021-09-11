@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-09-04T08:16:13.833Z</updated>
+  <updated>2021-09-11T08:19:01.091Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>联邦学习</title>
+    <link href="http://example.com/2021/09/11/federatedlearning1/"/>
+    <id>http://example.com/2021/09/11/federatedlearning1/</id>
+    <published>2021-09-10T16:00:00.000Z</published>
+    <updated>2021-09-11T08:19:01.091Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;使用FATE框架开始联邦学习之路&quot;&gt;&lt;a href=&quot;#使用FATE框架开始联邦学习之路&quot; class=&quot;headerlink&quot; title=&quot;使用FATE框架开始联邦学习之路&quot;&gt;&lt;/a&gt;使用FATE框架开始联邦学习之路&lt;/h2&gt;&lt;h3</summary>
+        
+      
+    
+    
+    
+    
+    <category term="deeplearning" scheme="http://example.com/tags/deeplearning/"/>
+    
+  </entry>
   
   <entry>
     <title>关于程序的性能优化-part1</title>

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-09-18T10:27:38.060Z</updated>
+  <updated>2021-09-25T08:42:39.848Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>循环展开</title>
+    <link href="http://example.com/2021/09/25/loop-unwinding/"/>
+    <id>http://example.com/2021/09/25/loop-unwinding/</id>
+    <published>2021-09-24T16:00:00.000Z</published>
+    <updated>2021-09-25T08:42:39.848Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;循环展开是一种程序变换，通过增加每次迭代计算的元素数量，减少循环的迭代次数，在之前的程序优化中有函数用到循环展开。循环展开能从两个方面改进程序的性能。首先，它减少了不直接有助于程序结果的操作的数量，例如循环索引计算和条件分支。第二，它提供了一些方法，可以进一步变化代码，减少</summary>
+        
+      
+    
+    
+    
+    
+    <category term="os" scheme="http://example.com/tags/os/"/>
+    
+  </entry>
   
   <entry>
     <title>关于程序的性能优化-part2</title>

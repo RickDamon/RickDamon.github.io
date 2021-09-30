@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="循环展开, RickDamon&#39;s blogs">
+    <meta name="keywords" content="Golang中的延迟代码, RickDamon&#39;s blogs">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>循环展开 | RickDamon&#39;s blogs</title>
+    <title>Golang中的延迟代码 | RickDamon&#39;s blogs</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -313,12 +313,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">循环展开</h1>
+                    <h1 class="description center-align post-title">Golang中的延迟代码</h1>
                 </div>
             </div>
         </div>
@@ -434,8 +434,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/os/">
-                                <span class="chip bg-color">os</span>
+                            <a href="/tags/Golang/">
+                                <span class="chip bg-color">Golang</span>
                             </a>
                         
                     </div>
@@ -450,7 +450,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-09-25
+                    2021-09-30
                 </div>
                 
 
@@ -474,156 +474,61 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>循环展开是一种程序变换，通过增加每次迭代计算的元素数量，减少循环的迭代次数，在之前的程序优化中有函数用到循环展开。循环展开能从两个方面改进程序的性能。首先，它减少了不直接有助于程序结果的操作的数量，例如循环索引计算和条件分支。第二，它提供了一些方法，可以进一步变化代码，减少整个计算中关键路径上的操作数量。</p>
-<p>这是之前计算前置和的两个函数：</p>
-<pre class="line-numbers language-none"><code class="language-none">// 计算前置和不使用和使用循环展开
-void psum1(float a[], float p[], long n)
-{
-      long i;
-      p[0] = a[0];
-      for (i = 1; i&lt;n; i++)
-           p[i] = p[i-1] + a[i];
-}
-//程序每次迭代计算前置和的两个元素，因而将需要的迭代次数减半
-void psum2(float a[], float p[], long n)
-{
-      long i;
-      p[0] = a[0];
-      for (i = 1; i&lt;n-1; i+=2) {
-           float mid_val = p[i-1] + a[i];
-           p[i] = mid_val;
-           p[i+1] = mid_val + a[i+1];
-      }
-      if (i &lt; n)
-          p[i] = p[i-1] + a[i];
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>接下来的函数是合并代码的使用“2*1循环展开”的版本。之前几个版本的代码都在程序优化的第二部分。</p>
-<pre class="line-numbers language-none"><code class="language-none">// 此程序中的IDENT和OP可以用#define来定义
-void combined5(vec_ptr v, data_t *dest)
-{
-    long i;
-    long length = vec_length(v);
-    long limit = length-1;
-    data_t *data = get_vec_start(v);
-    data_t acc = IDENT;
- 
-    /* Combine 2 elements at a time */
-    for (i = 0; i &lt; limit; i+=2) {
-        acc = (acc OP data[i]) OP data[i+1];
+                <p>GO语言中，defer代码块会在函数调用链表中增加一个函数调用，这个函数调用是发生在return 之后的，通常用来释放函数的内部变量。</p>
+<p>假设有一个函数，打开文件并对文件进行若干读写，在这种函数中，经常会有提前返回的情况。如果这样的话，就需要关闭正在工作的文件描述符。可能你会写如下的代码：</p>
+<pre class="line-numbers language-none"><code class="language-none">// 不用defer
+func ReadWrite() bool {
+    file.Open("file")
+    // 做一些工作
+    if failureX {
+        file.Close() 
+        return false
     }
-
-    /* Finish any remaining elements*/
-    for(; i &lt; length; i++){
-        acc = acc OP data[i];
+    if failureY {
+        file.Close() 
+        return false
     }
-    *dest = acc;
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    file.Close() 
+    return true
+    }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>程序中第一个循环每次处理数组的两个元素。也就是每次迭代，循环索引i加2，再一次迭代中，对数组元素i和i+1使用合并运算。</p>
-<p>在一般情况下，向量长度不一定是2的倍数，想要让代码对任意向量长度都能够正确工作，可以从两个方面来处理这个需求。首先，确保第一次循环不会超出数组的界限。对于长度为n的向量，我们将循环界限设置为n-1。然后，保证只有当循环索引i满足i&lt;n-1时才会执行该循环，因此最大数组索引i+1满足i+1&lt;(n-1)+1=n。</p>
-<p>将上述思想归纳为对一个循环按任意因子k进行展开，由此产生k×1循环展开。为此，上限为n-k+1，在循环内对元素i到i+k-1应用合并运算。每次迭代，循环索引i加k。那么最大循环索引i+k-1会小于n。要使用第二个循环，以每次处理一个元素的方式处理向量的后几个元素。这个循环体将会执行0~k-1次。对于k=2，可以用一个最简单的条件语句，可选的增加最后一次迭代，就像函数pum2所示，k&gt;2时，最后的这些情况最好用一个循环来表示，所以对k=2的情况，我们同样也采用这个编程惯例。称之为“k×1循环展开”，因为循环展开因子为k，而累积值旨在单个变量acc中。</p>
-<table class="MsoTableGrid" border="1" cellspacing="0" style="border-collapse:collapse;border:none;mso-border-left-alt:0.5000pt solid windowtext;
-mso-border-top-alt:0.5000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;mso-border-bottom-alt:0.5000pt solid windowtext;
-mso-border-insideh:0.5000pt solid windowtext;mso-border-insidev:0.5000pt solid windowtext;mso-padding-alt:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;"><tbody><tr style="height:7.5500pt;"><td width="177" valign="top" rowspan="2" style="width:106.5000pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:1.0000pt solid windowtext;
-mso-border-left-alt:0.5000pt solid windowtext;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:1.0000pt solid windowtext;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="宋体">函数</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td><td width="177" valign="top" rowspan="2" style="width:106.5000pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:none;
-mso-border-left-alt:none;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:1.0000pt solid windowtext;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="宋体">方法</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td><td width="177" valign="top" style="width:106.5500pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:none;
-mso-border-left-alt:none;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:1.0000pt solid windowtext;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="宋体">整数</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td><td width="177" valign="top" style="width:106.5500pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:none;
-mso-border-left-alt:none;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:1.0000pt solid windowtext;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="宋体">浮点数</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr><tr style="height:7.5500pt;"><td width="177" valign="top" style="width:106.5500pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:none;
-mso-border-left-alt:none;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:none;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">+ <span style="mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>*</span><span style="font-family:Calibri;mso-fareast-font-family:宋体;mso-bidi-font-family:'Times New Roman';
-font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td><td width="177" valign="top" style="width:106.5500pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:none;
-mso-border-left-alt:none;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:none;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">+ <span style="mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>*</span><span style="font-family:Calibri;mso-fareast-font-family:宋体;mso-bidi-font-family:'Times New Roman';
-font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr><tr><td width="177" valign="top" style="width:106.5000pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:1.0000pt solid windowtext;
-mso-border-left-alt:0.5000pt solid windowtext;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:none;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">Combine</span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">4</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">Combine</span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">5</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p>&nbsp;</o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="宋体">延迟界限</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="宋体">吞吐量界限</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td><td width="177" valign="top" style="width:106.5000pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:none;
-mso-border-left-alt:none;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:none;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="宋体">无展开</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">2*1</font><font face="宋体">展开</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">3*1</font><font face="宋体">展开</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:'Times New Roman';font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p>&nbsp;</o:p></span></p><p class="MsoNormal"><span style="font-family:Calibri;mso-fareast-font-family:宋体;mso-bidi-font-family:'Times New Roman';
-font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p>&nbsp;</o:p></span></p></td><td width="177" valign="top" style="width:106.5500pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:none;
-mso-border-left-alt:none;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:none;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">1.27</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><span style="mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;&nbsp;</span><font face="Calibri">3.01</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;mso-bidi-font-family:'Times New Roman';
-font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">1.01</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><span style="mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;&nbsp;</span></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">3.01</span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">1.01 <span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>3.01</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">&nbsp;</span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">1.00 <span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>3.00</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">0.50 <span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>1.00</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td><td width="177" valign="top" style="width:106.5500pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:none;
-mso-border-left-alt:none;border-right:1.0000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;
-border-top:none;mso-border-top-alt:0.5000pt solid windowtext;border-bottom:1.0000pt solid windowtext;
-mso-border-bottom-alt:0.5000pt solid windowtext;"><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">3.01</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><span style="mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;</span><font face="Calibri">5.01</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;mso-bidi-font-family:'Times New Roman';
-font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">3.01 <span style="mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;</span></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">5.01</span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">3.01 <span style="mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;</span></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;">5.01</span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">3.00 <span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>5.00</font></span><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p><p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family:Calibri;
-mso-bidi-font-family:Calibri;font-size:10.5000pt;mso-font-kerning:1.0000pt;"><font face="Calibri">1.00 <span style="font-family:Calibri;mso-spacerun:'yes';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>0.50</font></span><span style="font-family:Calibri;mso-fareast-font-family:宋体;font-size:10.5000pt;
-mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
+<p>在这个函数中出现了很多的重复代码，而defer语句是可以解决这些问题的，在defer后指定的函数会在函数退出前进行调用。</p>
+<p>我们可以通过defer语句，将Close对应的内容放置在Open后面，可以使函数更加可读和健壮。</p>
+<pre class="line-numbers language-none"><code class="language-none">func ReadWrite() bool {
+    file.Open("file")
+    defer file.Close()  // file.Close() 被添加到了 defer 列表
+    // 做一些工作
+    if failureX {
+        return false  // Close() 现在自动调用
+    }
+    if failureY {
+        return false  // 这里也是
+    }
+    return true  // And here
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>我们可以看到对于整数加法，CPE有所改进，得到的延迟界限为1.00，这就是因为循环展开减少了循环开销的操作。相对于计算向量所需要的假发数量，降低开销操作的数量，此时整数加法的一个周期的延迟就成为了限制性能的因素。另一方面，其他情况没有性能提高，它们已经达到了其他延迟界限。</p>
-<p>编译器可以很容易的执行循环展开。只要优化级别设置的足够高，用优化等级三以上调用GCC就可以执行循环展开。</p>
+<p>我们再来看一个延迟函数的例子：</p>
+<pre class="line-numbers language-none"><code class="language-none">for i := 0 ; i &lt; 5 ; i++ {
+    defer fmt.Printf("%d ", i)
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
+<p>延迟的函数是按照后进先出（LIFO）的顺序执行的，所以上面for循环的例子会打印：4 3 2 1 0.利用defer也可以修改返回值，假设正在使用明明结果参数和函数符号，例如下面这个函数：</p>
+<pre class="line-numbers language-none"><code class="language-none">defer func() {
+        /* ... */
+}()     // ← () 在这里是必须的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>或者这个例子，我们更容易理解为什么，以及在哪需要用括号。</p>
+<pre class="line-numbers language-none"><code class="language-none">defer func(x i n t) {
+        /* ... */
+}(5)    // 为输入参数 x 赋值 5
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>在这个defer匿名函数中，可以访问任何命名返回参数：</p>
+<pre class="line-numbers language-none"><code class="language-none">func f() (ret i n t) { ← ret 初始化为零
+    defer func() {
+        ret++  // ret 增加为 1
+    }()
+    return 0  // 返回的是 1 而不是 0！ 
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -649,7 +554,7 @@ mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/09/25/loop-unwinding/">http://example.com/2021/09/25/loop-unwinding/</a>
+                    <a href="http://example.com/2021/09/30/defer/">http://example.com/2021/09/30/defer/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -687,8 +592,8 @@ mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/os/">
-                                    <span class="chip bg-color">os</span>
+                                <a href="/tags/Golang/">
+                                    <span class="chip bg-color">Golang</span>
                                 </a>
                             
                         </div>
@@ -858,9 +763,10 @@ mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/09/30/defer/">
                     <div class="card-image">
@@ -878,9 +784,9 @@ mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-30
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-30
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -889,6 +795,7 @@ mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -907,13 +814,13 @@ mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/09/18/program-performance-optimization2/">
+                <a href="/2021/09/25/loop-unwinding/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="关于程序的性能优化-part2">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="循环展开">
                         
-                        <span class="card-title">关于程序的性能优化-part2</span>
+                        <span class="card-title">循环展开</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -924,7 +831,7 @@ mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-25
                             </span>
                         <span class="publish-author">
                             

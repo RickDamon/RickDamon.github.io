@@ -513,7 +513,7 @@ func ReadWrite() bool {
     defer fmt.Printf("%d ", i)
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<p>延迟的函数是按照后进先出（LIFO）的顺序执行的，所以上面for循环的例子会打印：4 3 2 1 0.利用defer也可以修改返回值，假设正在使用明明结果参数和函数符号，例如下面这个函数：</p>
+<p>延迟的函数是按照后进先出（LIFO）的顺序执行的，所以上面for循环的例子会打印：4 3 2 1 0.利用defer也可以修改返回值，假设正在使用命名结果参数和函数符号，例如下面这个函数：</p>
 <pre class="line-numbers language-none"><code class="language-none">defer func() {
         /* ... */
 }()     // ← () 在这里是必须的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>

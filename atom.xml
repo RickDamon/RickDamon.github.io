@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-09-30T10:40:59.357Z</updated>
+  <updated>2021-10-10T07:03:50.626Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Golang中的指针及内存分配</title>
+    <link href="http://example.com/2021/10/10/go-point/"/>
+    <id>http://example.com/2021/10/10/go-point/</id>
+    <published>2021-10-09T16:00:00.000Z</published>
+    <updated>2021-10-10T07:03:50.626Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;指针&quot;&gt;&lt;a href=&quot;#指针&quot; class=&quot;headerlink&quot; title=&quot;指针&quot;&gt;&lt;/a&gt;指针&lt;/h2&gt;&lt;p&gt;Go 有指针。然而却没有指针运算，因此它们更像是引用而不是我们所知道的来自于 C的指针。指针非常有用。在 Go</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Golang" scheme="http://example.com/tags/Golang/"/>
+    
+  </entry>
   
   <entry>
     <title>Golang中的延迟代码</title>
@@ -29,29 +52,6 @@
         
         
     <summary type="html">&lt;p&gt;GO语言中，defer代码块会在函数调用链表中增加一个函数调用，这个函数调用是发生在return</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Golang" scheme="http://example.com/tags/Golang/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Golang中的指针及内存分配</title>
-    <link href="http://example.com/2021/09/30/go-point/"/>
-    <id>http://example.com/2021/09/30/go-point/</id>
-    <published>2021-09-29T16:00:00.000Z</published>
-    <updated>2021-10-10T07:01:27.092Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;指针&quot;&gt;&lt;a href=&quot;#指针&quot; class=&quot;headerlink&quot; title=&quot;指针&quot;&gt;&lt;/a&gt;指针&lt;/h2&gt;&lt;p&gt;Go 有指针。然而却没有指针运算，因此它们更像是引用而不是我们所知道的来自于 C的指针。指针非常有用。在 Go</summary>
         
       
     

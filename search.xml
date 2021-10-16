@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Golang中自定义类型</title>
+      <link href="/2021/10/16/go-type/"/>
+      <url>/2021/10/16/go-type/</url>
+      
+        <content type="html"><![CDATA[<p>Go 允许定义新的类型，可以通过关键字 type 实现：<br>type foo int<br>如上我们创建了一个新的类型 foo 作用跟 int 一样。创建更加复杂的类型需要用到 struct 关键字。这有个在一个数据结构中记录某人的姓名（string）和年龄（int），并且使其成为一个新的类型的例子：</p><pre class="line-numbers language-none"><code class="language-none">package mainimport "fmt"type NameAge struct {    name string // 不导出    age int // 不导出}func main() {    a := new(NameAge)    a.name = "Pete" ; a.age = 42    fmt.Printf("%v\n", a)}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>通常，fmt.Printf(“%v\n”, a) 的输出是&amp;{Pete 42}<br>Go 知道如何打印结构。如果仅想打印某一个，或者某几个结构中的字段，需<br>要使用 .<field name="">。例如，仅仅打印名字：</field></p><pre class="line-numbers language-none"><code class="language-none">fmt.Printf("%s", a.name) // %s 格式化字符串<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="结构字段"><a href="#结构字段" class="headerlink" title="结构字段"></a>结构字段</h3><p>之前已经提到结构中的项目被称为field。没有字段的结构：struct {}<br>或者有四个c 字段的：</p><pre class="line-numbers language-none"><code class="language-none">struct {    x, y int    A *[]int    F func()}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>如果省略字段的名字，可以创建匿名字段，例如：</p><pre class="line-numbers language-none"><code class="language-none">struct {    T1 // 字段名字是 T1    *T2 // 字段名字是 T2    P.T3 // 字段名字是 T3    x, y int // 字段名字是 x 和 y }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>注意首字母大写的字段可以被导出，也就是说，在其他包中可以进行读写。字段名以小写字母开头是当前包的私有的。</p><h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>可以对新定义的类型创建函数以便操作，可以通过两种途径：</p><ol><li>创建一个函数接受这个类型的参数。<pre class="line-numbers language-none"><code class="language-none">func doSomething(n1 *NameAge, n2 int) { /* */ }<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>（你可能已经猜到了）这是 函数调用。</li><li>创建一个工作在这个类型上的函数（参阅在 2.1 中定义的接收方）：<pre class="line-numbers language-none"><code class="language-none">func (n1 *NameAge) doSomething(n2 int) { /* */ }<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>这是方法调用，可以类似这样使用：<pre class="line-numbers language-none"><code class="language-none">var n *NameAgen.doSomething(2)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>使用函数还是方法是由程序员决定的，但是如果想要满足接口就只能使用方法。如果没有这方面的需求，那就由个人品味决定了。</li></ol><p>下面的类型定义中有一些微小但是很重要的不同之处。<br>我们假设有如下代码：</p><pre class="line-numbers language-none"><code class="language-none">// Mutex 数据类型有两个方法，Lock 和 Unlock。type Mutex struct { /* Mutex 字段 */ }func (m *Mutex) Lock() { /* Lock 实现 */ }func (m *Mutex) Unlock() { /* Unlock 实现 */ }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>现在用两种不同的风格创建了两个数据类型:</p><pre class="line-numbers language-none"><code class="language-none">type NewMutex Mutextype PrintableMutex struct {Mutex }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>现在 NewMutux 等同于 Mutex，但是它没有任何 Mutex 的方法。换句话说，它的方法<br>是空的。但是 PrintableMutex 已经从 Mutex 继承了方法集合。*PrintableMutex 的方法集合包含了 Lock 和 Unlock 方法，被绑定到其匿名字段 Mutex。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Golang </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Golang中的指针及内存分配</title>
       <link href="/2021/10/10/go-point/"/>
       <url>/2021/10/10/go-point/</url>

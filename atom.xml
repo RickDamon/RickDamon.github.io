@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-10-10T07:03:50.626Z</updated>
+  <updated>2021-10-16T10:18:01.660Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Golang中自定义类型</title>
+    <link href="http://example.com/2021/10/16/go-type/"/>
+    <id>http://example.com/2021/10/16/go-type/</id>
+    <published>2021-10-15T16:00:00.000Z</published>
+    <updated>2021-10-16T10:18:01.660Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;Go 允许定义新的类型，可以通过关键字 type 实现：&lt;br&gt;type foo int&lt;br&gt;如上我们创建了一个新的类型 foo 作用跟 int 一样。创建更加复杂的类型需要用到 struct</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Golang" scheme="http://example.com/tags/Golang/"/>
+    
+  </entry>
   
   <entry>
     <title>Golang中的指针及内存分配</title>

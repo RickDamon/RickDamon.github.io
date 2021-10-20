@@ -141,7 +141,7 @@
       <link href="/2021/08/30/guan-yu/"/>
       <url>/2021/08/30/guan-yu/</url>
       
-        <content type="html"><![CDATA[<h3 id="whosbug项目总结"><a href="#whosbug项目总结" class="headerlink" title="whosbug项目总结"></a>whosbug项目总结</h3><p>  为其十五天，从第二天开始做Golang版本，自认为完成了导师方面制定的所有需求，虽然对算法方面是很有欠缺，但是目前来看解决方式也是要跑xgboost解决好一点，就算来再多的参数，没办法确定每个特征的重要性，还是没有什么实质性的效果。这么多天加班加点，到最后不知道给评委的感觉怎么说，不过做了十四天Golang，对我这边的问题主要还是在问Python的协程并发方面的东西，实际上我还是挺诧异的，只能说有时候答辩这种东西也是比较需要运气。之后新学期开始着手Federated Learning方面的事情吧，FATE框架还没搭好，第一次的和企业有关的项目，也算是有所收获和体会。</p>]]></content>
+        <content type="html"><![CDATA[<h3 id="whosbug项目总结"><a href="#whosbug项目总结" class="headerlink" title="whosbug项目总结"></a>whosbug项目总结</h3><p>  为其十五天，从第二天开始做Golang版本，完成了导师方面制定的基本需求，虽然对算法方面是很有欠缺，但是目前来看解决方式也是要跑xgboost这些机器学习解决好一点，就算来再多的参数，没办法确定每个特征的重要性，还是没有什么实质性的效果。这些天加班加点，到最后不知道给评委的感觉怎么说，不过做了十四天Golang，我回答的问题主要还是在Python的协程并发方面的东西，确实有些紧张了，只能说有时候答辩这种东西也是比较需要运气。第一次的和企业有关的项目，有所收获和体会。</p>]]></content>
       
       
       

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-10-16T10:18:01.660Z</updated>
+  <updated>2021-10-24T06:11:38.924Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Golang中类型转换</title>
+    <link href="http://example.com/2021/10/24/go-typechange/"/>
+    <id>http://example.com/2021/10/24/go-typechange/</id>
+    <published>2021-10-23T16:00:00.000Z</published>
+    <updated>2021-10-24T06:11:38.924Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：byte()）完成的，而并且不是所有的转换都是允许的。&lt;/p&gt;
+&lt;p&gt;从 string 到字节或者 ruin 的</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Golang" scheme="http://example.com/tags/Golang/"/>
+    
+  </entry>
   
   <entry>
     <title>Golang中自定义类型</title>

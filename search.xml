@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Golang中类型转换</title>
+      <link href="/2021/10/24/go-typechange/"/>
+      <url>/2021/10/24/go-typechange/</url>
+      
+        <content type="html"><![CDATA[<p>有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：byte()）完成的，而并且不是所有的转换都是允许的。</p><p>从 string 到字节或者 ruin 的 slice。</p><pre class="line-numbers language-none"><code class="language-none">mystring := "hello this is stringbyteslice := []byte(mystring)runeslice := []rune(mystring)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>转换到 byte slice，每个 byte 保存字符串对应字节的整数值。注意 Go 的字符串是 UTF-8 编码的，一些字符可能是 1、2、3 或者 4 个字节结尾。</p><p>转换到 rune slice，每个 rune 保存 Unicode 编码的指针。字符串中的每个字符对应一个整数。</p><p>从字节或者整形的 slice 到 string。</p><pre class="line-numbers language-none"><code class="language-none">b := []byte {'h','e','l','l','o'} // 复合声明s := string(b)i := []rune {257,1024,65}r := string(i)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>对于数值，定义了下面的转换：<br>1、将整数转换到指定的（bit）长度：uint8(int)；<br>2、从浮点数到整数：int(float32)。这会截断浮点数的小数部分；<br>3、其他的类似：float32(int)。<br>用户定义类型的转换<br>如何在自定义类型之间进行转换？这里创建了两个类型 Foo 和 Bar，而 Bar 是 Foo 的一个别名：</p><pre class="line-numbers language-none"><code class="language-none">type foo struct { int } // 匿名字段type bar foo // bar 是 foo 的别名var b bar = bar{1} // 声明 b 为 bar 类型var f foo = b // 赋值 b 到 f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>最后一行会引起错误：<br>cannot use b (type bar) as type foo in assignment(不能使用 b（类型 bar）作为类型 foo 赋值)</p><p>这可以通过转换来修复：</p><pre class="line-numbers language-none"><code class="language-none">var f foo = foo(b)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>注意转换那些字段不一致的结构是很困难的。同时，转换 b 到 int 同样会出错；整数与有整数字段的结构体并不是一样的。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Golang </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Golang中自定义类型</title>
       <link href="/2021/10/16/go-type/"/>
       <url>/2021/10/16/go-type/</url>

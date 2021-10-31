@@ -518,12 +518,12 @@ func ReadWrite() bool {
         /* ... */
 }()     // ← () 在这里是必须的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>或者这个例子，我们更容易理解为什么，以及在哪需要用括号。</p>
-<pre class="line-numbers language-none"><code class="language-none">defer func(x i n t) {
+<pre class="line-numbers language-none"><code class="language-none">defer func(x int) {
         /* ... */
 }(5)    // 为输入参数 x 赋值 5
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>在这个defer匿名函数中，可以访问任何命名返回参数：</p>
-<pre class="line-numbers language-none"><code class="language-none">func f() (ret i n t) { ← ret 初始化为零
+<pre class="line-numbers language-none"><code class="language-none">func f() (ret int) { ← ret 初始化为零
     defer func() {
         ret++  // ret 增加为 1
     }()

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-10-24T06:11:38.924Z</updated>
+  <updated>2021-10-31T07:31:48.052Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Golang中的interface</title>
+    <link href="http://example.com/2021/10/31/go-interface/"/>
+    <id>http://example.com/2021/10/31/go-interface/</id>
+    <published>2021-10-30T16:00:00.000Z</published>
+    <updated>2021-10-31T07:31:48.052Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;在 Go 中，关键字 interface 被赋予了多种不同的含义。每个类型都有接口，意味着对那个类型定义了方法集合 。如下这段代码定义了具有一个字段和两个方法的结构类型 S。&lt;/p&gt;
+&lt;pre class=&quot;line-numbers</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Golang" scheme="http://example.com/tags/Golang/"/>
+    
+  </entry>
   
   <entry>
     <title>Golang中类型转换</title>
@@ -91,7 +115,7 @@
     <link href="http://example.com/2021/09/30/go-defer/"/>
     <id>http://example.com/2021/09/30/go-defer/</id>
     <published>2021-09-29T16:00:00.000Z</published>
-    <updated>2021-09-30T10:40:59.357Z</updated>
+    <updated>2021-10-31T07:32:35.851Z</updated>
     
     
       

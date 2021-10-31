@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Golang中类型转换, RickDamon">
+    <meta name="keywords" content="Golang中的interface, RickDamon">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Golang中类型转换 | RickDamon</title>
+    <title>Golang中的interface | RickDamon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -313,12 +313,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Golang中类型转换</h1>
+                    <h1 class="description center-align post-title">Golang中的interface</h1>
                 </div>
             </div>
         </div>
@@ -450,7 +450,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-10-24
+                    2021-10-31
                 </div>
                 
 
@@ -474,30 +474,52 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：byte()）完成的，而并且不是所有的转换都是允许的。</p>
-<p>从 string 到字节或者 ruin 的 slice。</p>
-<pre class="line-numbers language-none"><code class="language-none">mystring := "hello this is string
-byteslice := []byte(mystring)
-runeslice := []rune(mystring)
+                <p>在 Go 中，关键字 interface 被赋予了多种不同的含义。每个类型都有接口，意味着对那个类型定义了方法集合 。如下这段代码定义了具有一个字段和两个方法的结构类型 S。</p>
+<pre class="line-numbers language-none"><code class="language-none">type S struct { i int }
+func (p *S) Get() int { return p.i }
+func (p *S) Put(v int) { p.i = v }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>转换到 byte slice，每个 byte 保存字符串对应字节的整数值。注意 Go 的字符串是 UTF-8 编码的，一些字符可能是 1、2、3 或者 4 个字节结尾。</p>
-<p>转换到 rune slice，每个 rune 保存 Unicode 编码的指针。字符串中的每个字符对应一个整数。</p>
-<p>从字节或者整形的 slice 到 string。</p>
-<pre class="line-numbers language-none"><code class="language-none">b := []byte {'h','e','l','l','o'} // 复合声明
-s := string(b)
-i := []rune {257,1024,65}
-r := string(i)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也可以定义接口类型，仅仅是方法的集合。这里定义了一个有两个方法的接口 I：</p>
+<pre class="line-numbers language-none"><code class="language-none">type I interface {
+Get() int
+Put(int) 
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>对于数值，定义了下面的转换：<br>1、将整数转换到指定的（bit）长度：uint8(int)；<br>2、从浮点数到整数：int(float32)。这会截断浮点数的小数部分；<br>3、其他的类似：float32(int)。<br>用户定义类型的转换<br>如何在自定义类型之间进行转换？这里创建了两个类型 Foo 和 Bar，而 Bar 是 Foo 的一个别名：</p>
-<pre class="line-numbers language-none"><code class="language-none">type foo struct { int } // 匿名字段
-type bar foo // bar 是 foo 的别名
-var b bar = bar{1} // 声明 b 为 bar 类型
-var f foo = b // 赋值 b 到 f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>最后一行会引起错误：<br>cannot use b (type bar) as type foo in assignment(不能使用 b（类型 bar）作为类型 foo 赋值)</p>
-<p>这可以通过转换来修复：</p>
-<pre class="line-numbers language-none"><code class="language-none">var f foo = foo(b)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>对于接口 I，S 是合法的实现，因为它定义了 I 所需的两个方法。注意，即便是没有明确定义 S 实现了 I，这也是正确的。<br>Go 程序可以利用这个特点来实现接口的另一个含义，就是 接口值:</p>
+<pre class="line-numbers language-none"><code class="language-none">func f(p I) {  //定义一个函数接受一个接口类型作为参数
+fmt.Println(p.Get()) //p实现了接口I，必须有get()方法
+p.Put(1)  //Put()方法类似
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里的变量 p 保存了接口类型的值。因为 S 实现了 I，可以调用 f 向其传递 S 类型的值的指针：</p>
+<pre class="line-numbers language-none"><code class="language-none">var s S ; f(&amp;s)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>获取 s 的地址，而不是 S 的值的原因，是因为在 s 的指针上定义了方法。</p>
+<p>在 Go 中的接口有着与许多其他编程语言类似的思路：C++ 中的纯抽象虚基类，Haskell中的 typeclasses 或者 Python 中的 duck typing。然而没有其他任何一个语言联合了接口值、静态类型检查、运行时动态转换，以及无须明确定义类型适配一个接口。这些给 Go 带来的结果是，强大、灵活、高效和容易编写的。</p>
+<p>定义另外一个类型同样实现了接口 I：</p>
+<pre class="line-numbers language-none"><code class="language-none">type R struct { i int }
+func (p *R) Get() int { return p.i }
+func (p *R) Put(v int) { p.i = v }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<p>注意转换那些字段不一致的结构是很困难的。同时，转换 b 到 int 同样会出错；整数与有整数字段的结构体并不是一样的。</p>
+<p>函数 f 现在可以接受类型为 R 或 S 的变量。假设需要在函数 f 中知道实际的类型。在Go 中可以使用 type switch 得到。</p>
+<p>type switch:</p>
+<pre class="line-numbers language-none"><code class="language-none">func f(p I) {
+switch t := p.(type) { 
+case *S: 
+case *R: 
+case S: 
+case R: 
+default: 
+    } 
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在 switch 之外使用 (type) 是非法的。类型判断不是唯一的运行时得到类型的方法。<br>为了在运行时得到类型，同样可以使用 “comma, ok” 来判断一个接口类型是否实现了某个特定接口：</p>
+<pre class="line-numbers language-none"><code class="language-none">if t, ok := something.(I) ; ok {
+// 对于某些实现了接口 I 的
+// t 是其所拥有的类型
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>确定一个变量实现了某个接口，可以使用：</p>
+<pre class="line-numbers language-none"><code class="language-none">t := something.(I)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 
                 
             </div>
@@ -524,7 +546,7 @@ var f foo = b // 赋值 b 到 f<span aria-hidden="true" class="line-numbers-rows
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/10/24/go-typechange/">http://example.com/2021/10/24/go-typechange/</a>
+                    <a href="http://example.com/2021/10/31/go-interface/">http://example.com/2021/10/31/go-interface/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -733,9 +755,10 @@ var f foo = b // 赋值 b 到 f<span aria-hidden="true" class="line-numbers-rows
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/10/31/go-interface/">
                     <div class="card-image">
@@ -753,9 +776,9 @@ var f foo = b // 赋值 b 到 f<span aria-hidden="true" class="line-numbers-rows
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-31
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-31
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -764,6 +787,7 @@ var f foo = b // 赋值 b 到 f<span aria-hidden="true" class="line-numbers-rows
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -782,13 +806,13 @@ var f foo = b // 赋值 b 到 f<span aria-hidden="true" class="line-numbers-rows
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/10/16/go-type/">
+                <a href="/2021/10/24/go-typechange/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Golang中自定义类型">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Golang中类型转换">
                         
-                        <span class="card-title">Golang中自定义类型</span>
+                        <span class="card-title">Golang中类型转换</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -799,7 +823,7 @@ var f foo = b // 赋值 b 到 f<span aria-hidden="true" class="line-numbers-rows
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-24
                             </span>
                         <span class="publish-author">
                             

@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
 </head>
@@ -490,16 +492,14 @@
 <p>Java类的标准命名规范为<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%AA%86%E9%A9%BC%E5%91%BD%E5%90%8D%E6%B3%95/7794053?fr=aladdin">骆驼命名法</a> </p>
 <p>Java中源代码的文件名必须与公共类的名字相同，并且使用.java作为扩展名。</p>
 <h2 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h2><p>在编译过程中，以上面程序为例，在编译这段代码之后会得到一个包含这个类字节码的文件，java编译器会将字节码文件命名为FirstSample.class，并存储在源文件的同一目录下，编译完后可以使用 java FirstSample运行此程序，当然运行结果会是一段我们输入的字符。</p>
-<h2 id="java中的一些规范"><a href="#java中的一些规范" class="headerlink" title="java中的一些规范"></a>java中的一些规范</h2><p>运行已编译的程序时，Java虚拟机总是会从指定的类中的main方法的代码开始执行，所以在类的源文件中必须有一个main方法，且根据(Java语言规范)[<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/specs]%E3%80%82">http://docs.oracle.com/javase/specs]。</a></p>
+<h2 id="java中的一些规范"><a href="#java中的一些规范" class="headerlink" title="java中的一些规范"></a>java中的一些规范</h2><p>运行已编译的程序时，Java虚拟机总是会从指定的类中的main方法的代码开始执行，所以在类的源文件中必须有一个main方法，且根据(Java语言规范)[<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/specs]。">http://docs.oracle.com/javase/specs]。</a></p>
 <p>main方法必须声明为public。</p>
 <p>在Java语言中，和在C++中一样，用大括号来划分程序部分。</p>
 <p>作为学习过C++程序的一员，对Java类的理解应该会好理解一下，Java的所有函数都是某个类的方法。因此，Java的main方法必须有一个shell类。</p>
-<p>Java中的main方法必须是静态的，void类型表示没有返回值，所以不用返回退出码。</p>
-<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">public static void main(String[] args)
+<p>Java中的main方法必须是静态的，void类型表示没有返回值，所以不用返回退出码。<br></p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">public static void main(String[] args)
    {
         System.out.println("We will not use 'hello world!' ");
-   }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>现在对这个语句进行研究：</p>
+   }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><br>现在对这个语句进行研究：<p></p>
 <p>在这里我们使用了System.out对象且调用了它的println方法。注意，点号（.）用于调用方法，Java中通用的调用为object.method(parameters)。和C++一样，都是用双引号界定字符串。注释也是很类似的。</p>
 <h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Java中有八种基本的数据类型，其中4种整型，2种浮点类型，一种字符类型char，和判断值boolean类型。</p>
 <h1 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h1><p>Java中提供了四种整型，即int，short，long，byte，其中int类型最为常用，而要表达地球人口这样的较大数就需要用到long类型，而byte和short常用于特定的场合，比如底层文件处理或者存储空间很宝贵的大数据。</p>
@@ -514,11 +514,9 @@
 <p>设计Unicode的初衷便是要解决这些问题。当时人们认为两个字节的代码宽度足以对世界上任何语言的所有字符进行编码，但最终还是因为大量的汉语系文字<br>中的表意文字，目前16位的char类型已无法满足描述所有Unicode字符的需要。</p>
 <h1 id="boolean类型"><a href="#boolean类型" class="headerlink" title="boolean类型"></a>boolean类型</h1><p>包括两个值true和false，来判定逻辑条件，整型和布尔值不能进行相互转换。</p>
 <h2 id="变量与常量"><a href="#变量与常量" class="headerlink" title="变量与常量"></a>变量与常量</h2><p>和C++类似，Java也用变量来存储值，常量就是值不变的变量，通常会用final修饰。</p>
-<h1 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h1><p>当变量的取值只在一个有限的集合内，可以自定义枚举类型。枚举类型包括有限个命名的值。</p>
-<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">
+<h1 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h1><p>当变量的取值只在一个有限的集合内，可以自定义枚举类型。枚举类型包括有限个命名的值。<br></p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">
 enum Size { SMALL , MEDIUM , LARGE , EXRA_LARGE};
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>之后会进行枚举类的详细介绍。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br>之后会进行枚举类的详细介绍。<p></p>
 <h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><h1 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h1><p>此处与其他语言类似，而要注意使用strictfp关键字标记的方法必须使用严格的浮点运算来生成可再生的结果。</p>
 <h1 id="数学函数与常量"><a href="#数学函数与常量" class="headerlink" title="数学函数与常量"></a>数学函数与常量</h1><p>在Math类中，包含了各种各样的数学函数。在编写不同类型的程序时，可能需要的函数也不同。</p>
 <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">

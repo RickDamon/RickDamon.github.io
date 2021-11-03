@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
 </head>
@@ -488,24 +490,18 @@ func main() {
     fmt.Printf("%v\n", a)
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>通常，fmt.Printf(“%v\n”, a) 的输出是&amp;{Pete 42}<br>Go 知道如何打印结构。如果仅想打印某一个，或者某几个结构中的字段，需<br>要使用 .<field name="">。例如，仅仅打印名字：</field></p>
-<pre class="line-numbers language-none"><code class="language-none">fmt.Printf("%s", a.name) // %s 格式化字符串<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="结构字段"><a href="#结构字段" class="headerlink" title="结构字段"></a>结构字段</h3><p>之前已经提到结构中的项目被称为field。没有字段的结构：struct {}<br>或者有四个c 字段的：</p>
-<pre class="line-numbers language-none"><code class="language-none">struct {
+<p>通常，fmt.Printf(“%v\n”, a) 的输出是&amp;{Pete 42}<br>Go 知道如何打印结构。如果仅想打印某一个，或者某几个结构中的字段，需<br>要使用 .<field name="">。例如，仅仅打印名字：<br></field></p><pre class="line-numbers language-none"><code class="language-none">fmt.Printf("%s", a.name) // %s 格式化字符串<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p></p>
+<h3 id="结构字段"><a href="#结构字段" class="headerlink" title="结构字段"></a>结构字段</h3><p>之前已经提到结构中的项目被称为field。没有字段的结构：struct {}<br>或者有四个c 字段的：<br></p><pre class="line-numbers language-none"><code class="language-none">struct {
     x, y int
     A *[]int
     F func()
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>如果省略字段的名字，可以创建匿名字段，例如：</p>
-<pre class="line-numbers language-none"><code class="language-none">struct {
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>如果省略字段的名字，可以创建匿名字段，例如：<br><pre class="line-numbers language-none"><code class="language-none">struct {
     T1 // 字段名字是 T1
     *T2 // 字段名字是 T2
     P.T3 // 字段名字是 T3
     x, y int // 字段名字是 x 和 y 
 }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>注意首字母大写的字段可以被导出，也就是说，在其他包中可以进行读写。字段名以小写字母开头是当前包的私有的。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>注意首字母大写的字段可以被导出，也就是说，在其他包中可以进行读写。字段名以小写字母开头是当前包的私有的。<p></p>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>可以对新定义的类型创建函数以便操作，可以通过两种途径：</p>
 <ol>
 <li>创建一个函数接受这个类型的参数。<pre class="line-numbers language-none"><code class="language-none">func doSomething(n1 *NameAge, n2 int) { /* */ }<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -515,15 +511,11 @@ func main() {
 n.doSomething(2)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 使用函数还是方法是由程序员决定的，但是如果想要满足接口就只能使用方法。如果没有这方面的需求，那就由个人品味决定了。</li>
 </ol>
-<p>下面的类型定义中有一些微小但是很重要的不同之处。<br>我们假设有如下代码：</p>
-<pre class="line-numbers language-none"><code class="language-none">// Mutex 数据类型有两个方法，Lock 和 Unlock。
+<p>下面的类型定义中有一些微小但是很重要的不同之处。<br>我们假设有如下代码：<br></p><pre class="line-numbers language-none"><code class="language-none">// Mutex 数据类型有两个方法，Lock 和 Unlock。
 type Mutex struct { /* Mutex 字段 */ }
 func (m *Mutex) Lock() { /* Lock 实现 */ }
-func (m *Mutex) Unlock() { /* Unlock 实现 */ }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>现在用两种不同的风格创建了两个数据类型:</p>
-<pre class="line-numbers language-none"><code class="language-none">type NewMutex Mutex
-type PrintableMutex struct {Mutex }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>现在 NewMutux 等同于 Mutex，但是它没有任何 Mutex 的方法。换句话说，它的方法<br>是空的。但是 PrintableMutex 已经从 Mutex 继承了方法集合。*PrintableMutex 的方法集合包含了 Lock 和 Unlock 方法，被绑定到其匿名字段 Mutex。</p>
+func (m *Mutex) Unlock() { /* Unlock 实现 */ }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><br>现在用两种不同的风格创建了两个数据类型:<br><pre class="line-numbers language-none"><code class="language-none">type NewMutex Mutex
+type PrintableMutex struct {Mutex }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br>现在 NewMutux 等同于 Mutex，但是它没有任何 Mutex 的方法。换句话说，它的方法<br>是空的。但是 PrintableMutex 已经从 Mutex 继承了方法集合。*PrintableMutex 的方法集合包含了 Lock 和 Unlock 方法，被绑定到其匿名字段 Mutex。<p></p>
 
                 
             </div>

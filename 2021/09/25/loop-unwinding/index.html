@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
 </head>
@@ -475,8 +477,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>循环展开是一种程序变换，通过增加每次迭代计算的元素数量，减少循环的迭代次数，在之前的程序优化中有函数用到循环展开。循环展开能从两个方面改进程序的性能。首先，它减少了不直接有助于程序结果的操作的数量，例如循环索引计算和条件分支。第二，它提供了一些方法，可以进一步变化代码，减少整个计算中关键路径上的操作数量。</p>
-<p>这是之前计算前置和的两个函数：</p>
-<pre class="line-numbers language-none"><code class="language-none">// 计算前置和不使用和使用循环展开
+<p>这是之前计算前置和的两个函数：<br></p><pre class="line-numbers language-none"><code class="language-none">// 计算前置和不使用和使用循环展开
 void psum1(float a[], float p[], long n)
 {
       long i;
@@ -497,8 +498,7 @@ void psum2(float a[], float p[], long n)
       if (i &lt; n)
           p[i] = p[i-1] + a[i];
 }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
 <p>接下来的函数是合并代码的使用“2*1循环展开”的版本。之前几个版本的代码都在程序优化的第二部分。</p>
 <pre class="line-numbers language-none"><code class="language-none">// 此程序中的IDENT和OP可以用#define来定义
 void combined5(vec_ptr v, data_t *dest)
@@ -520,7 +520,6 @@ void combined5(vec_ptr v, data_t *dest)
     }
     *dest = acc;
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>程序中第一个循环每次处理数组的两个元素。也就是每次迭代，循环索引i加2，再一次迭代中，对数组元素i和i+1使用合并运算。</p>
 <p>在一般情况下，向量长度不一定是2的倍数，想要让代码对任意向量长度都能够正确工作，可以从两个方面来处理这个需求。首先，确保第一次循环不会超出数组的界限。对于长度为n的向量，我们将循环界限设置为n-1。然后，保证只有当循环索引i满足i&lt;n-1时才会执行该循环，因此最大数组索引i+1满足i+1&lt;(n-1)+1=n。</p>
 <p>将上述思想归纳为对一个循环按任意因子k进行展开，由此产生k×1循环展开。为此，上限为n-k+1，在循环内对元素i到i+k-1应用合并运算。每次迭代，循环索引i加k。那么最大循环索引i+k-1会小于n。要使用第二个循环，以每次处理一个元素的方式处理向量的后几个元素。这个循环体将会执行0~k-1次。对于k=2，可以用一个最简单的条件语句，可选的增加最后一次迭代，就像函数pum2所示，k&gt;2时，最后的这些情况最好用一个循环来表示，所以对k=2的情况，我们同样也采用这个编程惯例。称之为“k×1循环展开”，因为循环展开因子为k，而累积值旨在单个变量acc中。</p>

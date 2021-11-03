@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
 </head>
@@ -482,8 +484,7 @@
 <p>在了解了处理器的运作后，我们即可进行第二步，利用处理器提供的指令级并行(instruction-level parallelism)能力，同时执行多条指令。</p>
 <h2 id="优化编译器的能力和局限性"><a href="#优化编译器的能力和局限性" class="headerlink" title="优化编译器的能力和局限性"></a>优化编译器的能力和局限性</h2><p>现代编译器运用复杂精细的算法来确定一个程序中计算的是什么值，以及它们是如何被使用的，之后会利用一些机会来简化表达式，在几个不同的地方使用同一个计算，以及降低一个给定的计算必须被执行的次数。一些编译器向用户提供了一些对它们使用的优化的控制，例如在GCC中最简单的控制便是指定优化级别。”-Og”是基本优化，而”-O1”,”-O2”,”-O3”则是让GCC使用更大量的优化，这样可以提高程序性能，但相应的也可能会增加程序的规模。对于大多数使用GCC的软件项目来说，优化级别-O2被定义为了可以被接受的标准，但还是主要考虑-O1级别编译出的代码。</p>
 <h3 id="第一个妨碍优化的因素"><a href="#第一个妨碍优化的因素" class="headerlink" title="第一个妨碍优化的因素"></a>第一个妨碍优化的因素</h3><p>编译器必须很小心地对程序只使用<strong>安全</strong>的优化，这里的安全是指在程序可能遇到的所有可能情况下，在C语言标准提供的保证之下，优化后得到的程序和未优化版本有一样的行为。</p>
-<p>我们用两个函数举一个栗子：</p>
-<pre class="line-numbers language-none"><code class="language-none">void twiddle1(long *xp, long *yp)
+<p>我们用两个函数举一个栗子：<br></p><pre class="line-numbers language-none"><code class="language-none">void twiddle1(long *xp, long *yp)
 {
       *xp += *yp;
       *xp += *yp;
@@ -492,19 +493,16 @@
 void twiddle1(long *xp, long *yp)
 {
       *xp += 2* *yp;
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>乍一看的话，两程序好像是有相同的行为，都是将储存在由指针yp指示的位置处的值两次加到xp指针指示的位置出的值。另一方面，函数twiddle2效率要高些。因为它只要求了3此内存引用(读 <em>xp，读</em>yp，写<em>xp)，而twiddle1则需要六次(两次读 <em>xp，两次读</em>yp，两次写</em>xp)，因此我们会认为基于第二个函数执行的计算能产生更有效的代码。</p>
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
+<p>乍一看的话，两程序好像是有相同的行为，都是将储存在由指针yp指示的位置处的值两次加到xp指针指示的位置出的值。另一方面，函数twiddle2效率要高些。因为它只要求了3此内存引用(读 <em>xp，读</em>yp，写<em>xp)，而twiddle1则需要六次(两次读 </em>xp，两次读<em>yp，两次写</em>xp)，因此我们会认为基于第二个函数执行的计算能产生更有效的代码。</p>
 <p>不过如果考虑到xp等于yp的情况的话，此时函数twiddle1会执行下列运算：</p>
 <pre class="line-numbers language-none"><code class="language-none">
 *xp += *xp; /* Double value at xp */
 *xp += *xp; /* Double value at xp */
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>其结果便是xp的值增加四倍，而twiddle2会执行下列运算：</p>
-<pre class="line-numbers language-none"><code class="language-none">
+<p>其结果便是xp的值增加四倍，而twiddle2会执行下列运算：<br></p><pre class="line-numbers language-none"><code class="language-none">
 *xp += 2* *xp; /* Trible value at xp */
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>现在就不一样了，程序二让xp的值增加了3倍，是不是很神奇。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br>现在就不一样了，程序二让xp的值增加了3倍，是不是很神奇。<p></p>
 <p>编译器是不知道twiddle1会被如何调用的，因此他必须考虑到参数xp和yp相等的情况，所以他不会产生twiddle2风格代码作为twiddle1的优化版本。</p>
 <p>这中两个指针可能指向同一内存位置的情况称为<strong>内存别名使用</strong>（memory aliasing）。在只执行安全的优化中，编译器必须假设不同的指针可能会指向内存中的同一位置。</p>
 <h3 id="第二个妨碍优化的因素"><a href="#第二个妨碍优化的因素" class="headerlink" title="第二个妨碍优化的因素"></a>第二个妨碍优化的因素</h3><p>我们先举一个栗子：</p>
@@ -519,7 +517,6 @@ long func2() {
      return 4*f();
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>同样的，这个例子看上去两个过程计算的都是一样的结果，但是func2只调用了f一次，而func1调用了f四次。要是你写了func1风格的代码，你可能会想要改成func2的样子。</p>
 <p>不过考虑一下下面的f代码：</p>
 <pre class="line-numbers language-none"><code class="language-none">
@@ -556,7 +553,6 @@ void psum2(float a[], float p[], long n)
           p[i] = p[i-1] + a[i];
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>我们可以看到，函数psum1每次迭代计算结果的一个元素。第二个函数则使用循环展开的技术，每次迭代计算了两个元素。</p>
 <p>这样一个过程所需时间可以用一个常数加上一个与被处理元素个数成正比的因子来描述。使用最小二乘法拟合后，psum1个psum2的运行时间约为368+9.0n和368+6.0n，这两个式子表示了对代码的计时和初始化过程、准备循环以及完成过程的开销为368个周期加上每个元素6.0或9.0周期的线性因子。对于较大的n值，运行时间主要就由线性因子来决定。这些项的系数称为每元素的周期数(CPE)的有效值。在这个例子中，psum2的CPE为6.0，优于9.0的psum1。</p>
 <p>未完待续…</p>

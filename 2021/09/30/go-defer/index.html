@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
 </head>
@@ -491,7 +493,6 @@ func ReadWrite() bool {
     file.Close() 
     return true
     }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>在这个函数中出现了很多的重复代码，而defer语句是可以解决这些问题的，在defer后指定的函数会在函数退出前进行调用。</p>
 <p>我们可以通过defer语句，将Close对应的内容放置在Open后面，可以使函数更加可读和健壮。</p>
 <pre class="line-numbers language-none"><code class="language-none">func ReadWrite() bool {
@@ -507,22 +508,18 @@ func ReadWrite() bool {
     return true  // And here
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>我们再来看一个延迟函数的例子：</p>
 <pre class="line-numbers language-none"><code class="language-none">for i := 0 ; i &lt; 5 ; i++ {
     defer fmt.Printf("%d ", i)
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>延迟的函数是按照后进先出（LIFO）的顺序执行的，所以上面for循环的例子会打印：4 3 2 1 0.利用defer也可以修改返回值，假设正在使用命名结果参数和函数符号，例如下面这个函数：</p>
 <pre class="line-numbers language-none"><code class="language-none">defer func() {
         /* ... */
 }()     // ← () 在这里是必须的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>或者这个例子，我们更容易理解为什么，以及在哪需要用括号。</p>
-<pre class="line-numbers language-none"><code class="language-none">defer func(x int) {
+<p>或者这个例子，我们更容易理解为什么，以及在哪需要用括号。<br></p><pre class="line-numbers language-none"><code class="language-none">defer func(x int) {
         /* ... */
 }(5)    // 为输入参数 x 赋值 5
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>在这个defer匿名函数中，可以访问任何命名返回参数：</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><br>在这个defer匿名函数中，可以访问任何命名返回参数：<p></p>
 <pre class="line-numbers language-none"><code class="language-none">func f() (ret int) { ← ret 初始化为零
     defer func() {
         ret++  // ret 增加为 1

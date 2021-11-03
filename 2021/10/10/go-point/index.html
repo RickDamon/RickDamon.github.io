@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
 </head>
@@ -475,21 +477,18 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>Go 有指针。然而却没有指针运算，因此它们更像是引用而不是我们所知道的来自于 C的指针。指针非常有用。在 Go 中调用函数的时候，得记得变量是值传递的。因此，为了修改一个传递入函数的值的效率和可能性，有了指针。</p>
-<p>通过类型作为前缀来定义一个指针’*’：var p *int。现在 p 是一个指向整数值的指针。所有新定义的变量都被赋值为其类型的零值，而指针也一样。一个新定义的或者没有任何指向的指针，有值 nil。在其他语言中，被叫做空（NULL）指针，在 Go 中就是 nil。让指针指向某些内容，可以使用取址操作符 （&amp;），像这样：</p>
+<p>通过类型作为前缀来定义一个指针’<em>’：var p </em>int。现在 p 是一个指向整数值的指针。所有新定义的变量都被赋值为其类型的零值，而指针也一样。一个新定义的或者没有任何指向的指针，有值 nil。在其他语言中，被叫做空（NULL）指针，在 Go 中就是 nil。让指针指向某些内容，可以使用取址操作符 （&amp;），像这样：</p>
 <pre class="line-numbers language-none"><code class="language-none">var p *int
 fmt.Printf("%v", p) // 打印 nil
 var i int // 定义一个整形变量 i
 p = &amp;i // 使得 p 指向 i
 fmt.Printf("%v", p) // 打印出来的内容类似 0x5ff72b76c000b
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>从指针获取值是通过在指针变量前置’*’ 实现的：</p>
-<pre class="line-numbers language-none"><code class="language-none">p = &amp;i // 获取 i 的地址
+<p>从指针获取值是通过在指针变量前置’*’ 实现的：<br></p><pre class="line-numbers language-none"><code class="language-none">p = &amp;i // 获取 i 的地址
 *p = 8 // 修改 i 的值
 fmt.Printf("%v\n", *p) // 打印 8
-fmt.Printf("%v\n", i) // 同上<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>因为没有指针运算，所以如果这样在golang写：*p++，它表示 (*p)++：首先获取指针指向的值，然后对这个值加一，而不是对指针本身进行操作。</p>
+fmt.Printf("%v\n", i) // 同上<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p></p>
+<p>因为没有指针运算，所以如果这样在golang写：<em>p++，它表示 (</em>p)++：首先获取指针指向的值，然后对这个值加一，而不是对指针本身进行操作。</p>
 <h2 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h2><p>Go 同样也有垃圾回收，也就是说无须担心内存分配和回收。</p>
 <p>Go 有两个内存分配原语，new 和 make。它们应用于不同的类型，做不同的工作，可能<br>有些迷惑人，但是规则很简单。</p>
 <h3 id="用new分配内存"><a href="#用new分配内存" class="headerlink" title="用new分配内存"></a>用new分配内存</h3><p>内建函数 new 本质上说跟其他语言中的同名函数功能一样：new(T) 分配了零值填充的 T 类型的内存空间，并且返回其地址，一个 *T 类型的值。用 Go 的术语说，它返回了一个指针，指向新分配的类型 T 的零值。</p>
@@ -502,7 +501,6 @@ buffer bytes.Buffer
 <p>SyncedBuffer 的值在分配内存或定义之后立刻就可以使用。在这个片段中，p 和 v 都<br>可以在没有任何更进一步处理的情况下工作。</p>
 <pre class="line-numbers language-none"><code class="language-none">p := new(SyncedBuffer) // Type *SyncedBuffer，已经可以使用
 var v SyncedBuffer // Type SyncedBuffer，同上<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
 <h3 id="用-make-分配内存"><a href="#用-make-分配内存" class="headerlink" title="用 make 分配内存"></a>用 make 分配内存</h3><p>回到内存分配。内建函数 make(T, args) 与 new(T) 有着不同的功能。它只能创建slice，map和 channel，并且返回一个有初始值（非零）的 T 类型，而不是 *T。本质来讲，导致这三个类型有所不同的原因是指向数据结构的引用在使用前必须被初始化。例如，一个 slice，是一个包含指向数据（内部 array）的指针，长度和容量的三项描述符；在这些项目被初始化之前，slice 为 nil。对于 slice，map 和 channel，make 初始化了内部的数据结构，填充适当的值。<br>例如，make([]int, 10, 100) 分配了 100 个整数的数组，然后用长度 10 和容量 100创建了 slice 结构指向数组的前 10 个元素。区别是，new([]int) 返回指向新分配的内存的指针，而零值填充的 slice 结构是指向 nil 的 slice 值。</p>
 <p>用一个例子展示new和make的不同：</p>
 <pre class="line-numbers language-none"><code class="language-none">var p *[]int = new([]int) // 分配 slice 结构内存；很少使用

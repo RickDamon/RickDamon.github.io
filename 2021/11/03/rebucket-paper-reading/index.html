@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java中的文档注释, RickDamon">
+    <meta name="keywords" content="ReBucket论文精读, RickDamon">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java中的文档注释 | RickDamon</title>
+    <title>ReBucket论文精读 | RickDamon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -315,12 +315,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java中的文档注释</h1>
+                    <h1 class="description center-align post-title">ReBucket论文精读</h1>
                 </div>
             </div>
         </div>
@@ -436,8 +436,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Java/">
-                                <span class="chip bg-color">Java</span>
+                            <a href="/tags/Paper/">
+                                <span class="chip bg-color">Paper</span>
                             </a>
                         
                     </div>
@@ -452,7 +452,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-07-10
+                    2021-11-03
                 </div>
                 
 
@@ -476,67 +476,40 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="文档注释"><a href="#文档注释" class="headerlink" title="文档注释"></a>文档注释</h3><p>JDK中包含一个叫做javadoc的工具，可以由源文件生成一个HTML文档。若在源代码中添加以特殊定界符/**开始的注释，也可以很容易的生成一个看上去比较专业的文档。这种方法的好处在于，将代码和注释放在一个地方，在修改源码的同时，重新运行javadoc就可以轻松的保持两者的一致性。</p>
-<h2 id="注释的插入"><a href="#注释的插入" class="headerlink" title="注释的插入"></a>注释的插入</h2><p>javadoc实用工具从模块，包，公共类与接口，公共的和受保护的字段，公共的和受保护的构造器及方法中抽取信息。</p>
-<p>可以为上面各个特性编写注释，注释放置在所描述特性的前面，注释将以/<em>*开始，且以</em>/结束。</p>
-<p>每个/<em>*…</em>/文档注释包含标记以及之后紧跟着的自由格式文本。标记以@开始，比如@since或@param。</p>
-<p>自由格式文本的第一句应该是一个概要性的句子，javadoc工具自动的将这些句子抽取出来生成概要页。</p>
-<p>在自由格式文本中，可以使用HTML修饰符 例：<br> </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">用于强调的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>em</span><span class="token punctuation">&gt;</span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>em</span><span class="token punctuation">&gt;</span></span>
-着重强调的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>strong</span><span class="token punctuation">&gt;</span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>strong</span><span class="token punctuation">&gt;</span></span>
-用于项目符号列表的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">&gt;</span></span>/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span></span>
-及用于包含图像的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">...</span><span class="token punctuation">&gt;</span></span>等
-如要键入宽代码，需使用{@code ... }而非<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span><span class="token punctuation">&gt;</span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">&gt;</span></span>。这样就不用操心对代码中的&lt;进行字符转义了。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
-<h2 id="类注释"><a href="#类注释" class="headerlink" title="类注释"></a>类注释</h2><p>类注释必须要放在import语句之后和类定义之前。<br>我们举一个例子</p>
- <pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">/*<span class="token italic"><span class="token punctuation">*</span><span class="token content">
- </span><span class="token punctuation">*</span></span> A {@code Card} object represents a playing card,such
- <span class="token list punctuation">*</span> as "Queen of Hearts". A card has a suit (Diamond , He
- <span class="token list punctuation">*</span> art, Spade or Club) and a value
- */
-public class Card
-{
-   ...
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>事实上没必要在每行的开始都添加星号<em>，不过大部分的IDE会自动提供星号</em>，而且换行改变时，还会重新放置星号。</p>
-<h2 id="方法注释"><a href="#方法注释" class="headerlink" title="方法注释"></a>方法注释</h2><p>每个方法的注释都要放在所描述方法之前。除了通用标记之外，还可用下列标记：</p>
-<p>  @param variable description<br>      这个标记将给当前方法的参数（parameters）部分添加一个条目，此描述可以占据多行，且可以使用HTML标记。一个方法的所有@param必须放在一起<br>  @return description<br>      这个标记将给当前方法添加返回（returns）部分。这个描述可以跨多行，同样的，可以使用HTML标记。<br>  @throws class description<br>      这个标记将添加一个注释，表示此方法可能会抛出异常。</p>
-<p>下面是一个方法注释的案例：<br> </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">/*<span class="token italic"><span class="token punctuation">*</span><span class="token content">
- </span><span class="token punctuation">*</span></span> Raises the salary of an employee.
- <span class="token list punctuation">*</span> @param byPercent the percentage by which to raise the salary (e.g., 10 means 10%)
- <span class="token list punctuation">*</span> @return the amount of the raise
- <span class="token italic"><span class="token punctuation">*</span><span class="token content">/
-public double raiseSalary(double byPercent)
-{
-    double raise = salary </span><span class="token punctuation">*</span></span> byPercent / 100;
-    salary += raise;
-    return raise;
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
-<h2 id="字段注释"><a href="#字段注释" class="headerlink" title="字段注释"></a>字段注释</h2><p>只需对公共字段（通常为静态变量）建立文档。如：<br>  </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">/*<span class="token italic"><span class="token punctuation">*</span><span class="token content">
- </span><span class="token punctuation">*</span></span> The "Hearts" card suit
- */
-public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p></p>
-<h2 id="通用注释"><a href="#通用注释" class="headerlink" title="通用注释"></a>通用注释</h2><p>标记@since text将会建立一个“since”条目。text是可以引入这个特性的版本的任何描述。 例如，@since 1.7.1 。</p>
-<p>下面的标记可以用在类文档的注释中：</p>
-<p>   @author name<br>      此标记将产生一个“author”条目。可以使用多个@author标记，每个@author标记就对应了一个作者。<br>   @version text<br>      此标记将产生一个版本条目，这里的文本可以是对当前版本的任何描述。</p>
-<p>通过@see和@link的标记，可以使用超链接，链接到javadoc的相关部分以及外部文档。</p>
-<p>标记@see reference将在“see also”（参见）部分增加一个超链接。它可以用于类中，也可以用于方法中。这里的reference有下面三个选择：<br>  </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">package.class#feature label
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>...<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>label<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">&gt;</span></span>
-"text"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><br>我们用第一种情况举一个例子。<p></p>
-<p>@see com.horstmann.corejava.Employee#raiseSalary(double)</p>
-<p>这样我们就建立了一个到com.horstmann.corejava.Employee的raiseSalary(double)方法的超链接。在此处可以省略报名，甚至是报名和类名都省去，省去后就会位于当前的包或者类中。需要注意一定要使用井号（#）而非（.）来分割类名和方法名，或者类名和变量名。Java编译器自身可以熟练的确定句点在分隔包、子包、类、内部类与方法和变量时的不同含义。但是javadoc没有这么聪明，需要用#对他提供帮助。</p>
-<p>在第二种情况下，如果@see标记之后有一个&lt;字符，那么就需要指定一个超链接，可以链接到任何URL。例如<br>  </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">@see <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>www.horstmann.com/corejava.html<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>The Core Java home page<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>在上述情况下，都可以指定一个label（标签）作为链接锚（link anchor）。若省略了标签，则用户看到的锚就是目标代码名或者URL。<p></p>
-<p>在第三种情况下，如果@see后有一个双引号（“）字符，文本就会显示在”see also“部分。例如：<br>  </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">@see "Core Java 2 volume 2"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>可以为一个特性添加多个@see标记，但必须把它们放在一起。<p></p>
-<p>如果你愿意，可以在文档注释中的任何位置放置指向其他类或方法的超链接。可以在注释中任何位置插入一个形式如下的特殊标记：<br>  </p><pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">{@link package.class#feature label}<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p></p>
-<h2 id="包注释"><a href="#包注释" class="headerlink" title="包注释"></a>包注释</h2><p>可以直接将类、方法和变量的注释放在Java源文件中，是要用/<em>*…</em>/文档注释界定就可以。但是要产生包注释就需要在每一个包目录中添加一个单独的文件。可以有如下两种选择：</p>
-<p>1.提供一个名为package-info.java的Java文件。这个文件须包含一个初始的以/<em>*和</em>/界定的javadoc注释。后面是一个package语句。它不能包含更多的代码和注释。<br>2.提供一个名为package.html的HTML文件。会抽取标记...间的所有文本。</p>
-<h1 id="注释提取"><a href="#注释提取" class="headerlink" title="注释提取"></a>注释提取</h1><p>在此，如果你希望HTML文件将放在名为docDirectory的目录下，执行如下步骤：</p>
-<p>1.切换到包含你想要生成文档的源文件的目录。如果有嵌套的包想要生成文档，例如com.horstmann.corejava，就必须切换到包含子目录com的目录。</p>
-<p>2.如果是一个包，则运行如下命令：</p>
-<p>   javadoc -d docDirectory nameOfPackage</p>
-<p>或者，如果要为多个包生成文档，运行：</p>
-<p>   javadoc -d docDirectory nameOfPackage1 nameOfPackage2 …</p>
-<p>若文件处于无名的包中，则运行：</p>
-<p>   javadoc -d docDirectory *.java</p>
-<p>如若在上述操作中省略了 -d docDirectory选项，那么HTML文件就会被提取到当前目录下，这样的结果就是可能比较混乱。</p>
+                <p>本篇文章是对缺陷分析算法相关论文ReBucket_A_method_for_clustering_duplicate_crash_reports_based_on_call_stack_similarity的精读。</p>
+<p>论文原链接：<br><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/6227111">ReBucket</a></p>
+<h1 id="Rebucket概述"><a href="#Rebucket概述" class="headerlink" title="Rebucket概述"></a>Rebucket概述</h1><p>关键词：crash reports——崩溃报告 hierarchical clustering method——层次聚类方法 duplicate crash report——重复的崩溃报告 WER：Windows Error Reporting，微软的及时告警分布系统。</p>
+<p>在WER中，崩溃报告被扔到了一个个桶（bucket）里，每个桶里包含的崩溃报告在理想状态下被认为是一致的，桶中的崩溃信息对于开发人员解决问题的优先级有很大的重要性（桶中信息到一定程度生成错误报告）。Rebucket的提出主要就是为了为了提高分桶的准确性。</p>
+<p>文章提出了一个测量两个调用堆栈之间相似度的模型，称为PDM(Position Dependent Model-位置相关模型)。此模型依据两个调用堆栈上的函数数量，这些函数到堆栈顶部的距离，以及函数间的偏移距离来判断调用堆栈的相似度。在Rebucket中还有一个训练过程用来调整PDM所需的参数。</p>
+<h1 id="算法的实现流程"><a href="#算法的实现流程" class="headerlink" title="算法的实现流程"></a>算法的实现流程</h1><h2 id="算法的整体结构"><a href="#算法的整体结构" class="headerlink" title="算法的整体结构"></a>算法的整体结构</h2><p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/4ee30aee617c318027e01fc9ca53513.png?raw=true" alt="image"></p>
+<p>我们首先来看一下算法的流程图，可以看到对于新到达的崩溃报告，Rebucket首先对他们进行了预处理来简化调用堆栈，之后用PDM模型计算调用堆栈的相似性，最终用层次聚类方法将崩溃报告聚类到相应的桶中。</p>
+<h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title=".数据预处理"></a>.数据预处理</h2><p>删除以下两个函数：<br>1、Immue Functions：简单到我们认为不会发生问题的函数<br>2、递归函数：递归函数是很常见的，在通常情况下不包含有效信息，也会影响PDM对堆栈相似性的测量,因此删除了递归函数。</p>
+<h2 id="计算堆栈间的相似性"><a href="#计算堆栈间的相似性" class="headerlink" title=".计算堆栈间的相似性"></a>.计算堆栈间的相似性</h2><h3 id="keywords"><a href="#keywords" class="headerlink" title="keywords"></a>keywords</h3><p>在介绍计算过程之前需要注意的两个量：<br>1.当前帧到调用堆栈顶部帧间的距离<br>2.对齐偏移(Alignment Offset)：两个堆栈中匹配的函数到顶部帧间的偏移量,也就是两者的差值</p>
+<p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/55c5362289f31d90e2dbdfe72174855.png?raw=true" alt="image"></p>
+<p>我们通过上面这张图理解下两个概念，对于两个堆栈$C_1$和$C_2$，崩溃点都在顶部帧。$C_1$中的$f_0$，$f_1$，$f_4$与$C_2$中的$f_0$，$f_2$，$f_6$匹配,对于$C_1$中的$f_4$函数,它到栈顶的距离是4。在$C_2$中的$f_6$函数到栈顶的距离是6。而对齐距离两者的差，也就是2。</p>
+<h3 id="PDM"><a href="#PDM" class="headerlink" title="PDM"></a>PDM</h3><p>在理解了这两个概念之后，我们来看一下一早就提到的位置相关模型(PDM)。</p>
+<p>PDM的设计基于以下两个原理：<br>1.离栈顶越近的地方权重越大，因为bug更容易发生在栈顶附近<br>2.两匹配的堆栈间对齐偏移应该是更小的</p>
+<p>而两个堆栈$C_1$和$C_2$间的相似度计算的流程如下：</p>
+<p>定义L作为$C_1$和$C_2$间所有公共帧序列的集合,$L_i$是其中一个公共帧序列，$S_{i, 1}, S_{i, 2},\ldots S_{i, k}$是$C_1$和$C_2$中都具有的匹配函数。</p>
+<p>$L=\left\{L_{1}, L_{s}, L_{3} \ldots\right\} \quad L_{i}=\left\{S_{i, 1}, S_{i, 2}, S_{i, 3}, \ldots S_{i, k} \ldots\right\}$</p>
+<p>定义$POS(C_q, S_{i,k})$作为$S_{i,k}$在$C_q$堆栈中的位置，l作为$C_1$和$C_2$间帧数的最小值，那么$C_1$和$C_2$间的相似度可以由公式（1）来定义：</p>
+<p>$\left\{ \begin{array}{lr}\operatorname{sim}\left(C_{1}, C_{2}\right)=\frac{\max_{L_{i}\in L} \left[ Q\left(L_{i}\right) \right] }{\sum_{j=0}^{l} e^{-cj}}\\\\Q\left(L_{i}\right)=\sum_{s_{i, k} \in L_{i}} e^{-c \min \left( \operatorname{Pos}\left(C_{1}, s_{i, k}\right), \operatorname{Pos}\left(C_{2}, s_{i, k}\right) \right)}e^{-o \mid \operatorname{Pos}\left(C_{1}, s_{i, k}\right)-\operatorname{Pos}\left(C_{2}, s_{i, k}\right) \mid}\end{array}\right.\quad (1)$</p>
+<p>其中c是到顶部帧的距离系数，o是对齐偏移的系数。c和o的值可以根据过去的经验来手动设置。本文之后还提出了一种学习方法去自动获取最佳的系数值。$Q\left(L_{i}\right)$用来衡量$L_i$匹配函数的相似度的值。第一个指数函数考虑了一对匹配函数到顶部帧的最小距离。第二个指数函数考虑了一对匹配函数的最小对齐偏移。到顶部的距离和对齐偏移越小那么函数的返回值$Q\left( L_i \right)$也就越大。</p>
+<p>根据公式（1），调用栈相似度的度量由能让$Q\left( L_i \right)$达到最大值的公共帧序列来决定。它是通过穷举来找到这个公共帧序列的，这样效率是较为低下的。根据最长公共子序列问题，文章提出了一个动态规划算法去解决这个问题：</p>
+<p>1.定义一个相似矩阵$M\left[i,j\right]$，表示量子序列的相似性。第一个子序列是从$C_1$的顶部帧到i个帧，第二个是从顶部帧到$C_2$的第j个帧。<br>2.根据$M\left[i,j\right]$的定义，堆栈的相似性计算可以转化为M[m,n]的计算,其中$m$为$C_1$的长度，$n$为$C_2$的长度，具体见公式(4)<br>3.M[i,j]可以被分解为几个子问题，见公式（2）和公式（3）。相似度矩阵M[i,j]可以通过逐步计算矩阵元素来获得。</p>
+<p>$\begin{array}{lr}M_{i, j}=\max \left\{\begin{array}{lr}M_{i-1, j-1} + \operatorname{cost}(i, j) \\M_{i-1, j} \\M_{i, j-1}\end{array}\right.&amp;(2)\\\\\operatorname{cost}(i, j)=\left\{\begin{array}{lr}e^{-c^{<em>} \min (i, j)} e^{-o^{</em>} \left| i-j \right|}&amp; \text {if $ith$ frame of } C_1==\text {$jth$ frame of } C_2 \\0&amp; \text { otherwise }\end{array}\right.&amp;(3)\\\\    \operatorname{sim}\left(C_{1}, C_{2}\right)=\frac{M_{m, n}}{\sum_{j=0}^{l} e^{-c j}}    &amp;(4)    \end{array}$</p>
+<p>通过PDM，两个调用堆栈间的相似性就被定义了，这样就可以确定两个崩溃报告是否合适归在一个聚类中了。</p>
+<h2 id="Clustering"><a href="#Clustering" class="headerlink" title="Clustering"></a>Clustering</h2><p>通过PDM计算堆栈相似度之后，若两堆栈相似性很高，那么相关的崩溃报告就会被归到一个桶里。</p>
+<p>本文使用了一种凝聚力分层聚类方法(Agglomerative Hierarchical clustering technique),是一种自下而上的聚类方法。在聚类开始时，每个调用堆栈都归到属于他自己的集群。之后最近的集群会进行合并。本文采用两个集群所有元素配对的最大距离作为集群间距离的度量。换句话说，集群间距离的度量依据两个集群间堆栈的最大距离。集群间的距离被定义为公式（5）和公式（6），其中$Cl_i$和$Cl_j$时一对集群，而$C_1$和$C_2$分别为$Cl_i$和$Cl_j$中的堆栈。</p>
+<p>$\begin{array}{lr}\operatorname{distance}\left({Cl}_{i}, {Cl}_{j}\right)=\max_{C_{1} \in {Cl}_{i}, C_{2} \in {Cl}_{j}}\operatorname{ dist }\left(C_{1}, C_{2}\right)&amp; (5)\\\operatorname{ dist }\left(C_{1}, C_{2}\right)=1-\operatorname{sim}\left(C_{1}, C_{2}\right)&amp; (6)\end{array}$</p>
+<p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/0c416ff1f53224dae4b8f889e1d7d5b.png?raw=true" alt="image"></p>
+<p>在一次聚类的过程中，如果所有的堆栈被合并为了一个集群，那么这个凝聚力分层聚类方法的时间复杂度就是$O(n^3)$，在这个例子里，我们采用一个距离阈值d作为聚类过程的停止标准。d的值可以手动设置，或者通过一个学习模型来训练。一旦一堆集群见的最大距离超过了这个阈值d，这次的聚类过程就会被停止。最终，集群的结果就是装着相似崩溃报告的buckets。如上图所示，最终生成了两个集群，他们分别是装着A,B报告的bucket和装着C,D,E报告的bucket。</p>
+<h2 id="训练算法相关参数"><a href="#训练算法相关参数" class="headerlink" title="训练算法相关参数"></a>训练算法相关参数</h2><p>PDM使用两个系数：<br>1.c是到顶部框架的距离<br>2.o是对齐偏移</p>
+<p>分层聚类中的距离阈值也是一个应该调整的参数。</p>
+<p>如果这些参数设置不好，肯定会有明显不同的相似性结果。参数也可能会因为项目的不同而异。</p>
+<p>下面是这些参数值的训练过程（D为一些调用堆栈对）：</p>
+<p>1.给c一个较小的初始值$c_0$<br>2.给o一个较小的初始值$o_0$<br>3.对于D中的每个调用堆栈 (for循环)<br>4.用公式(1)，c以及o计算p的相似度<br>5.结束for循环<br>6.给距离阈值一个较小的初始值$d_0$<br>7.对于D中的每个调用堆栈 (for循环)<br>8.if p的相似度大于1-d，那么p被标记为相似；else p被标记为不相似<br>9.结束for循环<br>10.计算D中所有调用堆栈对的F-measure<br>11.将d增加一小步$s_1$<br>12.重复步骤7-11，直至d达到最大阈值$d_max$<br>13.将o增加一小步$s_2$<br>14.重复步骤3-13，直至o到达最大阈值$o_max$<br>15.将c增加一小步$s_3$<br>16.重复步骤2-15，直至c达到最大阈值$c_max$<br>17.选择达到最佳F-measure的$c_optimal$，$o_optimal$和$d_optimal$<br>18.返回三个值$c_optimal$，$o_optimal$和$d_optimal$</p>
+<p>在训练算法中，初始化$c_0$ = 0，$o_max$ = 2，$s_2$ = 0.1，$c_0$ = 0，$c_max$ = 2，$s_3$ = 0.1，这就代表训练过程中每次都给c和o增加0.1进行迭代。对于距离阈值d，$d_0$ = 0，$d_max$ = 1，$s_1$ = 0.01，从0到1，步长为0.01。最终选择最好的F-measure。</p>
 
                 
             </div>
@@ -563,7 +536,7 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/07/10/about-javadoc/">http://example.com/2021/07/10/about-javadoc/</a>
+                    <a href="http://example.com/2021/11/03/rebucket-paper-reading/">http://example.com/2021/11/03/rebucket-paper-reading/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -601,8 +574,8 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Java/">
-                                    <span class="chip bg-color">Java</span>
+                                <a href="/tags/Paper/">
+                                    <span class="chip bg-color">Paper</span>
                                 </a>
                             
                         </div>
@@ -772,17 +745,18 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/07/17/whosbug1/">
+                <a href="/2021/11/03/rebucket-paper-reading/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="whosbug项目的初步认识">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ReBucket论文精读">
                         
-                        <span class="card-title">whosbug项目的初步认识</span>
+                        <span class="card-title">ReBucket论文精读</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -792,9 +766,9 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-03
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -803,11 +777,12 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/whosbug/">
-                        <span class="chip bg-color">whosbug</span>
+                    <a href="/tags/Paper/">
+                        <span class="chip bg-color">Paper</span>
                     </a>
                     
                 </div>
@@ -821,13 +796,13 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/07/02/java-learning-3/">
+                <a href="/2021/10/31/go-interface/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Java_learning_3">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Golang中的interface">
                         
-                        <span class="card-title">Java_learning_3</span>
+                        <span class="card-title">Golang中的interface</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -838,7 +813,7 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-31
                             </span>
                         <span class="publish-author">
                             
@@ -851,8 +826,8 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Java/">
-                        <span class="chip bg-color">Java</span>
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
                     </a>
                     
                 </div>
@@ -983,6 +958,13 @@ public static final int HEARTS = 1;<span aria-hidden="true" class="line-numbers-
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 
 

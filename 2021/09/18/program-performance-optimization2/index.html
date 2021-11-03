@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.4.0">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
 </head>
@@ -474,20 +476,17 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>为了说明一个抽象程序是如何被系统转换为更有效地代码的，之后的例子我们将使用如下的向量数据结构的运行示例，向量由两个内存块表示：头部和数据数组。<br>头部是一个声明如下的结构：</p>
-<pre class="line-numbers language-none"><code class="language-none">/* Create abstract data type for vector */
+                <h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>为了说明一个抽象程序是如何被系统转换为更有效地代码的，之后的例子我们将使用如下的向量数据结构的运行示例，向量由两个内存块表示：头部和数据数组。<br>头部是一个声明如下的结构：<br></p><pre class="line-numbers language-none"><code class="language-none">/* Create abstract data type for vector */
 typedef struct {
     long len;
     data_t *data;
 } vec_rec, *vec_ptr;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
 <p>这个声明用data_t来表示基本元素的数据类型。在测试中，我们度量代码对于整数和浮点数数据的性能。为此，会分别为不同的类型声明编译和运行程序，像下面这个例子对数据类型long一样：</p>
 <pre class="line-numbers language-none"><code class="language-none">typedef long data_t;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>我们还会分配一个len个data_t类型对象的数组，来存放实际的向量元素。</p>
 <p>如下给出的是一些生成向量，访问向量元素以及确定向量长度的基本过程。值得注意的是向量访问函数get_vec_element,它会对每个向量引用进行辩解检查。类似于很多其它语言所使用的数组表示法。边界检查降低了程序出错的机会，但会减缓程序的执行。</p>
-<p>向量抽象数据类型的实现，在实际的程序中，数据类型data_t会被声明为明确的数据类型如int或float：</p>
-<pre class="line-numbers language-none"><code class="language-none">
+<p>向量抽象数据类型的实现，在实际的程序中，数据类型data_t会被声明为明确的数据类型如int或float：<br></p><pre class="line-numbers language-none"><code class="language-none">
 /* Create vector of specified length */
 vec_ptr new_vec(long len)
 {
@@ -538,8 +537,7 @@ long vec_length(vec_ptr v)
 {
     return v-&gt;len;
 }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
 <p>作为一个优化的示例，如下的代码会使用某种运算，将一个向量中所有的元素合并为一个值，通过使用编译时常数IDENT和OP的不同定义，这段代码可以重编译为对数据进行不同的运算。<br>这是一个合并运算的初始实现，通过定义IDENT和OP，可以用来测试该函数对不同运算的性能：</p>
 <pre class="line-numbers language-none"><code class="language-none">/* Implementation with maximum use of data abstraction */
 void combine1(vec_ptr v, data_t *dest)
@@ -553,7 +551,6 @@ void combine1(vec_ptr v, data_t *dest)
         *dest = *dest OP val;
     }
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>在之后我们会对这段代码进行一系列的优化，为评估性能优化，会在一个参考机上测量函数的CPE性能。<br>以下是combine1的CPE度量值</p>
 <table class="MsoTableGrid" border="1" cellspacing="0" style="border-collapse:collapse;border:none;mso-border-left-alt:0.5000pt solid windowtext;
 mso-border-top-alt:0.5000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;mso-border-bottom-alt:0.5000pt solid windowtext;
@@ -634,8 +631,7 @@ font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr>
 <p>未经优化的代码是从C语言代码到机器代码的直接翻译，通常效率较低，简单的使用命令行选项“-O1”，就会进行一些基本的优化，这样就可以显著提升性能。</p>
 <h3 id="消除循环的低效率"><a href="#消除循环的低效率" class="headerlink" title="消除循环的低效率"></a>消除循环的低效率</h3><p>可以观察到，过程combine1调用函数vec_length作为for循环的测试条件。在循环中，每次循环迭代时都必须对测试条件求值。另一方面，向量的长度并不会随着循环的进行而改变。因此，我们只需要计算一次向量的长度，然后在我们的测试条件中都会使用这个值。</p>
 <p>以下是一个修改了的版本，称为combine2，它在开始时就调用了vec_length,并且将结果赋值给局部变量length。对于某些数据类型和操作，这个变换明显地影响了某些数据类型和操作的整体性能，对于其他的则很小甚至没有影响。无论哪种情况，都需要这种变化来消除这个低效率，这有可能称为尝试进一步优化时的瓶颈。</p>
-<p>改进循环测试的效率，通过把vec_length的调用移出循环，不需要每次迭代都执行该函数。</p>
-<pre class="line-numbers language-none"><code class="language-none">void combine2(vec_ptr v, data_t *dest)
+<p>改进循环测试的效率，通过把vec_length的调用移出循环，不需要每次迭代都执行该函数。<br></p><pre class="line-numbers language-none"><code class="language-none">void combine2(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
@@ -646,7 +642,7 @@ font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr>
         get_vec_element(v, i, &amp;val);
         *dest = *dest OP val;
     }
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
 <table class="MsoTableGrid" border="1" cellspacing="0" style="border-collapse:collapse;border:none;mso-border-left-alt:0.5000pt solid windowtext;
 mso-border-top-alt:0.5000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;mso-border-bottom-alt:0.5000pt solid windowtext;
 mso-border-insideh:0.5000pt solid windowtext;mso-border-insidev:0.5000pt solid windowtext;mso-padding-alt:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;"><tbody><tr style="height:7.5500pt;"><td width="177" valign="top" rowspan="2" style="width:106.5000pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:1.0000pt solid windowtext;
@@ -744,7 +740,6 @@ font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr>
 {
     return v-&gt;data;
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
 <pre class="line-numbers language-none"><code class="language-none">void combine3(vec_ptr v, data_t *dest)
 {
     long i;
@@ -757,7 +752,6 @@ font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr>
         *dest = *dest OP data[i];
     }
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <table class="MsoTableGrid" border="1" cellspacing="0" style="border-collapse:collapse;border:none;mso-border-left-alt:0.5000pt solid windowtext;
 mso-border-top-alt:0.5000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;mso-border-bottom-alt:0.5000pt solid windowtext;
 mso-border-insideh:0.5000pt solid windowtext;mso-border-insidev:0.5000pt solid windowtext;mso-padding-alt:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;"><tbody><tr style="height:7.5500pt;"><td width="177" valign="top" rowspan="2" style="width:106.5000pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:1.0000pt solid windowtext;
@@ -845,8 +839,7 @@ font-size:10.5000pt;mso-font-kerning:1.0000pt;">11.03</span><span style="font-fa
 font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr></tbody></table>
 
 <p>ok，我们可以看到，性能提升和理论配合的并不是很好，显然内循环中有其他的操作形成了瓶颈，限制性能超过了调用get_vec_element。我们继续做优化。</p>
-<h3 id="消除不必要的内存引用"><a href="#消除不必要的内存引用" class="headerlink" title="消除不必要的内存引用"></a>消除不必要的内存引用</h3><p>combine3的代码将合并运算计算的值累积在dest指定的位置。在dest指针地址存放在寄存器中时，考虑到底层汇编，累计变量的数值都需要从内存读出再写入到内存。这样的读写是很浪费的。为了消除这种不必要的读写，我们按如下生成了combine4的代码。<br>把结果累积在临时变量中，将累积值存放在局部变量acc中，消除了每次循环迭代中从内存中读出并将更新值写回的需要:</p>
-<pre class="line-numbers language-none"><code class="language-none">void combine4 (vec_ptr v, data_t *dest)
+<h3 id="消除不必要的内存引用"><a href="#消除不必要的内存引用" class="headerlink" title="消除不必要的内存引用"></a>消除不必要的内存引用</h3><p>combine3的代码将合并运算计算的值累积在dest指定的位置。在dest指针地址存放在寄存器中时，考虑到底层汇编，累计变量的数值都需要从内存读出再写入到内存。这样的读写是很浪费的。为了消除这种不必要的读写，我们按如下生成了combine4的代码。<br>把结果累积在临时变量中，将累积值存放在局部变量acc中，消除了每次循环迭代中从内存中读出并将更新值写回的需要:<br></p><pre class="line-numbers language-none"><code class="language-none">void combine4 (vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
@@ -857,8 +850,7 @@ font-size:10.5000pt;mso-font-kerning:1.0000pt;"><o:p></o:p></span></p></td></tr>
         acc = acc OP data[i];
     }
     *dest = acc
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
 <table class="MsoTableGrid" border="1" cellspacing="0" style="border-collapse:collapse;border:none;mso-border-left-alt:0.5000pt solid windowtext;
 mso-border-top-alt:0.5000pt solid windowtext;mso-border-right-alt:0.5000pt solid windowtext;mso-border-bottom-alt:0.5000pt solid windowtext;
 mso-border-insideh:0.5000pt solid windowtext;mso-border-insidev:0.5000pt solid windowtext;mso-padding-alt:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;"><tbody><tr style="height:7.5500pt;"><td width="177" valign="top" rowspan="2" style="width:106.5000pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;border-left:1.0000pt solid windowtext;

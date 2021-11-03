@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-10-31T07:31:48.052Z</updated>
+  <updated>2021-11-03T10:40:31.814Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ReBucket论文精读</title>
+    <link href="http://example.com/2021/11/03/rebucket-paper-reading/"/>
+    <id>http://example.com/2021/11/03/rebucket-paper-reading/</id>
+    <published>2021-11-02T16:00:00.000Z</published>
+    <updated>2021-11-03T10:40:31.814Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本篇文章是对缺陷分析算法相关论文ReBucket_A_method_for_clustering_duplicate_crash_reports_based_on_call_stack_similarity的精读。&lt;/p&gt;
+&lt;p&gt;论文原链接：&lt;br&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Paper" scheme="http://example.com/tags/Paper/"/>
+    
+  </entry>
   
   <entry>
     <title>Golang中的interface</title>
@@ -446,29 +470,6 @@
         
         
     <summary type="html">&lt;h3 id=&quot;Java核心技术一卷学习笔记（1）&quot;&gt;&lt;a href=&quot;#Java核心技术一卷学习笔记（1）&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java_learning_2</title>
-    <link href="http://example.com/2021/06/26/java-learning-2/"/>
-    <id>http://example.com/2021/06/26/java-learning-2/</id>
-    <published>2021-06-25T16:00:00.000Z</published>
-    <updated>2021-07-31T03:54:15.721Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h3 id=&quot;Java核心技术卷一-学习笔记（2）&quot;&gt;&lt;a href=&quot;#Java核心技术卷一-学习笔记（2）&quot; class=&quot;headerlink&quot; title=&quot;Java核心技术卷一 学习笔记（2）&quot;&gt;&lt;/a&gt;Java核心技术卷一</summary>
         
       
     

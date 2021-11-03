@@ -497,7 +497,7 @@
 <p>其中c是到顶部帧的距离系数，o是对齐偏移的系数。c和o的值可以根据过去的经验来手动设置。本文之后还提出了一种学习方法去自动获取最佳的系数值。$Q\left(L_{i}\right)$用来衡量$L_i$匹配函数的相似度的值。第一个指数函数考虑了一对匹配函数到顶部帧的最小距离。第二个指数函数考虑了一对匹配函数的最小对齐偏移。到顶部的距离和对齐偏移越小那么函数的返回值$Q\left( L_i \right)$也就越大。</p>
 <p>根据公式（1），调用栈相似度的度量由能让$Q\left( L_i \right)$达到最大值的公共帧序列来决定。它是通过穷举来找到这个公共帧序列的，这样效率是较为低下的。根据最长公共子序列问题，文章提出了一个动态规划算法去解决这个问题：</p>
 <p>1.定义一个相似矩阵$M\left[i,j\right]$，表示量子序列的相似性。第一个子序列是从$C_1$的顶部帧到i个帧，第二个是从顶部帧到$C_2$的第j个帧。<br>2.根据$M\left[i,j\right]$的定义，堆栈的相似性计算可以转化为M[m,n]的计算,其中$m$为$C_1$的长度，$n$为$C_2$的长度，具体见公式(4)<br>3.M[i,j]可以被分解为几个子问题，见公式（2）和公式（3）。相似度矩阵M[i,j]可以通过逐步计算矩阵元素来获得。</p>
-<p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1635936192(1" alt="image">.png?raw=true)</p>
+<p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/16359361923.png?raw=true" alt="image"></p>
 <p>通过PDM，两个调用堆栈间的相似性就被定义了，这样就可以确定两个崩溃报告是否合适归在一个聚类中了。</p>
 <h2 id="Clustering"><a href="#Clustering" class="headerlink" title="Clustering"></a>Clustering</h2><p>通过PDM计算堆栈相似度之后，若两堆栈相似性很高，那么相关的崩溃报告就会被归到一个桶里。</p>
 <p>本文使用了一种凝聚力分层聚类方法(Agglomerative Hierarchical clustering technique),是一种自下而上的聚类方法。在聚类开始时，每个调用堆栈都归到属于他自己的集群。之后最近的集群会进行合并。本文采用两个集群所有元素配对的最大距离作为集群间距离的度量。换句话说，集群间距离的度量依据两个集群间堆栈的最大距离。集群间的距离被定义为公式（5）和公式（6），其中$Cl_i$和$Cl_j$时一对集群，而$C_1$和$C_2$分别为$Cl_i$和$Cl_j$中的堆栈。</p>

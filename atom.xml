@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-03T11:11:52.466Z</updated>
+  <updated>2021-11-04T16:51:28.704Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TraceSim算法概述</title>
+    <link href="http://example.com/2021/11/05/tracesim-read/"/>
+    <id>http://example.com/2021/11/05/tracesim-read/</id>
+    <published>2021-11-04T16:00:00.000Z</published>
+    <updated>2021-11-04T16:51:28.704Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本篇博客是针对TraceSim: A Method for Calculating Stack Trace Similarity的阅读。&lt;/p&gt;
+&lt;p&gt;在本文中提出了一个新的计算堆栈跟踪相似性的算法，该算法结合了TF-IDF和Levenshtein</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Paper" scheme="http://example.com/tags/Paper/"/>
+    
+  </entry>
   
   <entry>
     <title>ReBucket论文精读</title>
@@ -447,29 +471,6 @@
         
         
     <summary type="html">&lt;h3 id=&quot;Java核心技术卷一-学习笔记（3）&quot;&gt;&lt;a href=&quot;#Java核心技术卷一-学习笔记（3）&quot; class=&quot;headerlink&quot; title=&quot;Java核心技术卷一 学习笔记（3）&quot;&gt;&lt;/a&gt;Java核心技术卷一</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java_learning_1</title>
-    <link href="http://example.com/2021/06/26/java-learning-1/"/>
-    <id>http://example.com/2021/06/26/java-learning-1/</id>
-    <published>2021-06-25T16:17:44.074Z</published>
-    <updated>2021-07-31T03:54:10.361Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h3 id=&quot;Java核心技术一卷学习笔记（1）&quot;&gt;&lt;a href=&quot;#Java核心技术一卷学习笔记（1）&quot; class=&quot;headerlink&quot;</summary>
         
       
     

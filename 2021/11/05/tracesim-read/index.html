@@ -495,19 +495,16 @@
 </ul>
 <p>对于以上两个问题，定义一个好的相似性度量是很重要的，因为输出的质量很大程度上取决于此。而且仔细的改进相似性算法也是很重要，因为大量的报告需要被正确处理，甚至一个相对较小的改进就可以在分桶质量上有很大的提升作用。大多数的重复数据删除研究可以分为两类：基于IT-IDF或是堆栈追踪结构。前者是用到了信息检索方法，后者采用的是字符串匹配方法。本文结合了这两个方法并加了机器学习，设计了TraceSim算法。</p>
 <h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>算法将两个堆栈跟踪（stack traces）作为输入，首先，算法会单独处理stack overflow exceptions(SOEs),因为这些堆栈跟踪包含了大量重复的帧，且他们的相似性可以用TF-IDF有效的计算相似性。</p>
-<p>如果输入的堆栈报错不是SOEs：</p>
+<p>如果输入的堆栈报错不是SOEs将按顺序执行如下三个步骤：</p>
 <ul>
-<li>1.计算堆栈跟踪中每一帧的权重</li>
-<li><ol>
+<li>计算堆栈跟踪中每一帧的权重</li>
 <li>计算两个堆栈跟踪中的edit distance，在本方法中，它被定义为带有帧权重的Levenshtein distance</li>
-</ol>
-</li>
-<li>3.将计算所得的Levenshtein distance归一化，作为最终结果</li>
+<li>将计算所得的Levenshtein distance归一化，作为最终结果</li>
 </ul>
 <p>这是算法实现的链接:</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/traceSimSubmission/trace-sim">implementation</a></p>
 <h3 id="单独处理SOEs"><a href="#单独处理SOEs" class="headerlink" title="单独处理SOEs"></a>单独处理SOEs</h3><p>作为堆栈溢出异常的堆栈跟踪有很多引用递归调用的重复帧。如果这个递归部分的两个堆栈跟踪相似，那么很可能他们错误情况也是相似的，递归部分相比非递归要多很多，所以复杂的测试对这类堆栈追踪是没必要的，根据帧频率计算他们的近似度就足够了。<br>文章使用了如下的IT-IDF算法来处理这种情况:<br><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/6498456">The Algorithm</a></p>
-<h3 id="帧-Frame-权值计算"><a href="#帧-Frame-权值计算" class="headerlink" title="帧(Frame)权值计算"></a>帧(Frame)权值计算</h3><p>和ReBucket中类似，在比较两个堆栈追踪时，距离堆栈顶部的帧要更为重要，因为他们一般更可能包含bug的来源。算法将这种影响表示为帧权重：权重越高越重要。</p>
+<h3 id="帧（Frame）权值计算"><a href="#帧（Frame）权值计算" class="headerlink" title="帧（Frame）权值计算"></a>帧（Frame）权值计算</h3><p>和ReBucket中类似，在比较两个堆栈追踪时，距离堆栈顶部的帧要更为重要，因为他们一般更可能包含bug的来源。算法将这种影响表示为帧权重：权重越高越重要。</p>
 <p>我们确定了两个对权重有影响的因素：</p>
 <ul>
 <li>堆栈跟踪中帧的位置</li>
@@ -519,7 +516,7 @@
 <p>对于$f_{i}$，本地的权值的计算公式:</p>
 <p>$\mathit{lw}_{\alpha}\left(f_{i}\right)=\frac{1}{i^{\alpha}}$</p>
 <p>实践证明离堆栈顶部的帧局部权重更高，因为错误更可能是因为最后的函数调用导致的。</p>
-<p>$f_{i}$的全局权重计算根据大伙都了解的信息检索算法来计算：$\mathit{TF}\left(f_{i}\right) * \mathit{IDF}\left(f_{i}\right)$，TF(f)(term frequency)表示帧在特定堆栈中的重要程度，IDF(f)(inverse document frequency)表示对于整个堆栈跟踪的库来说，帧(f)有多不常见。在本文中不适用TF部分且认为它等于1，因为不用考虑帧排序，这实际上是关于堆栈中一个帧最重要的信息。这已经在计算$l \mathbf{w}_{\alpha}\left(f_{i}\right)$的时候考虑在内了，因此我们只用用如下的方式计算IDF即可:</p>
+<p>$f_{i}$的全局权重计算根据大伙都了解的信息检索算法来计算：$\mathit{TF}\left(f_{i}\right) * \mathit{IDF}\left(f_{i}\right)$，TF（f）（term frequency）表示帧在特定堆栈中的重要程度，ID（f）(inverse document frequency)表示对于整个堆栈跟踪的库来说，帧(f)有多不常见。在本文中不适用TF部分且认为它等于1，因为不用考虑帧排序，这实际上是关于堆栈中一个帧最重要的信息。这已经在计算$l \mathbf{w}_{\alpha}\left(f_{i}\right)$的时候考虑在内了，因此我们只用用如下的方式计算IDF即可:</p>
 <p>$\mathit{IDF}\left(f_{i}\right)=\log \frac{\text { Total num. of stack traces }}{\text { Num. of stack traces } S T: f_{i} \in S T}$</p>
 <p>全局权重的计算如下：</p>
 <p>$\mathit{gw}_{\beta \gamma}\left(f_{i}\right)=\sigma\left(\beta\left(\operatorname{IDF}\left(f_{i}\right)-\gamma\right)\right)\\\sigma(x)=\frac{1}{1+e^{-x}}$</p>

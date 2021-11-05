@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-04T16:51:28.704Z</updated>
+  <updated>2021-11-05T12:54:38.124Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2021/11/05/tracesim-read/"/>
     <id>http://example.com/2021/11/05/tracesim-read/</id>
     <published>2021-11-04T16:00:00.000Z</published>
-    <updated>2021-11-04T16:51:28.704Z</updated>
+    <updated>2021-11-05T12:54:38.124Z</updated>
     
     
       
@@ -45,14 +45,14 @@
     <link href="http://example.com/2021/11/03/rebucket-paper-reading/"/>
     <id>http://example.com/2021/11/03/rebucket-paper-reading/</id>
     <published>2021-11-02T16:00:00.000Z</published>
-    <updated>2021-11-03T11:11:52.466Z</updated>
+    <updated>2021-11-05T12:52:00.015Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;本篇文章是对缺陷分析算法相关论文ReBucket_A_method_for_clustering_duplicate_crash_reports_based_on_call_stack_similarity的精读。&lt;/p&gt;
+    <summary type="html">&lt;p&gt;本篇文章是对缺陷分析算法相关论文ReBucket A method for clustering duplicate crash reports based on call stack similarity的精读。&lt;/p&gt;
 &lt;p&gt;论文原链接：&lt;br&gt;&lt;a</summary>
         
       

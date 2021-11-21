@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-05T12:54:38.124Z</updated>
+  <updated>2021-11-21T06:03:49.086Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SLO及SLI的基本定义</title>
+    <link href="http://example.com/2021/11/21/sli-slo-sla/"/>
+    <id>http://example.com/2021/11/21/sli-slo-sla/</id>
+    <published>2021-11-20T16:00:00.000Z</published>
+    <updated>2021-11-21T06:03:49.086Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;SLO及SLI的基本定义&quot;&gt;&lt;a href=&quot;#SLO及SLI的基本定义&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="SRE" scheme="http://example.com/tags/SRE/"/>
+    
+  </entry>
   
   <entry>
     <title>TraceSim算法概述</title>
@@ -448,29 +471,6 @@
         
         
     <summary type="html">&lt;h3 id=&quot;文档注释&quot;&gt;&lt;a href=&quot;#文档注释&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java_learning_3</title>
-    <link href="http://example.com/2021/07/02/java-learning-3/"/>
-    <id>http://example.com/2021/07/02/java-learning-3/</id>
-    <published>2021-07-01T16:00:00.000Z</published>
-    <updated>2021-07-31T03:54:21.047Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h3 id=&quot;Java核心技术卷一-学习笔记（3）&quot;&gt;&lt;a href=&quot;#Java核心技术卷一-学习笔记（3）&quot; class=&quot;headerlink&quot; title=&quot;Java核心技术卷一 学习笔记（3）&quot;&gt;&lt;/a&gt;Java核心技术卷一</summary>
         
       
     

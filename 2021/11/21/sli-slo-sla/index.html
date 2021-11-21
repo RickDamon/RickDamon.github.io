@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="TraceSim算法概述, RickDamon">
+    <meta name="keywords" content="SLO及SLI的基本定义, RickDamon">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>TraceSim算法概述 | RickDamon</title>
+    <title>SLO及SLI的基本定义 | RickDamon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -315,12 +315,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">TraceSim算法概述</h1>
+                    <h1 class="description center-align post-title">SLO及SLI的基本定义</h1>
                 </div>
             </div>
         </div>
@@ -436,8 +436,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Paper/">
-                                <span class="chip bg-color">Paper</span>
+                            <a href="/tags/SRE/">
+                                <span class="chip bg-color">SRE</span>
                             </a>
                         
                     </div>
@@ -452,7 +452,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-11-05
+                    2021-11-21
                 </div>
                 
 
@@ -476,58 +476,32 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本篇博客是针对TraceSim: A Method for Calculating Stack Trace Similarity的阅读。</p>
-<p>在本文中提出了一个新的计算堆栈跟踪相似性的算法，该算法结合了TF-IDF和Levenshtein distance两者，且用了机器学习来构建堆栈跟踪间的相似性度量。</p>
-<p>文章中需要注意的关键字：</p>
+                <h2 id="SLO及SLI的基本定义"><a href="#SLO及SLI的基本定义" class="headerlink" title="SLO及SLI的基本定义"></a>SLO及SLI的基本定义</h2><p>确保应用程序可用性的很大部分是在建立和监控服务级别指标(service-level metrics)上,service-level在商业级别上主要指的是SLA，而在SRE的规划和事件中会使用SLO和SLI，这里的A，O，I指的是Objective，Agreement以及indicator。</p>
+<h3 id="SLO"><a href="#SLO" class="headerlink" title="SLO"></a>SLO</h3><p>SLO指的是每个服务的用户可接受的最低可靠性级别，通过这项数据，团队就可以决定是要将服务变得更加可靠，还是降低其可靠性进行一个原则性的判断，因为越可靠往往意味着运营成本越高，这就是SLO对于开发团队的作用。</p>
+<h3 id="SLA"><a href="#SLA" class="headerlink" title="SLA"></a>SLA</h3><p>而SLA相对于SLO来说，通常涉及到对服务用户的承诺，即服务可用性SLO应该在特定的时期达到一个特定的级别，之前有说过SLA是商业级别的，那么达不到对用户的承诺的话，必然也会导致某种惩罚，一般都是经济性的。通常是向客户收费的服务涉及到SLA，在whosbug中SLA应该是用不太上的。</p>
+<h3 id="SLI"><a href="#SLI" class="headerlink" title="SLI"></a>SLI</h3><p>SLI就是一个对于服务行为的直接衡量了，定义为系统成功探测的频率，当我们去评估过去一周内我们的系统是否在SLO内运行时，会查看SLI来得到服务可用性的百分比，如果低于定义的SLO，那说明系统有问题，需要去提升系统的可用性了。whosbug中的需要关注的则是SLI与SLO。</p>
+<p>通俗一点来讲，SLI指的是服务等级指标，即QPS，响应时间等，而SLO是对SLI中指标设立的目标，即QPS要达到99.99%,响应时间应该为10ms等。</p>
+<h2 id="SLI及SLO的具体设计"><a href="#SLI及SLO的具体设计" class="headerlink" title="SLI及SLO的具体设计"></a>SLI及SLO的具体设计</h2><p>那么理解了概念之后，常见的指标又有很多，系统层面包括了CPU的使用率，内存的使用率，磁盘使用率，在应用服务器层面包括了端口的存活状态，而应用运行的层面也包括状态码，时延等等。我们的选择主要遵循两个原则:</p>
 <ul>
-<li>Duplicate Crash/Bug Report： 重复的崩溃/错误报告</li>
-<li>Stack Trace：堆栈跟踪</li>
-<li>WER：微软用于管理崩溃报告的系统。</li>
-<li>Information Retrieval Approach： 信息检索方法</li>
-<li>String Matching algorithms：字符串匹配算法</li>
+<li><p>选择能够标识一个主体是否稳定的目标，如果不是主体本身的指标，或是不能标识主题稳定性的就需要排除在外。</p>
+</li>
+<li><p>选择些用户可以感知到的指标，比如whosbug中传入数据库或是get责任人的状态码返回可以作为指标。</p>
+</li>
 </ul>
-<p>TF-IDF:TF(term frequency)，IDF(inverse document frequency)。</p>
-<p>Levenshtein distance:一个字符串匹配方法，在这里被改进用来计算堆栈间距离的度量。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>文章和ReBucket想要解决的是类似的问题，也就是对于像WER这样的管理崩溃报告的系统来说：</p>
-<ul>
-<li>对于给定的报告，在数据库中找到相似的报告并且根据他们属于同一错误的可能性进行排名</li>
-<li>将一组给定的报告分发到buckets中（分桶）</li>
-</ul>
-<p>对于以上两个问题，定义一个好的相似性度量是很重要的，因为输出的质量很大程度上取决于此。而且仔细的改进相似性算法也是很重要，因为大量的报告需要被正确处理，甚至一个相对较小的改进就可以在分桶质量上有很大的提升作用。大多数的重复数据删除研究可以分为两类：基于IT-IDF或是堆栈追踪结构。前者是用到了信息检索方法，后者采用的是字符串匹配方法。本文结合了这两个方法并加了机器学习，设计了TraceSim算法。</p>
-<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>算法将两个堆栈跟踪（stack traces）作为输入，首先，算法会单独处理stack overflow exceptions(SOEs),因为这些堆栈跟踪包含了大量重复的帧，且他们的相似性可以用TF-IDF有效的计算相似性。</p>
-<p>如果输入的堆栈报错不是SOEs将按顺序执行如下三个步骤：</p>
-<ul>
-<li>计算堆栈跟踪中每一帧的权重</li>
-<li>计算两个堆栈跟踪中的edit distance，在本方法中，它被定义为带有帧权重的Levenshtein distance</li>
-<li>将计算所得的Levenshtein distance归一化，作为最终结果</li>
-</ul>
-<p>这是算法实现的链接:</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/traceSimSubmission/trace-sim">implementation</a></p>
-<h3 id="单独处理SOEs"><a href="#单独处理SOEs" class="headerlink" title="单独处理SOEs"></a>单独处理SOEs</h3><p>作为堆栈溢出异常的堆栈跟踪有很多引用递归调用的重复帧。如果这个递归部分的两个堆栈跟踪相似，那么很可能他们错误情况也是相似的，递归部分相比非递归要多很多，所以复杂的测试对这类堆栈追踪是没必要的，根据帧频率计算他们的近似度就足够了。<br>文章使用了如下的IT-IDF算法来处理这种情况:<br><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/6498456">The Algorithm</a></p>
-<h3 id="帧（Frame）权值计算"><a href="#帧（Frame）权值计算" class="headerlink" title="帧（Frame）权值计算"></a>帧（Frame）权值计算</h3><p>和ReBucket中类似，在比较两个堆栈追踪时，距离堆栈顶部的帧要更为重要，因为他们一般更可能包含bug的来源。算法将这种影响表示为帧权重：权重越高越重要。</p>
-<p>我们确定了两个对权重有影响的因素：</p>
-<ul>
-<li>堆栈跟踪中帧的位置</li>
-<li>帧在数据库中所有帧中出现的频率</li>
-</ul>
-<p>$f_{i}$被定义为堆栈中的第i个帧，那么对于堆栈中的所有帧$S T=f_{0}, \ldots, f_{N-1}$，权值的计算方式如下：</p>
-<p>$\mathit{w}\left(f_{i}\right)=\mathit{lw}_{\alpha}\left(f_{i}\right) * \mathit{gw}_{\beta \gamma}\left(f_{i}\right)$</p>
-<p>$l \mathbf{w}_{\alpha}\left(f_{i}\right)$是$f_{i}$的局部权重，对应第一个因素，而$\operatorname{gw}_{\beta \gamma}\left(f_{i}\right)$是$f_{i}$的全局权值，对应了第二个因素。𝛼, 𝛽 and 𝛾是数值超参数，用来提调整模型以适应数据——将算法调整的适应特定的堆栈追踪集合。</p>
-<p>对于$f_{i}$，本地的权值的计算公式:</p>
-<p>$\mathit{lw}_{\alpha}\left(f_{i}\right)=\frac{1}{i^{\alpha}}$</p>
-<p>实践证明离堆栈顶部的帧局部权重更高，因为错误更可能是因为最后的函数调用导致的。</p>
-<p>$f_{i}$的全局权重计算根据大伙都了解的信息检索算法来计算：$\mathit{TF}\left(f_{i}\right) * \mathit{IDF}\left(f_{i}\right)$，TF（f）（term frequency）表示帧在特定堆栈中的重要程度，ID（f）(inverse document frequency)表示对于整个堆栈跟踪的库来说，帧(f)有多不常见。在本文中不适用TF部分且认为它等于1，因为不用考虑帧排序，这实际上是关于堆栈中一个帧最重要的信息。这已经在计算$l \mathbf{w}_{\alpha}\left(f_{i}\right)$的时候考虑在内了，因此我们只用用如下的方式计算IDF即可:</p>
-<p>$\mathit{IDF}\left(f_{i}\right)=\log \frac{\text { Total num. of stack traces }}{\text { Num. of stack traces } S T: f_{i} \in S T}$</p>
-<p>全局权重的计算如下：</p>
-<p>$\mathit{gw}_{\beta \gamma}\left(f_{i}\right)=\sigma\left(\beta\left(\operatorname{IDF}\left(f_{i}\right)-\gamma\right)\right)\\\sigma(x)=\frac{1}{1+e^{-x}}$</p>
-<p>其中𝛽和𝛾是为了更平滑的调整IDF，我们给堆栈追踪中很常见的帧赋予较小的权重。这些帧可能是使用的开发框架，日志记录或者是线程池，总之是被经常调用的代码块。</p>
-<h3 id="Levenshtein-Distance的计算"><a href="#Levenshtein-Distance的计算" class="headerlink" title="Levenshtein Distance的计算"></a>Levenshtein Distance的计算</h3><p>为了用数字表示堆栈跟踪间的差异，文章使用了修改版本的Levenshtein Distance，在经典的Levenshtein Distance包含插入，删除和替换操作的基础上不再考虑转置操作，因为堆栈跟踪中帧的顺序是很重要的，在一个堆栈中调换两个帧的位置是没道理的。</p>
-<p>对于两个字符串，经典Levenshtein distance被定义为最少的编辑开销成本，即将一个单词更改为另一个单词所需的最少单字符编辑（插入、删除或替换）次数。</p>
-<p>对于两个堆栈跟踪也是用一样的方法，但是这里用到的是之前得到的帧权值。</p>
-<p>在计算一个帧的插入，删除或是替换的代价时，我们定义了如下操作成本：插入和删除的代价是帧对应的权重，替换的权重是原帧和新帧的权重之和。</p>
-<h3 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h3><p>本文不使用Levenshtein distance的值进行聚类和分类，为了更好理解计算了归一化的相似度值:</p>
-<p>$\operatorname{\mathit{sim}}\left(S T^{\prime}, S T^{\prime \prime}\right)=1-\frac{\operatorname{\mathit{dist}}\left(S T^{\prime}, S T^{\prime \prime}\right)}{\sum_{i=0}^{N^{\prime}-1} \mathit{w}\left(f_{i}^{\prime}\right)+\sum_{i=0}^{N^{\prime \prime}-1} \mathit{w}\left(f_{i}^{\prime \prime}\right)}$</p>
-<p>在此$\operatorname{\mathit{dist}}\left(S T^{\prime}, S T^{\prime \prime}\right)$就是$S T^{\prime}, S T^{\prime \prime}$的Levenshtein distance，这个步骤让我们更好的理解相似性的结果，就像是深度学习中的softmax函数一样将结果归一化到[0, 1]，通常这样是更好理解的。</p>
+<p>也就是说选择指标基本上是给两个群体去看的，一个是运维，一个是客户，前者是为了了解整个系统的运转状态，后者则是使用体验。</p>
+<p>标准化一点可以套用《谷歌SRE工作手册》的方法:VALET,即Volume、Availability、Latency、Error和Ticket。这五个单词就是谷歌推荐我们选择的五个指标。</p>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p>Volume指的是容量，也就是常来衡量吞吐量的QPS和TPS等等。</p>
+<h3 id="Availability"><a href="#Availability" class="headerlink" title="Availability"></a>Availability</h3><p>Availability即可用性，他不是一个直接得到的概念，与之相关的定义有MTBF(Mean Time Between Failure)和MTTR(Mean Time To Repair)，平均故障间隔和平均恢复时间，前者越长即系统正常运转的平均时间越长，那么代表系统的稳定性越高；后者是对事故处理的时间，此值越小代表了故障对于用户的影响越小，Availability的计算为:<br>Availability = MTBF / (MTBF + MTTR) ，计算结果是一个百分数来作为SLO的值。</p>
+<h3 id="Latency"><a href="#Latency" class="headerlink" title="Latency"></a>Latency</h3><p>Latency即延迟，这个反应的就是响应是否够快，如果是一个任务类的作业，我们会看每个任务是否在规定的时间完成了。通常对于时延这个指标，我们不会直接做所有请求时延的平均，因为整个时延的分布也符合正态分布，所以通常会以类似“90% 请求的时延 &lt;= 80ms，或者 95% 请求的时延 &lt;=120ms ”这样的方式来设定时延 SLO，数理统计中，这个 90% 或 95% 称之为置信区间。这样选择的原因也是因为不排除很多请求从业务逻辑层面是不成功的，这时业务逻辑的处理时长就会非常短（可能 10ms），或者出现 404 这样的状态码（可能就 1ms）。从可用性来讲，这些请求也算成功，但是这样的请求会拉低整个均值。</p>
+<p>Latency的延迟选择应该就是类似“90% 请求的时延 &lt;= 80ms，或者 95% 请求的时延 &lt;=120ms ”这样的方式来设定SLO。</p>
+<h3 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h3><p>Error就是我们最常见的错误，最能想到的就是状态码，比如在whosbug中将责任人信息传给服务器，报错了，亦或者是在get责任人的时候报错了，不光是4xx还是5xx都可以列进来，也可以去自定义一些状态码，比如创建一个用户的时候老报错什么的，也可以作为衡量的标准。我们可以用 正常的返回状态/总的返回状态 得到一个Error的SLO。</p>
+<h3 id="Tickets"><a href="#Tickets" class="headerlink" title="Tickets"></a>Tickets</h3><p>Tickets是故障单，如果说一项任务需要去人工介入的话，类似于数据无法恢复，超时了，这些都需要人工介入，中断任务或者重新跑等等。对于Tickets的SLO就像是一个人工介入的门票一样，比如说我给SLO设置为10，那就说明我这个月每人工介入那就消耗一张Ticket，如果这十张消耗完了，那还要人工介入，那么这个月系统就不达标了。所以Ticket的SLO通常是一个整数值。</p>
+<p>可以通过使用Prometheus和Grafana实现对各个指标的监控，我们得到这五种指标的SLO之后不一定需要得到一个唯一的SLO的值，可以看到有的是整数值，有的是百分数值，有的还是个在区间中定义的，只需要将每个指标都列出来即可。</p>
+<h3 id="MTBF与MTTR"><a href="#MTBF与MTTR" class="headerlink" title="MTBF与MTTR"></a>MTBF与MTTR</h3><p>下面补充下Availability中用到两个量的定义。</p>
+<p>MTBF（Mean Time Between Failure）</p>
+<p>这个指标指的是平均的故障时间间隔，比方说对于whosbug的webservice而言，使用者每天运行使用十小时，但是在某天的使用期间出现了两次故障，第一次故障服务器挂掉了一个小时，第二次挂了俩小时，那么总共挂了仨小时，出现故障的总次数为2，MTBF的计算为（10-7）/2 。类似的这个量也可以用错误率来表示，错误率就是MTBF的倒数。</p>
+<p>MTTR（Mean Time To Repair）</p>
+<p>这个指标指的是平均修复所用的时间，根据MTBF中的例子，修复时间总共为3小时，故障次数为2，那么MTTR即为3/2h。</p>
 
                 
             </div>
@@ -554,7 +528,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/11/05/tracesim-read/">http://example.com/2021/11/05/tracesim-read/</a>
+                    <a href="http://example.com/2021/11/21/sli-slo-sla/">http://example.com/2021/11/21/sli-slo-sla/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -592,8 +566,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Paper/">
-                                    <span class="chip bg-color">Paper</span>
+                                <a href="/tags/SRE/">
+                                    <span class="chip bg-color">SRE</span>
                                 </a>
                             
                         </div>
@@ -637,9 +611,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/11/21/sli-slo-sla/">
                     <div class="card-image">
@@ -657,9 +632,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -668,6 +643,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -686,13 +662,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/03/rebucket-paper-reading/">
+                <a href="/2021/11/05/tracesim-read/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ReBucket论文精读">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="TraceSim算法概述">
                         
-                        <span class="card-title">ReBucket论文精读</span>
+                        <span class="card-title">TraceSim算法概述</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -703,7 +679,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-05
                             </span>
                         <span class="publish-author">
                             
@@ -848,13 +824,6 @@
 
 </main>
 
-
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 
 

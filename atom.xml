@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-21T06:03:49.086Z</updated>
+  <updated>2021-11-28T10:41:35.091Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>对golang并发的简单阐述</title>
+    <link href="http://example.com/2021/11/28/go-goroutine/"/>
+    <id>http://example.com/2021/11/28/go-goroutine/</id>
+    <published>2021-11-27T16:00:00.000Z</published>
+    <updated>2021-11-28T10:41:35.091Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;goroutine的简单使用&quot;&gt;&lt;a href=&quot;#goroutine的简单使用&quot; class=&quot;headerlink&quot; title=&quot;goroutine的简单使用&quot;&gt;&lt;/a&gt;goroutine的简单使用&lt;/h3&gt;&lt;p&gt;goroutine 是</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Golang" scheme="http://example.com/tags/Golang/"/>
+    
+  </entry>
   
   <entry>
     <title>SLO及SLI的基本定义</title>
@@ -455,29 +478,6 @@
     
     
     <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java中的文档注释</title>
-    <link href="http://example.com/2021/07/10/about-javadoc/"/>
-    <id>http://example.com/2021/07/10/about-javadoc/</id>
-    <published>2021-07-09T16:00:00.000Z</published>
-    <updated>2021-07-31T03:54:31.257Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h3 id=&quot;文档注释&quot;&gt;&lt;a href=&quot;#文档注释&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Java" scheme="http://example.com/tags/Java/"/>
     
   </entry>
   

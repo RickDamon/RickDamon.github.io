@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="对golang并发的简单阐述, RickDamon">
+    <meta name="keywords" content="Golang中通讯, RickDamon">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>对golang并发的简单阐述 | RickDamon</title>
+    <title>Golang中通讯 | RickDamon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -315,12 +315,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">对golang并发的简单阐述</h1>
+                    <h1 class="description center-align post-title">Golang中通讯</h1>
                 </div>
             </div>
         </div>
@@ -452,7 +452,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-11-28
+                    2021-12-12
                 </div>
                 
 
@@ -476,74 +476,87 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="goroutine的简单使用"><a href="#goroutine的简单使用" class="headerlink" title="goroutine的简单使用"></a>goroutine的简单使用</h3><p>goroutine 是 Go并发能力的核心要素。</p>
-<p>将他命名为goroutine 是因为已有的短语——线程、协程、进程等等传递了不准确的含义。goroutine 有简单的模型：它是与其他 goroutine 并行执行的，有着相同地址空间的函数。它是轻量的，仅比分配栈空间多一点点消耗。而初始时栈是很小的，所以它们也是廉价ᡸ的，且随着需要在堆空间上分配和释放。</p>
-<p>使用时，goroutine 是一个普通的函数，只是需要使用关键字 go 作为开头。</p>
-<pre class="line-numbers language-none"><code class="language-none">ready("Tea", 2) // 普通函数调用
-go ready("Tea", 2) // ready() 作为 goroutine 运行
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>下面的程序让一个函数作为两个 goroutine 执行，goroutine 等待一段时间，然后打印一些内容到屏幕。在第6 和 7行，启动了 goroutine。main 函数等待足够的长的时间，这样每个goroutine 会打印各自的文本到屏幕。现在是在第 9 行等待 5 秒钟，但实际上没有任何办法知道，当所有 goroutine 都已经退出应当等待多久。</p>
-<pre class="line-numbers language-none"><code class="language-none">func ready(w string , sec int) {                                 // 1
-    time.Sleep(time.Duration(sec) * time.Second)    // 2
-    fmt.Println(w, "is ready!")                                   // 3
-}                                                                             // 4
-func main() {                                                          // 5
-    go ready("Tea", 2)                                             // 6	
-    go ready("Coffee", 1) 		              // 7
-    fmt.Println("I'm waiting")                                  // 8
-    time.Sleep(5 * time.Second)                             // 9
-}				             // 10
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>输出：</p>
-<pre class="line-numbers language-none"><code class="language-none">I'm waiting // 立刻
-Coffee is ready! // 1 秒后
-Tea is ready! // 2 秒后
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="channel进行goroutine的通信"><a href="#channel进行goroutine的通信" class="headerlink" title="channel进行goroutine的通信"></a>channel进行goroutine的通信</h3><p>如果不等待 goroutine 的执行（例如，移除第9行），程序立刻终止，而任何正在执行的goroutine 都会停止。为了修复这个，需要一些能够同 goroutine 通讯的机制。这一机制通过channels 的形式使用。channel 可以与 Unix sehll 中的双向管道做类比：可以通过它发送或者接收值。这些值只能是特定的类型：channel 类型。定义一个 channel时，也需要定义发送到channel 的值的类型。注意，必须使用 make 创建 channel：</p>
-<pre class="line-numbers language-none"><code class="language-none">ci := make(chan int)
-cs := make(chan string)
-cf := make(chan interface {})<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>从make中可以看到我们赋予channel的类型，创建 channel ci 用于发送和接收整数，创建channel cs 用于字符串，以及 channel cf使用了空接口来满足各种类型。向 channel 发送或接收数据，是通过类似的操作符完成的：&lt;−. 具体作用则依赖于操作符的位置：</p>
-<pre class="line-numbers language-none"><code class="language-none">ci &lt;− 1 // 发送整数 1 到 channel ci
-&lt;−ci // 从 channel ci 接收整数
-i := &lt;−ci // 从 channel ci 接收整数，并保存到 i 中
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>我们用channel来写一个程序:<br></p><pre class="line-numbers language-none"><code class="language-none">var c chan int //定义 c 作为 int 型的 channel。就是说：这个 channel 传输整数。注意这个变量是全局的，这样 goroutine 可以访问它；
-func ready(w string , sec int) {
-    time.Sleep(time.Duration(sec) * time.Second)
-    fmt.Println(w, "is ready!")
-    c &lt;− 1  // 发送整数 1 到 channel c；
-}
+                <p>在 Go 中，从文件读取（或写入）是非常容易的。程序只需要使用 os 包就可以从文件<br>/etc/passwd 中读取数据。</p>
+<pre class="line-numbers language-none"><code class="language-none">// 从文件读取(无缓冲)
 
+package main
+import "os"
 func main() {
-    c = make(chan int) // 初始化 c
-    go ready("Tea", 2) // 用关键字 go 开始一个 goroutine
-    go ready("Coffee", 1)
-    fmt.Println("I'm waiting, but not too long")
-    &lt;−c // 等待，直到从 channel 上接收一个值。注意,收到的值被丢弃了
-    &lt;−c // 两个 goroutines，接收两个值
+	buf := make([]byte, 1024)
+	f, _ := os.Open("/etc/passwd")  // 打开文件，os.Open 返回一个实现了 io.Reader 和 io.Writer 的 *os.File； 
+	de fer f.Close()  // 确保关闭了 f；
+	for {
+		n, _ := f.Read(buf) // 一次读取 1024 字节；
+		if n == 0 { break } // 到达文件末尾；
+		os.Stdout.Write(buf[:n]) // 将内容写入 os.Stdout
+	} 
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果想要使用缓冲 IO，则有 bufio 包：</p>
+<pre class="line-numbers language-none"><code class="language-none">package main
+import ( "os" ; "bufio")
+func main() {
+	io.Reader 91
+	buf := make([]byte, 1024)
+	f, _ := os.Open("/etc/passwd") // 打开文件；
+	de fer f.Close()
+	r := bufio.NewReader(f) // 转换 f 为有缓冲的 Reader 
+	w := bufio.NewWriter(os.Stdout)
+	defer w.Flush()
+	for {
+		n, _ := r.Read(buf) // 从 Reader 读取，而向 Writer 写入，然后向屏幕输出文件
+		if n == 0 { break }
+	w.Write(buf[0:n])
+	} 
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="io-Reader"><a href="#io-Reader" class="headerlink" title="io.Reader"></a>io.Reader</h3><p>  在前面已经提到 io.Reader 接口对于 Go 语言来说非常重要。许多函数需要通过 io.Reader 读取一些数据作为输入。为了满足这个接口，只需要实现一个方法：Read(p []byte) (n int, err error)。写入则是（你可能已经猜到了）实现了 Write 方法的 io.Writer。如果你让自己的程序或者包中的类型实现了io.Reader 或者 io.Writer 接口，那么整个 Go 标准库都可以使用这个类型.</p>
+<h3 id="行读取"><a href="#行读取" class="headerlink" title="行读取"></a>行读取</h3><pre class="line-numbers language-none"><code class="language-none">f, _ := os.Open("/etc/passwd") ; de fer f.Close()
+r := bufio.NewReader(f) // 使其成为一个 bufio，以便访问 ReadString 方法
+s, ok := r.ReadString('\n') { // 从输入中读取一行
+// ...  s 保存了字符串，通过 string 包就可以解析它<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>更加通用（但是也更加复杂）的方法是 ReadLine，可以参阅包 bufio 的文档了解更多内容。</p>
+<p>在 shell 脚本中通常遇到的场景是需要检查某个目录是否存在，如果不存在，就创建一<br>个。我们可以用go实现一下：</p>
+<pre class="line-numbers language-none"><code class="language-none">if f, e := os.Stat("name") ; e !=nil {
+os.Mkdir("name", 0755)
+} else {
+// error
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个例子展示了 Go 拥有的 “脚本” 化特性，用 Go 编写程序感觉上类似使用动态语言（Python、Ruby、Perl 或者 PHP）。</p>
+<h3 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h3><p>来自命令行的参数在程序中通过字符串 slice os.Args 获取，导入包 os 即可。flag 包有<br>着精巧的接口，同样提供了解析标识的方法。这个例子是一个 DNS 查询工具：<br></p><pre class="line-numbers language-none"><code class="language-none">dnssec := flag.Bool("dnssec", false, "Request DNSSEC records") // 定义 bool 标识，-dnssec。变量必须是指针，否则 package 无法设置其值
+port := flag.String("port", "53", "Set the query port") // 类似的，port 选项
+flag.Usage = func() { // 简单的重定义 Usage 函数，有点罗嗦；
+	fmt.Fprintf(os.Stderr, "Usage: %s [OPTIONS] [name ...]\n", os.
+	Args[0])
+	flag.PrintDefaults() // 指定的每个标识，PrintDefaults 将输出帮助信息
 }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
-<h3 id="select监听channel"><a href="#select监听channel" class="headerlink" title="select监听channel"></a>select监听channel</h3><p>如果不知道有启动了多少个 goroutine 怎么办呢？这里有另一个Go 内建的关键字：select。通过 select（和其他东西）可以监听 channel 上输入的数据。</p>
-<pre class="line-numbers language-none"><code class="language-none">L: for {
-    selec t {
-    case &lt;−c:
-        i++
-        if i &gt; 1 {
-            break L
-        }
-    }
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>现在将会一直等待下去。只有当从 channel c 上收到多个响应时才会退出循环 L。</p>
-<h3 id="GOMAXPROCS"><a href="#GOMAXPROCS" class="headerlink" title="GOMAXPROCS"></a>GOMAXPROCS</h3><p>虽然 goroutine 是并发执行的，但是它们并不是并行运行的。如果不告诉 Go 额外的东西，同一时刻只会有一个 goroutine 执行。利用 runtime.GOMAXPROCS(n) 可以设置goroutine 并行执行的数量。来自文档：</p>
-<p>GOMAXPROCS 设置了同时运行的 CPU 的最大数量，并返回之前的设置。如果 n &lt; 1，不会改变当前设置。当调度得到改进后，这将被移除。</p>
-<p>如果不希望修改任何源代码，同样可以通过设置环境变量 GOMAXPROCS 为目标值。</p>
-<h3 id="more-about-channel"><a href="#more-about-channel" class="headerlink" title="more about channel"></a>more about channel</h3><p>当在 Go 中用 ch := make(chan bool) 创建 channel 时，bool 型的无缓冲 channel 会被创建。这对于程序来说意味着什么呢？首先，如果读取（value := &lt;−ch）它将会被阻塞，直到有数据接收。其次，任何发送（ch&lt;−5）将会被阻塞，直到数据被读出。无缓冲 channel 是在多个 goroutine 之间同步很棒的工具。</p>
-<p>不过 Go 也允许指定 channel 的缓冲大小，很简单，就是 channel 可以存储多少元素。ch := make(chan bool, 4)，创建了可以存储 4 个元素的 bool 型 channel。在这个channel 中，前 4 个元素可以无阻塞的写入。当写入第 5个元素时，代码将会阻塞，直到其他 goroutine 从 channel 中读取一些元素，腾出空间。</p>
-<p>一句话来说，在 Go 中下面的为 true：<br></p><pre class="line-numbers language-none"><code class="language-none">ch := make(chan type, value) //value == 0，无缓冲；value ＞ 0，缓冲value的元素。<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p></p>
-<p>当 channel 被关闭后，读取端需要知道这个事情。如下代码演示了如何检查 channel是否被关闭。</p>
-<pre class="line-numbers language-none"><code class="language-none">x, ok = &lt;−ch<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>当 ok 被赋值为 true 意味着 channel 尚未被关闭，同时可以读取数据。ok 被赋值为 false表示 channel 被关闭。</p>
+flag.Parse() // 解析标识，并填充变量
+
+// 当参数被解析之后，就可以被使用：
+if *dnssec { // 定义传入参数 dnssec
+	// 做点啥
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><p>os/exec 包有函数可以执行外部命令，这也是在 Go 中主要的执行命令的方法。通过定<br>义一个有着数个方法的 *exec.Cmd 结构来使用。<br>执行ls -l的例子:<br></p><pre class="line-numbers language-none"><code class="language-none">// 不对返回的数据进行处理
+import "os/exec"
+cmd := exec.Command("/bin/ls", "-l")
+err := cmd.Run()
+
+// 从命令行的标准输出中获得信息
+import "exec"
+cmd := exec.Command("/bin/ls", "-l")
+buf, err := cmd.Output() // buf 是一个 []byte<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><p>所有网络相关的类型和函数可以在 net 包中找到。其中最重要的函数是 Dial。当Dial 到远程系统，这个函数返回 Conn 接口类型，可以用于发送或接收信息。函数Dial 简单的抽象了网络层和传输层。因此 IPv4 或者 IPv6，TCP 或者 UDP 可以共用一个接口。<br>通过 TCP 连接到远程系统（端口 80），然后是 UDP，最后是 TCP 通过 IPv6，大致是这<br>样:<br></p><pre class="line-numbers language-none"><code class="language-none">conn, e := Dial("tcp", "192.0.32.10:80")
+conn, e := Dial("udp", "192.0.32.10:80")
+conn, e := Dial("tcp", "[2620:0:2d0:200::10]:80") // 方括号是强制的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><br>如果没有错误（由 e 返回），就可以使用 conn 从套接字中读写。在包 net 中的原始定<br>义是：<p></p>
+<pre class="line-numbers language-none"><code class="language-none">Read(b []byte)(n int, err error) // 使conn成为了io.Reader
+Write(b []byte)(n int, err error) // 使 conn 成为了 io.Writer<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这都是些比较低层的东西，我们一般用的使更高层的包，比如http:</p>
+<pre class="line-numbers language-none"><code class="language-none">package main
+import ( "io/ioutil" ; "net/http" ; "fmt" ) 
+func main() {
+	r, err := http.Get("http://www.google.com/robots.txt") // 使用 http 的 Get 获取 html
+	if err != nil { fmt.Printf("%s\n", err.String()) ; return } //错误处理
+	b, err := ioutil.ReadAll(r.Body) // 将整个内容读入 b
+	r.Body.Close()
+	if err == nil { fmt.Printf("%s", s t ri n g(b)) } // 如果一切 OK ，打印内容<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -570,7 +583,7 @@ func main() {
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/11/28/go-goroutine/">http://example.com/2021/11/28/go-goroutine/</a>
+                    <a href="http://example.com/2021/12/12/go-tong-xun/">http://example.com/2021/12/12/go-tong-xun/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -653,9 +666,10 @@ func main() {
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/12/12/go-tong-xun/">
                     <div class="card-image">
@@ -673,9 +687,9 @@ func main() {
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-12
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -684,6 +698,7 @@ func main() {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -702,13 +717,13 @@ func main() {
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/21/sli-slo-sla/">
+                <a href="/2021/11/28/go-goroutine/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="SLO及SLI的基本定义">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="对golang并发的简单阐述">
                         
-                        <span class="card-title">SLO及SLI的基本定义</span>
+                        <span class="card-title">对golang并发的简单阐述</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -719,7 +734,7 @@ func main() {
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-28
                             </span>
                         <span class="publish-author">
                             
@@ -732,8 +747,8 @@ func main() {
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SRE/">
-                        <span class="chip bg-color">SRE</span>
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
                     </a>
                     
                 </div>

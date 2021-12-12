@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-28T10:41:35.091Z</updated>
+  <updated>2021-12-12T14:05:23.579Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Golang中通讯</title>
+    <link href="http://example.com/2021/12/12/go-tong-xun/"/>
+    <id>http://example.com/2021/12/12/go-tong-xun/</id>
+    <published>2021-12-11T16:00:00.000Z</published>
+    <updated>2021-12-12T14:05:23.579Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;在 Go 中，从文件读取（或写入）是非常容易的。程序只需要使用 os 包就可以从文件&lt;br&gt;/etc/passwd 中读取数据。&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Golang" scheme="http://example.com/tags/Golang/"/>
+    
+  </entry>
   
   <entry>
     <title>对golang并发的简单阐述</title>
@@ -448,29 +472,6 @@
         
         
     <summary type="html">&lt;h2 id=&quot;项目日志&quot;&gt;&lt;a href=&quot;#项目日志&quot; class=&quot;headerlink&quot; title=&quot;项目日志&quot;&gt;&lt;/a&gt;项目日志&lt;/h2&gt;&lt;h2 id=&quot;2021-7-17&quot;&gt;&lt;a href=&quot;#2021-7-17&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>whosbug项目的初步认识</title>
-    <link href="http://example.com/2021/07/17/whosbug1/"/>
-    <id>http://example.com/2021/07/17/whosbug1/</id>
-    <published>2021-07-16T16:00:00.000Z</published>
-    <updated>2021-07-31T05:59:13.807Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;项目日志&quot;&gt;&lt;a href=&quot;#项目日志&quot; class=&quot;headerlink&quot;</summary>
         
       
     

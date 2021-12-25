@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-12-12T14:05:23.579Z</updated>
+  <updated>2021-12-25T11:28:26.483Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SRE实战读书笔记</title>
+    <link href="http://example.com/2021/12/25/sre-shi-zhan-du-shu-bi-ji/"/>
+    <id>http://example.com/2021/12/25/sre-shi-zhan-du-shu-bi-ji/</id>
+    <published>2021-12-24T16:00:00.000Z</published>
+    <updated>2021-12-25T11:28:26.483Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;SRE的概念&quot;&gt;&lt;a href=&quot;#SRE的概念&quot; class=&quot;headerlink&quot; title=&quot;SRE的概念&quot;&gt;&lt;/a&gt;SRE的概念&lt;/h3&gt;&lt;p&gt;  </summary>
+        
+      
+    
+    
+    
+    
+    <category term="SRE" scheme="http://example.com/tags/SRE/"/>
+    
+  </entry>
   
   <entry>
     <title>Golang中通讯</title>
@@ -449,29 +472,6 @@
         
         
     <summary type="html">&lt;h1 id=&quot;项目日志&quot;&gt;&lt;a href=&quot;#项目日志&quot; class=&quot;headerlink&quot; title=&quot;项目日志&quot;&gt;&lt;/a&gt;项目日志&lt;/h1&gt;&lt;h2 id=&quot;7-25&quot;&gt;&lt;a href=&quot;#7-25&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>whosbug前置学习2</title>
-    <link href="http://example.com/2021/07/24/whosbug2/"/>
-    <id>http://example.com/2021/07/24/whosbug2/</id>
-    <published>2021-07-23T16:00:00.000Z</published>
-    <updated>2021-08-07T05:46:37.008Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;项目日志&quot;&gt;&lt;a href=&quot;#项目日志&quot; class=&quot;headerlink&quot; title=&quot;项目日志&quot;&gt;&lt;/a&gt;项目日志&lt;/h2&gt;&lt;h2 id=&quot;2021-7-17&quot;&gt;&lt;a href=&quot;#2021-7-17&quot; class=&quot;headerlink&quot;</summary>
         
       
     

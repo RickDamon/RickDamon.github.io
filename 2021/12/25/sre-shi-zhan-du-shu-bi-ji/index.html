@@ -31,9 +31,9 @@
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
-
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="RickDamon" type="application/atom+xml">
 </head>
 
 
@@ -477,7 +477,8 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="SRE的概念"><a href="#SRE的概念" class="headerlink" title="SRE的概念"></a>SRE的概念</h3><p>   近些年来随着越来越多团队采用微服务、容器或者是其他分布式技术和产品，虽然效率提升了，但复杂架构的稳定性变得难以保障，Google一直以来作为互联网产业的先驱在十年前提出了SRE(Site Reliability Engineering)这个概念,中文一般译为网站可靠性工程师，做的工作主要是监控告警、运维自动化、故障处理以及复盘等工作。</p>
-<h3 id="系统故障阶段"><a href="#系统故障阶段" class="headerlink" title="系统故障阶段"></a>系统故障阶段</h3><p>   我们可以看到这副图，把故障处理分了两个个阶段，MTBF（Mean Time Between Failure）,MTTR（Mean Time To Repair），MTBF指示的是系统正常运行的阶段，MTTR则是系统的故障状态。看到这幅图大致也能想到提升稳定性的两个方向：提升MTBF，减少故障发生次数，提升故障发生的间隔时长；降低MTTR，使故障的影响时长降低。</p>
+<h3 id="系统故障阶段"><a href="#系统故障阶段" class="headerlink" title="系统故障阶段"></a>系统故障阶段</h3><p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640407664.png?raw=true" alt="图"></p>
+<p>   从图中我们可以看到，把故障处理分了两个个阶段，MTBF（Mean Time Between Failure）,MTTR（Mean Time To Repair），MTBF指示的是系统正常运行的阶段，MTTR则是系统的故障状态。看到这幅图大致也能想到提升稳定性的两个方向：提升MTBF，减少故障发生次数，提升故障发生的间隔时长；降低MTTR，使故障的影响时长降低。</p>
 <p>  从图中也可以看到将MTTR分了四个阶段：</p>
 <ul>
 <li>MTTI（Mean Time To Identify，平均故障发生时间）：即故障实际发生到我们真正开始相应的时间。这个过程可能是用户或客服反馈或是监控告警等渠道触发。</li>
@@ -525,8 +526,7 @@
 <h3 id="错误预算"><a href="#错误预算" class="headerlink" title="错误预算"></a>错误预算</h3><p>  在SLO的目标设定之后，我们还是需要一个允许犯错的次数标准，就和考驾照一样，虽然你过了，但是不能你犯了一次问题就给你12分全扣了，得有一个提示你还有多少犯错机会的东西。在SRE这里，这个概念就是Error Budget，即错误预算，一般是通过SLO反向推导出来的。比方说有个应用请求总次数是10000，你设定的SLO其中一条是延迟&lt;=80ms要达到90%，那你在这里的错误预算就是1000了。在SLO落地实践时，通常就把SLO转化为错误预算来推进稳定性目标达成。</p>
 <p>那么如何应用错误预算呢？可以通过四种方式。</p>
 <p>  1.稳定性燃尽图</p>
-<p>  应用方面可以指定稳定性燃尽图来把错误预算直观的表达出来，可以参考Google给的错误预算燃尽图。</p>
-<p>  在应用错误预算的时候，需要设定一个合理的周期，一天或一周较短，通常设定为4个自然周，这也是谷歌给出的建议。选择月份容易导致跨周的情况出现，所以选为自然周。</p>
+<p>  应用方面可以指定稳定性燃尽图来把错误预算直观的表达出来，可以参考Google给的错误预算燃尽图。<br><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640416743.png?raw=true" alt="图"><br>  在应用错误预算的时候，需要设定一个合理的周期，一天或一周较短，通常设定为4个自然周，这也是谷歌给出的建议。选择月份容易导致跨周的情况出现，所以选为自然周。</p>
 <p>  2.故障定级</p>
 <p>  评估问题影响程度有多大除了看影响的时长外可以按照问题消耗的错误预算比例来进行评判。书中以蘑菇街的例子将故障定级为P0~P4，具体工作中的定级可以根据实际业务情况和容忍度来判定。</p>
 <p>  3.稳定性共识机制</p>
@@ -546,8 +546,7 @@
 <li>“人肉“投入程度，英文为toil，一般指需要大量人工投入、重复繁琐且没价值的事，用投入的程度的多少（High）和（Low）来表示。</li>
 <li>用户满意度。</li>
 </ul>
-<p>三个维度分别有两种情况，一共就是八种情况，下图是Google给出的相应情况的建议。</p>
-<p>应对方式大致可以分为三类：</p>
+<p>三个维度分别有两种情况，一共就是八种情况，下图是Google给出的相应情况的建议。<br><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640423517.png?raw=true" alt="tu"><br>应对方式大致可以分为三类：</p>
 <ul>
 <li>收紧SLO，在目标太低，达成了但用户不满意的情况下。</li>
 <li>放宽SLO，用户反馈很好但是目标太高难以达成。</li>

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-12-25T11:45:21.953Z</updated>
+  <updated>2022-01-03T09:10:07.280Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,35 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>金字塔原理</title>
+    <link href="http://example.com/2022/01/03/jin-zi-ta-yuan-li-du-hou-gan/"/>
+    <id>http://example.com/2022/01/03/jin-zi-ta-yuan-li-du-hou-gan/</id>
+    <published>2022-01-02T16:00:00.000Z</published>
+    <updated>2022-01-03T09:10:07.280Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;金字塔原理，书的目的是希望读者使用金字塔原理进行思考沟通及解决问题，提高逻辑性及条理性，掌握表达的标准结构及规范进而使得沟通准确高效。&lt;/p&gt;
+&lt;p&gt; </summary>
+        
+      
+    
+    
+    
+    
+    <category term="软技能" scheme="http://example.com/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SRE实战读书笔记</title>
     <link href="http://example.com/2021/12/25/sre-shi-zhan-du-shu-bi-ji/"/>
     <id>http://example.com/2021/12/25/sre-shi-zhan-du-shu-bi-ji/</id>
     <published>2021-12-24T16:00:00.000Z</published>
-    <updated>2021-12-25T11:45:21.953Z</updated>
+    <updated>2021-12-28T09:02:18.235Z</updated>
     
     
       
@@ -449,29 +473,6 @@
         
     <summary type="html">&lt;h2 id=&quot;2021-8-1&quot;&gt;&lt;a href=&quot;#2021-8-1&quot; class=&quot;headerlink&quot; title=&quot;2021/8/1&quot;&gt;&lt;/a&gt;2021/8/1&lt;/h2&gt;&lt;p&gt;了解学习gevent第三方用于python并发的库&lt;/p&gt;
 &lt;h2</summary>
-        
-      
-    
-    
-    
-    
-    <category term="whosbug" scheme="http://example.com/tags/whosbug/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>whosbug前置学习3</title>
-    <link href="http://example.com/2021/07/31/whosbug3/"/>
-    <id>http://example.com/2021/07/31/whosbug3/</id>
-    <published>2021-07-30T16:00:00.000Z</published>
-    <updated>2021-08-07T05:46:52.606Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;项目日志&quot;&gt;&lt;a href=&quot;#项目日志&quot; class=&quot;headerlink&quot; title=&quot;项目日志&quot;&gt;&lt;/a&gt;项目日志&lt;/h1&gt;&lt;h2 id=&quot;7-25&quot;&gt;&lt;a href=&quot;#7-25&quot; class=&quot;headerlink&quot;</summary>
         
       
     

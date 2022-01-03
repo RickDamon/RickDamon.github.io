@@ -560,6 +560,47 @@
 </ul>
 <h3 id="验证核心链路的SLO"><a href="#验证核心链路的SLO" class="headerlink" title="验证核心链路的SLO"></a>验证核心链路的SLO</h3><p>  验证方式主要是容量压测和混沌工程，容量压测的主要作用是看SLO中的Volume即容量目标是否可以达成，混沌工程则是线上模拟真实的故障，做线上应急演练来提前发现隐患，混沌工程是在SRE体系在服务治理、容量压测、链路跟踪、监控告警、运维自动化等相对基础和必需的部分非常完善的情况下才会考虑，简而言之这东西急不来。</p>
 <p>  做系统验证也要在保证生产系统的稳定性的情况下，不能因为演练导致系统异常或故障，要在错误预算充足的情况下来尝试，尽量避开错误预算不足的时间段，毕竟正常业务下，要完成SLO已经有了很大压力，不能给系统稳定性增加新风险。</p>
+<h3 id="故障发现"><a href="#故障发现" class="headerlink" title="故障发现"></a>故障发现</h3><p>在分布式系统中MTTR的各环节所占时长如图所示，我们针对故障处理的目的是比较明确的，就是要提升每个环节的处理效率，缩短它们的处理时间，才能缩短整个MTTR，减少不必要的时长消耗。</p>
+<p>MTTI此环节有两件事要做：第一是判断出现的问题是不是故障；第二是确定由谁来响应和召集。</p>
+<p>判断是否为故障以及故障的相应方式就如错误预算中故障等级设定所述来进行响应。</p>
+<p>第二件事就要提到SRE中的On-Call机制。</p>
+<p>在On-Call阶段并非所有的告警都要响应，若不影像稳定性，一般的告警可以降低相应级别，只需要响应基于SLO的告警。</p>
+<p>有使用高峰期的产品On-Call机制设立可以用错时保障机制，确保关键角色必须在线，随时应急响应。</p>
+<h3 id="On-Call的流程机制建设"><a href="#On-Call的流程机制建设" class="headerlink" title="On-Call的流程机制建设"></a>On-Call的流程机制建设</h3><p>蘑菇街团队的流程是“On-Call关键5步法”。</p>
+<p>1.确保关键角色在线。</p>
+<p>关键角色并非单指运维或SRE人员，而是整个产品体系的所有关键角色，比方电商中需要安排核心业务应用(用户、商品、交易、优惠、支付等)的Owner，或Backup中至少有人参与On-Call轮班。当然，接收故障告警或第一时间响应故障的还是运维、PE或SRE类角色。</p>
+<p>2.组织War Room应急组织。</p>
+<p>设立专门处理故障的“消防群”，当有故障发生时第一时间在消防群通报，这时对应的On-Call同事要在第一时间最高优先级响应呼叫。</p>
+<p>3.建立合理呼叫方式。</p>
+<p>在On-Call机制中，最熟悉系统的人很容易被7*24小时打扰。比如系统或应用的Owner或架构师会被默认为On-Call。</p>
+<p>这样做的后果会很影响这些同时在正常业务开发上的精力投入。总是被打断或通宵处理问题。为解决这种情况建议使用固定的On-Call手机，建立手机与所有On-Call系统的对应关系，比如一个手机对应交易核心应用，另一个手机对应IDC机房运维。手机在谁手中谁承担On-Call的职责。熟悉某个系统的最快最好方式就是参与On-Call而非看架构图和代码。</p>
+<p>4.确保资源投入的升级机制。</p>
+<p>分布式系统中On-Call机制的设立并不能单单让几个人值班或者将所有事情交给冲在前线的运维或SRE来完成。在这里需要给运维或SRE进行授权，当他们发现问题非现有人员能解决时，有权调动其他必要的资源投入，若故障等级偏高可以直接上升到主管要求上级主管协调资源投入。</p>
+<p>5.与云厂商联合的On-Call</p>
+<p>在企业上云大趋势的情况下，对问题和故障的处理离不开与云产品工程师一起联动，云厂商也应考虑将客户业务作为自身业务的一部分，双方实现紧密合作。</p>
+<p>对监控体系和ON-Call来说，On-Call机制更重要，毕竟监控体系是持续优化进步的过程，而业务的故障是随时发生，优先恢复业务是最高优先级。良好的On-Call机制既能保障业务，也能将处理过的故障快速反馈到监控体系，进一步优化监控体系，达到双赢。</p>
+<h3 id="建立有效的故障应急响应机制"><a href="#建立有效的故障应急响应机制" class="headerlink" title="建立有效的故障应急响应机制"></a>建立有效的故障应急响应机制</h3><p>Google的故障只会体系参考了美国消防员处理1968年森林大火时建立的应急指挥体系。</p>
+<p>体系中的三个重要核心角色为：</p>
+<p>1.IC（Incident Commander），故障指挥官，此角色是整个指挥体系的核心，最重要的职责是组织和协调而非执行，下面俩角色要接受他的指令并严格执行。</p>
+<p>2.CL（Communication Lead），沟通引导，负责对内和对外的信息收集和同胞，此角色一般相对固定，由技术支持、QA或某个SRE来承担皆可，但要求沟通表达能力较强。</p>
+<p>3.OL（Operations Lead），运维指挥，负责指挥或指导各种故障预案的执行和业务恢复。</p>
+<p>还有一个角色IR（incident responders）不在体系内，但也发挥了重要作用，就是所有需要参与到故障修复中的各类人员，真正的故障定位和业务恢复都由他们来完成。</p>
+<p>流程机制：</p>
+<p>1.故障发现后，On-Call的SRE或是运维，最一开始就是IC，有权召集相应的业务开发或其它必要资源，快速组织WarRoom。</p>
+<p>2.若问题和恢复过程很明确，IC仍为SRE，不做转移，由他来指挥每个人要做的具体事情，以恢复业务为优先。</p>
+<p>3.若问题疑难，影响范围很大，此时SRE可要求更高级的主管接入。</p>
+<p>反馈机制：</p>
+<p>以团队为单位，每10-15分钟做一次反馈，反馈当前处理进展及下一步行动，若中途有需要马上执行操作，也需事先通报，且要求通报的内容包括对业务和系统的影响是什么，最后由IC决策后再执行。没有进展也要及时反馈，若长时间未定位结果，可能需要选择有损的降级服务，不让故障蔓延。</p>
+<p>CL在沟通时要尽量以业务化的语言描述，且要给到对方大致的预期。</p>
+<h3 id="故障复盘"><a href="#故障复盘" class="headerlink" title="故障复盘"></a>故障复盘</h3><p>故障根因往往不止一个，与其争论根因是啥，不妨一起看看引起故障的原因都有哪些，是不是有改进的空间。</p>
+<p>故障三问：</p>
+<p>1.故障原因有哪些？<br>2.做什么，怎么做才能确保下次不会再出现类似故障？<br>3.做什么可以用更短的时间回复业务？</p>
+<p>故障复盘过程中避免出现相互指责和埋怨的情况，若出现应让会议主持者及时控制并打断。</p>
+<p>故障判定三原则：</p>
+<p>1.健壮性原则</p>
+<p>每个部件自身都具有一定自愈能力，如主备、集群、限流、降级和重试等，例如在B依赖A的情况下，被依赖方A出现问题，但能快速恢复但B无法快速恢复，这种情况下承担主要责任的是依赖方B而不是被依赖方A。</p>
+<p>2.第三方默认无责</p>
+<p>若使用到了第三方的服务，如公有云各类服务，包括IaaS、PaaS、CDN或视频等原则上就是默认第三方无责。</p>
 
                 
             </div>
@@ -669,18 +710,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/12/25/sre-shi-zhan-du-shu-bi-ji/">
+                <a href="/2022/01/03/jin-zi-ta-yuan-li-du-hou-gan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="SRE实战读书笔记">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="金字塔原理">
                         
-                        <span class="card-title">SRE实战读书笔记</span>
+                        <span class="card-title">金字塔原理</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -690,9 +730,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-25
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-03
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -701,12 +741,11 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SRE/">
-                        <span class="chip bg-color">SRE</span>
+                    <a href="/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/">
+                        <span class="chip bg-color">软技能</span>
                     </a>
                     
                 </div>
@@ -891,7 +930,7 @@
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2021</span>
+                <span id="year">2019-2022</span>
             
             <span id="year">2019</span>
             <a href="/about" target="_blank">RickDamon</a>

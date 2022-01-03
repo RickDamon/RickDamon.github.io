@@ -477,7 +477,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="SRE的概念"><a href="#SRE的概念" class="headerlink" title="SRE的概念"></a>SRE的概念</h3><p>   近些年来随着越来越多团队采用微服务、容器或者是其他分布式技术和产品，虽然效率提升了，但复杂架构的稳定性变得难以保障，Google一直以来作为互联网产业的先驱在十年前提出了SRE(Site Reliability Engineering)这个概念,中文一般译为网站可靠性工程师，做的工作主要是监控告警、运维自动化、故障处理以及复盘等工作。</p>
-<h3 id="系统故障阶段"><a href="#系统故障阶段" class="headerlink" title="系统故障阶段"></a>系统故障阶段</h3><p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640407664.png?raw=true" alt="图"></p>
+<h3 id="系统故障阶段"><a href="#系统故障阶段" class="headerlink" title="系统故障阶段"></a>系统故障阶段</h3><p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640407664.png?raw=true" alt=""></p>
 <p>   从图中我们可以看到，把故障处理分了两个个阶段，MTBF（Mean Time Between Failure）,MTTR（Mean Time To Repair），MTBF指示的是系统正常运行的阶段，MTTR则是系统的故障状态。看到这幅图大致也能想到提升稳定性的两个方向：提升MTBF，减少故障发生次数，提升故障发生的间隔时长；降低MTTR，使故障的影响时长降低。</p>
 <p>  从图中也可以看到将MTTR分了四个阶段：</p>
 <ul>
@@ -526,7 +526,7 @@
 <h3 id="错误预算"><a href="#错误预算" class="headerlink" title="错误预算"></a>错误预算</h3><p>  在SLO的目标设定之后，我们还是需要一个允许犯错的次数标准，就和考驾照一样，虽然你过了，但是不能你犯了一次问题就给你12分全扣了，得有一个提示你还有多少犯错机会的东西。在SRE这里，这个概念就是Error Budget，即错误预算，一般是通过SLO反向推导出来的。比方说有个应用请求总次数是10000，你设定的SLO其中一条是延迟&lt;=80ms要达到90%，那你在这里的错误预算就是1000了。在SLO落地实践时，通常就把SLO转化为错误预算来推进稳定性目标达成。</p>
 <p>那么如何应用错误预算呢？可以通过四种方式。</p>
 <p>  1.稳定性燃尽图</p>
-<p>  应用方面可以指定稳定性燃尽图来把错误预算直观的表达出来，可以参考Google给的错误预算燃尽图。<br><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640416743.png?raw=true" alt="图"><br>  在应用错误预算的时候，需要设定一个合理的周期，一天或一周较短，通常设定为4个自然周，这也是谷歌给出的建议。选择月份容易导致跨周的情况出现，所以选为自然周。</p>
+<p>  应用方面可以指定稳定性燃尽图来把错误预算直观的表达出来，可以参考Google给的错误预算燃尽图。<br><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640416743.png?raw=true" alt=""><br>  在应用错误预算的时候，需要设定一个合理的周期，一天或一周较短，通常设定为4个自然周，这也是谷歌给出的建议。选择月份容易导致跨周的情况出现，所以选为自然周。</p>
 <p>  2.故障定级</p>
 <p>  评估问题影响程度有多大除了看影响的时长外可以按照问题消耗的错误预算比例来进行评判。书中以蘑菇街的例子将故障定级为P0~P4，具体工作中的定级可以根据实际业务情况和容忍度来判定。</p>
 <p>  3.稳定性共识机制</p>
@@ -546,7 +546,7 @@
 <li>“人肉“投入程度，英文为toil，一般指需要大量人工投入、重复繁琐且没价值的事，用投入的程度的多少（High）和（Low）来表示。</li>
 <li>用户满意度。</li>
 </ul>
-<p>三个维度分别有两种情况，一共就是八种情况，下图是Google给出的相应情况的建议。<br><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640423517.png?raw=true" alt="tu"><br>应对方式大致可以分为三类：</p>
+<p>三个维度分别有两种情况，一共就是八种情况，下图是Google给出的相应情况的建议。<br><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640423517.png?raw=true" alt=""><br>应对方式大致可以分为三类：</p>
 <ul>
 <li>收紧SLO，在目标太低，达成了但用户不满意的情况下。</li>
 <li>放宽SLO，用户反馈很好但是目标太高难以达成。</li>
@@ -560,7 +560,7 @@
 </ul>
 <h3 id="验证核心链路的SLO"><a href="#验证核心链路的SLO" class="headerlink" title="验证核心链路的SLO"></a>验证核心链路的SLO</h3><p>  验证方式主要是容量压测和混沌工程，容量压测的主要作用是看SLO中的Volume即容量目标是否可以达成，混沌工程则是线上模拟真实的故障，做线上应急演练来提前发现隐患，混沌工程是在SRE体系在服务治理、容量压测、链路跟踪、监控告警、运维自动化等相对基础和必需的部分非常完善的情况下才会考虑，简而言之这东西急不来。</p>
 <p>  做系统验证也要在保证生产系统的稳定性的情况下，不能因为演练导致系统异常或故障，要在错误预算充足的情况下来尝试，尽量避开错误预算不足的时间段，毕竟正常业务下，要完成SLO已经有了很大压力，不能给系统稳定性增加新风险。</p>
-<h3 id="故障发现"><a href="#故障发现" class="headerlink" title="故障发现"></a>故障发现</h3><p>在分布式系统中MTTR的各环节所占时长如图所示，我们针对故障处理的目的是比较明确的，就是要提升每个环节的处理效率，缩短它们的处理时间，才能缩短整个MTTR，减少不必要的时长消耗。</p>
+<h3 id="故障发现"><a href="#故障发现" class="headerlink" title="故障发现"></a>故障发现</h3><p><img src="https://github.com/RickDamon/RickDamon.github.io/blob/master/medias/somethingBeUsed/1640612484.png?raw=true" alt=""><br>在分布式系统中MTTR的各环节所占时长如图所示，我们针对故障处理的目的是比较明确的，就是要提升每个环节的处理效率，缩短它们的处理时间，才能缩短整个MTTR，减少不必要的时长消耗。</p>
 <p>MTTI此环节有两件事要做：第一是判断出现的问题是不是故障；第二是确定由谁来响应和召集。</p>
 <p>判断是否为故障以及故障的相应方式就如错误预算中故障等级设定所述来进行响应。</p>
 <p>第二件事就要提到SRE中的On-Call机制。</p>

@@ -12,3 +12,4 @@ public/
 *.swo
 *~
 **/twikoo/
+.deploy_git/

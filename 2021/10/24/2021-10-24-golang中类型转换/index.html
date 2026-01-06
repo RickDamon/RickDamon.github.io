@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Golang中类型转换, programming,learning,blog">
-    <meta name="description" content="有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：byte()）完成的，而并且不是所有的转换都是允许的。从 string 到字节或者 ruin 的 slice">
+    <meta name="description" content="有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：byte()）完成的，而并且不是所有的转换都是允许的。
+从 string 到字节或者 rune 的 slic">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -398,9 +399,32 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：byte()）完成的，而并且不是所有的转换都是允许的。<br>从 string 到字节或者 ruin 的 slice。</p>
-<p>mystring :&#x3D; “hello this is stringbyteslice :&#x3D; []byte(mystring)runeslice :&#x3D; []rune(mystring)<br>转换到 byte slice，每个 byte 保存字符串对应字节的整数值。注意 Go 的字符串是 UTF-8 编码的，一些字符可能是 1、2、3 或者 4 个字节结尾。<br>转换到 rune slice，每个 rune 保存 Unicode 编码的指针。字符串中的每个字符对应一个整数。<br>从字节或者整形的 slice 到 string。<br>b :&#x3D; []byte {‘h’,’e’,’l’,’l’,’o’} &#x2F;&#x2F; 复合声明s :&#x3D; string(b)i :&#x3D; []rune {257,1024,65}r :&#x3D; string(i)对于数值，定义了下面的转换：<br>1、将整数转换到指定的（bit）长度：uint8(int)；<br>2、从浮点数到整数：int(float32)。这会截断浮点数的小数部分；<br>3、其他的类似：float32(int)。<br>用户定义类型的转换<br>如何在自定义类型之间进行转换？这里创建了两个类型 Foo 和 Bar，而 Bar 是 Foo 的一个别名：<br>type foo struct { int } &#x2F;&#x2F; 匿名字段type bar foo &#x2F;&#x2F; bar 是 foo 的别名var b bar &#x3D; bar{1} &#x2F;&#x2F; 声明 b 为 bar 类型var f foo &#x3D; b &#x2F;&#x2F; 赋值 b 到 f最后一行会引起错误：<br>cannot use b (type bar) as type foo in assignment(不能使用 b（类型 bar）作为类型 foo 赋值)<br>这可以通过转换来修复：</p>
-<p>var f foo &#x3D; foo(b)<br>注意转换那些字段不一致的结构是很困难的。同时，转换 b 到 int 同样会出错；整数与有整数字段的结构体并不是一样的。</p>
+                <p>有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：<code>byte()</code>）完成的，而并且不是所有的转换都是允许的。</p>
+<p><strong>从 string 到字节或者 rune 的 slice</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mystring := <span class="string">&quot;hello this is string&quot;</span></span><br><span class="line">byteslice := []<span class="type">byte</span>(mystring)</span><br><span class="line">runeslice := []<span class="type">rune</span>(mystring)</span><br></pre></td></tr></table></figure>
+
+<p>转换到 byte slice，每个 byte 保存字符串对应字节的整数值。注意 Go 的字符串是 UTF-8 编码的，一些字符可能是 1、2、3 或者 4 个字节结尾。</p>
+<p>转换到 rune slice，每个 rune 保存 Unicode 编码的指针。字符串中的每个字符对应一个整数。</p>
+<p><strong>从字节或者整形的 slice 到 string</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">b := []<span class="type">byte</span> &#123;<span class="string">&#x27;h&#x27;</span>,<span class="string">&#x27;e&#x27;</span>,<span class="string">&#x27;l&#x27;</span>,<span class="string">&#x27;l&#x27;</span>,<span class="string">&#x27;o&#x27;</span>&#125; <span class="comment">// 复合声明</span></span><br><span class="line">s := <span class="type">string</span>(b)</span><br><span class="line"></span><br><span class="line">i := []<span class="type">rune</span> &#123;<span class="number">257</span>,<span class="number">1024</span>,<span class="number">65</span>&#125;</span><br><span class="line">r := <span class="type">string</span>(i)</span><br></pre></td></tr></table></figure>
+
+<p>对于数值，定义了下面的转换：</p>
+<ol>
+<li>将整数转换到指定的（bit）长度：<code>uint8(int)</code>；</li>
+<li>从浮点数到整数：<code>int(float32)</code>。这会截断浮点数的小数部分；</li>
+<li>其他的类似：<code>float32(int)</code>。</li>
+</ol>
+<p><strong>用户定义类型的转换</strong></p>
+<p>如何在自定义类型之间进行转换？这里创建了两个类型 Foo 和 Bar，而 Bar 是 Foo 的一个别名：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> foo <span class="keyword">struct</span> &#123; <span class="type">int</span> &#125; <span class="comment">// 匿名字段</span></span><br><span class="line"><span class="keyword">type</span> bar foo <span class="comment">// bar 是 foo 的别名</span></span><br><span class="line"><span class="keyword">var</span> b bar = bar&#123;<span class="number">1</span>&#125; <span class="comment">// 声明 b 为 bar 类型</span></span><br><span class="line"><span class="keyword">var</span> f foo = b <span class="comment">// 赋值 b 到 f</span></span><br></pre></td></tr></table></figure>
+
+<p>最后一行会引起错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cannot use b (type bar) as type foo in assignment</span><br><span class="line">(不能使用 b（类型 bar）作为类型 foo 赋值)</span><br></pre></td></tr></table></figure>
+
+<p>这可以通过转换来修复：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f foo = foo(b)</span><br></pre></td></tr></table></figure>
+
+<p>注意转换那些字段不一致的结构是很困难的。同时，转换 b 到 int 同样会出错；整数与有整数字段的结构体并不是一样的。</p>
 
                 
             </div>

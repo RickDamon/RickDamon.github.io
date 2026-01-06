@@ -567,7 +567,9 @@
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    在 Go 中，从文件读取（或写入）是非常容易的。程序只需要使用 os 包就可以从文件&#x2F;etc&#x2F;passwd 中读取数据。&#x2F;&#x2F; 从文件读取(无缓冲)package mainimport “os”func
+                                    在 Go 中，从文件读取（或写入）是非常容易的。程序只需要使用 os 包就可以从文件 /etc/passwd 中读取数据。
+从文件读取(无缓冲)
+12345678910111213package mainimport &quot;os&qu
                                 
                             </div>
                             <div class="publish-info">
@@ -627,7 +629,8 @@
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    goroutine的简单使用goroutine 是 Go并发能力的核心要素。将他命名为goroutine 是因为已有的短语——线程、协程、进程等等传递了不准确的含义。goroutine 有简单的模型：它是与其他 goroutine 并行执行
+                                    goroutine的简单使用goroutine 是 Go并发能力的核心要素。
+将他命名为goroutine 是因为已有的短语——线程、协程、进程等等传递了不准确的含义。goroutine 有简单的模型：它是与其他 goroutine 并行执
                                 
                             </div>
                             <div class="publish-info">
@@ -852,7 +855,8 @@
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    在 Go 中，关键字 interface 被赋予了多种不同的含义。每个类型都有接口，意味着对那个类型定义了方法集合 。如下这段代码定义了具有一个字段和两个方法的结构类型 S。type S struct { i int }func (p *S
+                                    在 Go 中，关键字 interface 被赋予了多种不同的含义。每个类型都有接口，意味着对那个类型定义了方法集合 。如下这段代码定义了具有一个字段和两个方法的结构类型 S。
+123type S struct &#123; i int &#
                                 
                             </div>
                             <div class="publish-info">
@@ -907,7 +911,8 @@
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：byte()）完成的，而并且不是所有的转换都是允许的。从 string 到字节或者 ruin 的 slice
+                                    有时需要将一个类型转换为另一个类型。在 Go 中可以做到，当然有一些特定规则。首先，将一个值转换为另一个是由操作符（看起来像是函数：byte()）完成的，而并且不是所有的转换都是允许的。
+从 string 到字节或者 rune 的 slic
                                 
                             </div>
                             <div class="publish-info">
@@ -962,7 +967,10 @@
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    Go 允许定义新的类型，可以通过关键字 type 实现：type foo int如上我们创建了一个新的类型 foo 作用跟 int 一样。创建更加复杂的类型需要用到 struct 关键字。这有个在一个数据结构中记录某人的姓名（string）
+                                    Go 允许定义新的类型，可以通过关键字 type 实现：
+1type foo int
+
+如上我们创建了一个新的类型 foo 作用跟 int 一样。创建更加复杂的类型需要用到 struct 关键字。这有个在一个数据结构中记录某人的姓名（str
                                 
                             </div>
                             <div class="publish-info">
@@ -1017,7 +1025,8 @@
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    指针Go 有指针。然而却没有指针运算，因此它们更像是引用而不是我们所知道的来自于 C的指针。指针非常有用。在 Go 中调用函数的时候，得记得变量是值传递的。因此，为了修改一个传递入函数的值的效率和可能性，有了指针。通过类型作为前缀来定义一个
+                                    Go 有指针。然而却没有指针运算，因此它们更像是引用而不是我们所知道的来自于 C的指针。指针非常有用。在 Go 中调用函数的时候，得记得变量是值传递的。因此，为了修改一个传递入函数的值的效率和可能性，有了指针。
+通过类型作为前缀来定义一个指
                                 
                             </div>
                             <div class="publish-info">

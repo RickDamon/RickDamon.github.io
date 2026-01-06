@@ -399,7 +399,68 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>循环展开是一种程序变换，通过增加每次迭代计算的元素数量，减少循环的迭代次数，在之前的程序优化中有函数用到循环展开。循环展开能从两个方面改进程序的性能。首先，它减少了不直接有助于程序结果的操作的数量，例如循环索引计算和条件分支。第二，它提供了一些方法，可以进一步变化代码，减少整个计算中关键路径上的操作数量。<br>这是之前计算前置和的两个函数：</p>
-<p>&#x2F;&#x2F; 计算前置和不使用和使用循环展开void psum1(float a[], float p[], long n){      long i;      p[0] &#x3D; a[0];      for (i &#x3D; 1; i&lt;n; i++)           p[i] &#x3D; p[i-1] + a[i];}&#x2F;&#x2F;程序每次迭代计算前置和的两个元素，因而将需要的迭代次数减半void psum2(float a[], float p[], long n){      long i;      p[0] &#x3D; a[0];      for (i &#x3D; 1; i&lt;n-1; i+&#x3D;2) {           float mid_val &#x3D; p[i-1] + a[i];           p[i] &#x3D; mid_val;           p[i+1] &#x3D; mid_val + a[i+1];      }      if (i &lt; n)          p[i] &#x3D; p[i-1] + a[i];}<br>接下来的函数是合并代码的使用“2<em>1循环展开”的版本。之前几个版本的代码都在程序优化的第二部分。<br>&#x2F;&#x2F; 此程序中的IDENT和OP可以用#define来定义void combined5(vec_ptr v, data_t <em>dest){    long i;    long length &#x3D; vec_length(v);    long limit &#x3D; length-1;    data_t <em>data &#x3D; get_vec_start(v);    data_t acc &#x3D; IDENT;     &#x2F;</em> Combine 2 elements at a time <em>&#x2F;    for (i &#x3D; 0; i &lt; limit; i+&#x3D;2) {        acc &#x3D; (acc OP data[i]) OP data[i+1];    }    &#x2F;</em> Finish any remaining elements</em>&#x2F;    for(; i &lt; length; i++){        acc &#x3D; acc OP data[i];    }    <em>dest &#x3D; acc;}程序中第一个循环每次处理数组的两个元素。也就是每次迭代，循环索引i加2，再一次迭代中，对数组元素i和i+1使用合并运算。<br>在一般情况下，向量长度不一定是2的倍数，想要让代码对任意向量长度都能够正确工作，可以从两个方面来处理这个需求。首先，确保第一次循环不会超出数组的界限。对于长度为n的向量，我们将循环界限设置为n-1。然后，保证只有当循环索引i满足i&lt;n-1时才会执行该循环，因此最大数组索引i+1满足i+1&lt;(n-1)+1&#x3D;n。<br>将上述思想归纳为对一个循环按任意因子k进行展开，由此产生k×1循环展开。为此，上限为n-k+1，在循环内对元素i到i+k-1应用合并运算。每次迭代，循环索引i加k。那么最大循环索引i+k-1会小于n。要使用第二个循环，以每次处理一个元素的方式处理向量的后几个元素。这个循环体将会执行0~k-1次。对于k&#x3D;2，可以用一个最简单的条件语句，可选的增加最后一次迭代，就像函数pum2所示，k&gt;2时，最后的这些情况最好用一个循环来表示，所以对k&#x3D;2的情况，我们同样也采用这个编程惯例。称之为“k×1循环展开”，因为循环展开因子为k，而累积值旨在单个变量acc中。<br>函数方法整数浮点数+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Combine4Combine5&nbsp;延迟界限吞吐量界限无展开2</em>1展开3</em>1展开&nbsp;&nbsp;1.27&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.011.01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.011.01 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.01&nbsp;1.00 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.000.50 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.003.01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.013.01 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.013.01 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.013.00 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.001.00 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.50我们可以看到对于整数加法，CPE有所改进，得到的延迟界限为1.00，这就是因为循环展开减少了循环开销的操作。相对于计算向量所需要的假发数量，降低开销操作的数量，此时整数加法的一个周期的延迟就成为了限制性能的因素。另一方面，其他情况没有性能提高，它们已经达到了其他延迟界限。<br>编译器可以很容易的执行循环展开。只要优化级别设置的足够高，用优化等级三以上调用GCC就可以执行循环展开。</p>
+<p>&#x2F;&#x2F; 计算前置和不使用和使用循环展开void psum1(float a[], float p[], long n){      long i;      p[0] &#x3D; a[0];      for (i &#x3D; 1; i&lt;n; i++)           p[i] &#x3D; p[i-1] + a[i];}&#x2F;&#x2F;程序每次迭代计算前置和的两个元素，因而将需要的迭代次数减半void psum2(float a[], float p[], long n){      long i;      p[0] &#x3D; a[0];      for (i &#x3D; 1; i&lt;n-1; i+&#x3D;2) {           float mid_val &#x3D; p[i-1] + a[i];           p[i] &#x3D; mid_val;           p[i+1] &#x3D; mid_val + a[i+1];      }      if (i &lt; n)          p[i] &#x3D; p[i-1] + a[i];}<br>接下来的函数是合并代码的使用“2*1循环展开”的版本。之前几个版本的代码都在程序优化的第二部分。<br>&#x2F;&#x2F; 此程序中的IDENT和OP可以用#define来定义void combined5(vec_ptr v, data_t <em>dest){    long i;    long length &#x3D; vec_length(v);    long limit &#x3D; length-1;    data_t <em>data &#x3D; get_vec_start(v);    data_t acc &#x3D; IDENT;     &#x2F;</em> Combine 2 elements at a time <em>&#x2F;    for (i &#x3D; 0; i &lt; limit; i+&#x3D;2) {        acc &#x3D; (acc OP data[i]) OP data[i+1];    }    &#x2F;</em> Finish any remaining elements</em>&#x2F;    for(; i &lt; length; i++){        acc &#x3D; acc OP data[i];    }    *dest &#x3D; acc;}程序中第一个循环每次处理数组的两个元素。也就是每次迭代，循环索引i加2，再一次迭代中，对数组元素i和i+1使用合并运算。<br>在一般情况下，向量长度不一定是2的倍数，想要让代码对任意向量长度都能够正确工作，可以从两个方面来处理这个需求。首先，确保第一次循环不会超出数组的界限。对于长度为n的向量，我们将循环界限设置为n-1。然后，保证只有当循环索引i满足i&lt;n-1时才会执行该循环，因此最大数组索引i+1满足i+1&lt;(n-1)+1&#x3D;n。<br>将上述思想归纳为对一个循环按任意因子k进行展开，由此产生k×1循环展开。为此，上限为n-k+1，在循环内对元素i到i+k-1应用合并运算。每次迭代，循环索引i加k。那么最大循环索引i+k-1会小于n。要使用第二个循环，以每次处理一个元素的方式处理向量的后几个元素。这个循环体将会执行0~k-1次。对于k&#x3D;2，可以用一个最简单的条件语句，可选的增加最后一次迭代，就像函数pum2所示，k&gt;2时，最后的这些情况最好用一个循环来表示，所以对k&#x3D;2的情况，我们同样也采用这个编程惯例。称之为“k×1循环展开”，因为循环展开因子为k，而累积值旨在单个变量acc中。</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>方法</th>
+<th>整数 (+)</th>
+<th>整数 (*)</th>
+<th>浮点数 (+)</th>
+<th>浮点数 (*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Combine4</td>
+<td>延迟界限</td>
+<td>1.27</td>
+<td>3.01</td>
+<td>3.01</td>
+<td>5.01</td>
+</tr>
+<tr>
+<td>Combine5</td>
+<td>吞吐量界限</td>
+<td>1.01</td>
+<td>3.01</td>
+<td>3.01</td>
+<td>5.01</td>
+</tr>
+<tr>
+<td>Combine5</td>
+<td>无展开</td>
+<td>1.01</td>
+<td>3.01</td>
+<td>3.00</td>
+<td>5.00</td>
+</tr>
+<tr>
+<td>Combine5</td>
+<td>2*1展开</td>
+<td>0.50</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>0.50</td>
+</tr>
+<tr>
+<td>Combine5</td>
+<td>3*1展开</td>
+<td>3.01</td>
+<td>5.01</td>
+<td>3.01</td>
+<td>5.01</td>
+</tr>
+<tr>
+<td>Combine5</td>
+<td>3*1展开</td>
+<td>3.00</td>
+<td>5.00</td>
+<td>1.00</td>
+<td>0.50</td>
+</tr>
+</tbody></table>
+<p>我们可以看到对于整数加法，CPE有所改进，得到的延迟界限为1.00，这就是因为循环展开减少了循环开销的操作。相对于计算向量所需要的假发数量，降低开销操作的数量，此时整数加法的一个周期的延迟就成为了限制性能的因素。另一方面，其他情况没有性能提高，它们已经达到了其他延迟界限。<br>编译器可以很容易的执行循环展开。只要优化级别设置的足够高，用优化等级三以上调用GCC就可以执行循环展开。</p>
 
                 
             </div>

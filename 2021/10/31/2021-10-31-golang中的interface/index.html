@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Golang中的interface, programming,learning,blog">
-    <meta name="description" content="在 Go 中，关键字 interface 被赋予了多种不同的含义。每个类型都有接口，意味着对那个类型定义了方法集合 。如下这段代码定义了具有一个字段和两个方法的结构类型 S。type S struct { i int }func (p *S">
+    <meta name="description" content="在 Go 中，关键字 interface 被赋予了多种不同的含义。每个类型都有接口，意味着对那个类型定义了方法集合 。如下这段代码定义了具有一个字段和两个方法的结构类型 S。
+123type S struct &amp;#123; i int &amp;#">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -398,12 +399,34 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在 Go 中，关键字 interface 被赋予了多种不同的含义。每个类型都有接口，意味着对那个类型定义了方法集合 。如下这段代码定义了具有一个字段和两个方法的结构类型 S。<br>type S struct { i int }func (p *S) Get() int { return p.i }func (p *S) Put(v int) { p.i &#x3D; v }也可以定义接口类型，仅仅是方法的集合。这里定义了一个有两个方法的接口 I：</p>
-<p>type I interface {Get() intPut(int) }<br>对于接口 I，S 是合法的实现，因为它定义了 I 所需的两个方法。注意，即便是没有明确定义 S 实现了 I，这也是正确的。<br>Go 程序可以利用这个特点来实现接口的另一个含义，就是 接口值:<br>func f(p I) {  &#x2F;&#x2F;定义一个函数接受一个接口类型作为参数fmt.Println(p.Get()) &#x2F;&#x2F;p实现了接口I，必须有get()方法p.Put(1)  &#x2F;&#x2F;Put()方法类似}这里的变量 p 保存了接口类型的值。因为 S 实现了 I，可以调用 f 向其传递 S 类型的值的指针：</p>
-<p>var s S ; f(&amp;s)<br>获取 s 的地址，而不是 S 的值的原因，是因为在 s 的指针上定义了方法。<br>在 Go 中的接口有着与许多其他编程语言类似的思路：C++ 中的纯抽象虚基类，Haskell中的 typeclasses 或者 Python 中的 duck typing。然而没有其他任何一个语言联合了接口值、静态类型检查、运行时动态转换，以及无须明确定义类型适配一个接口。这些给 Go 带来的结果是，强大、灵活、高效和容易编写的。<br>定义另外一个类型同样实现了接口 I：</p>
-<p>type R struct { i int }func (p *R) Get() int { return p.i }func (p *R) Put(v int) { p.i &#x3D; v }<br>函数 f 现在可以接受类型为 R 或 S 的变量。假设需要在函数 f 中知道实际的类型。在Go 中可以使用 type switch 得到。<br>type switch:<br>func f(p I) {switch t :&#x3D; p.(type) { case *S: case *R: case S: case R: default:     } }在 switch 之外使用 (type) 是非法的。类型判断不是唯一的运行时得到类型的方法。<br>为了在运行时得到类型，同样可以使用 “comma, ok” 来判断一个接口类型是否实现了某个特定接口：</p>
-<p>if t, ok :&#x3D; something.(I) ; ok {&#x2F;&#x2F; 对于某些实现了接口 I 的&#x2F;&#x2F; t 是其所拥有的类型}<br>确定一个变量实现了某个接口，可以使用：</p>
-<p>t :&#x3D; something.(I)</p>
+                <p>在 Go 中，关键字 interface 被赋予了多种不同的含义。每个类型都有接口，意味着对那个类型定义了方法集合 。如下这段代码定义了具有一个字段和两个方法的结构类型 S。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> S <span class="keyword">struct</span> &#123; i <span class="type">int</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *S)</span></span> Get() <span class="type">int</span> &#123; <span class="keyword">return</span> p.i &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *S)</span></span> Put(v <span class="type">int</span>) &#123; p.i = v &#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以定义接口类型，仅仅是方法的集合。这里定义了一个有两个方法的接口 I：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> I <span class="keyword">interface</span> &#123;</span><br><span class="line">    Get() <span class="type">int</span></span><br><span class="line">    Put(<span class="type">int</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于接口 I，S 是合法的实现，因为它定义了 I 所需的两个方法。注意，即便是没有明确定义 S 实现了 I，这也是正确的。</p>
+<p>Go 程序可以利用这个特点来实现接口的另一个含义，就是<strong>接口值</strong>:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(p I)</span></span> &#123;  <span class="comment">//定义一个函数接受一个接口类型作为参数</span></span><br><span class="line">    fmt.Println(p.Get()) <span class="comment">//p实现了接口I，必须有get()方法</span></span><br><span class="line">    p.Put(<span class="number">1</span>)  <span class="comment">//Put()方法类似</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的变量 p 保存了接口类型的值。因为 S 实现了 I，可以调用 f 向其传递 S 类型的值的指针：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s S ; f(&amp;s)</span><br></pre></td></tr></table></figure>
+
+<p>获取 s 的地址，而不是 S 的值的原因，是因为在 s 的指针上定义了方法。</p>
+<p>在 Go 中的接口有着与许多其他编程语言类似的思路：C++ 中的纯抽象虚基类，Haskell中的 typeclasses 或者 Python 中的 duck typing。然而没有其他任何一个语言联合了接口值、静态类型检查、运行时动态转换，以及无须明确定义类型适配一个接口。这些给 Go 带来的结果是，强大、灵活、高效和容易编写的。</p>
+<p>定义另外一个类型同样实现了接口 I：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> R <span class="keyword">struct</span> &#123; i <span class="type">int</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *R)</span></span> Get() <span class="type">int</span> &#123; <span class="keyword">return</span> p.i &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *R)</span></span> Put(v <span class="type">int</span>) &#123; p.i = v &#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数 f 现在可以接受类型为 R 或 S 的变量。假设需要在函数 f 中知道实际的类型。在Go 中可以使用 type switch 得到。</p>
+<p><strong>type switch:</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(p I)</span></span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> t := p.(<span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> *S:</span><br><span class="line">    <span class="keyword">case</span> *R:</span><br><span class="line">    <span class="keyword">case</span> S:</span><br><span class="line">    <span class="keyword">case</span> R:</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 switch 之外使用 (type) 是非法的。类型判断不是唯一的运行时得到类型的方法。</p>
+<p>为了在运行时得到类型，同样可以使用 “comma, ok” 来判断一个接口类型是否实现了某个特定接口：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> t, ok := something.(I) ; ok &#123;</span><br><span class="line">    <span class="comment">// 对于某些实现了接口 I 的</span></span><br><span class="line">    <span class="comment">// t 是其所拥有的类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>确定一个变量实现了某个接口，可以使用：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">t := something.(I)</span><br></pre></td></tr></table></figure>
 
                 
             </div>

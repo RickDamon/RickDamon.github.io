@@ -401,9 +401,98 @@
             <div id="articleContent">
                 <p>实例为了说明一个抽象程序是如何被系统转换为更有效地代码的，之后的例子我们将使用如下的向量数据结构的运行示例，向量由两个内存块表示：头部和数据数组。<br>头部是一个声明如下的结构：</p>
 <p>&#x2F;* Create abstract data type for vector *&#x2F;typedef struct {    long len;    data_t *data;} vec_rec, *vec_ptr;<br>这个声明用data_t来表示基本元素的数据类型。在测试中，我们度量代码对于整数和浮点数数据的性能。为此，会分别为不同的类型声明编译和运行程序，像下面这个例子对数据类型long一样：<br>typedef long data_t;我们还会分配一个len个data_t类型对象的数组，来存放实际的向量元素。<br>如下给出的是一些生成向量，访问向量元素以及确定向量长度的基本过程。值得注意的是向量访问函数get_vec_element,它会对每个向量引用进行辩解检查。类似于很多其它语言所使用的数组表示法。边界检查降低了程序出错的机会，但会减缓程序的执行。<br>向量抽象数据类型的实现，在实际的程序中，数据类型data_t会被声明为明确的数据类型如int或float：</p>
-<p>&#x2F;* Create vector of specified length <em>&#x2F;vec_ptr new_vec(long len){    &#x2F;</em> Allocate header structure *&#x2F;    vec_ptr result &#x3D; (vec_ptr) malloc(sizeof(vec_rec));    data_t <em>data &#x3D; NULL;    if (!result)        return NULL;  &#x2F;</em> Couldn’t allocate storage <em>&#x2F;    result-&gt;len &#x3D; len;&#x2F;</em> $end vec <em>&#x2F;    &#x2F;</em> We don’t show this in the book <em>&#x2F;    result-&gt;allocated_len &#x3D; len;&#x2F;</em> $begin vec <em>&#x2F;    &#x2F;</em> Allocate array *&#x2F;    if (len &gt; 0) {        data &#x3D; (data_t *)calloc(len, sizeof(data_t));if (!data) {    free((void <em>) result);     return NULL; &#x2F;</em> Couldn’t allocate storage <em>&#x2F;}    }    &#x2F;</em> data will either be NULL or allocated array <em>&#x2F;    result-&gt;data &#x3D; data;    return result;}&#x2F;</em> Free storage used by vector <em>&#x2F;void free_vec(vec_ptr v) {    if (v-&gt;data)free(v-&gt;data);    free(v);}&#x2F;</em> * Retrieve vector element and store at dest. * Return 0 (out of bounds) or 1 (successful) *&#x2F;int get_vec_element(vec_ptr v, long index, data_t *dest){    if (index &lt; 0 || index &gt;&#x3D; v-&gt;len)return 0;    <em>dest &#x3D; v-&gt;data[index];    return 1;}&#x2F;</em> Return length of vector <em>&#x2F;long vec_length(vec_ptr v){    return v-&gt;len;}<br>作为一个优化的示例，如下的代码会使用某种运算，将一个向量中所有的元素合并为一个值，通过使用编译时常数IDENT和OP的不同定义，这段代码可以重编译为对数据进行不同的运算。<br>这是一个合并运算的初始实现，通过定义IDENT和OP，可以用来测试该函数对不同运算的性能：<br>&#x2F;</em> Implementation with maximum use of data abstraction *&#x2F;void combine1(vec_ptr v, data_t *dest){    long i;    *dest &#x3D; IDENT;    for(i &#x3D; 0; i &lt; vec_length(v); i++) {        data_t val;        get_vec_element(v, i, &amp;val);        *dest &#x3D; <em>dest OP val;    }}在之后我们会对这段代码进行一系列的优化，为评估性能优化，会在一个参考机上测量函数的CPE性能。<br>以下是combine1的CPE度量值<br>函数方法整数浮点数+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*combine1combine1抽象的未优化的抽象的-O122.68 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.0210.12 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10.12 19.98 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20.1810.17 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.14未经优化的代码是从C语言代码到机器代码的直接翻译，通常效率较低，简单的使用命令行选项“-O1”，就会进行一些基本的优化，这样就可以显著提升性能。<br>消除循环的低效率可以观察到，过程combine1调用函数vec_length作为for循环的测试条件。在循环中，每次循环迭代时都必须对测试条件求值。另一方面，向量的长度并不会随着循环的进行而改变。因此，我们只需要计算一次向量的长度，然后在我们的测试条件中都会使用这个值。<br>以下是一个修改了的版本，称为combine2，它在开始时就调用了vec_length,并且将结果赋值给局部变量length。对于某些数据类型和操作，这个变换明显地影响了某些数据类型和操作的整体性能，对于其他的则很小甚至没有影响。无论哪种情况，都需要这种变化来消除这个低效率，这有可能称为尝试进一步优化时的瓶颈。<br>改进循环测试的效率，通过把vec_length的调用移出循环，不需要每次迭代都执行该函数。</p>
-<p>void combine2(vec_ptr v, data_t *dest){    long i;    long length &#x3D; vec_length(v);    *dest &#x3D; IDENT;    for (i &#x3D; 0; i &lt; length; i++) {        data_t val;        get_vec_element(v, i, &amp;val);        *dest &#x3D; *dest OP val;    }}<br>函数方法整数浮点数+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*combine1combine2抽象的-O1移出vec_length10.12 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10.12 7.02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.03&nbsp;10.17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.149.02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.03这是一类常见的优化，称为代码移动（code motion）。这类优化需要识别执行多次但是计算结果不会改变的计算。因而可以将计算移动到代码前面不会被多次求值的部分。<br>优化编译器会试着进行代码移动。不过，对于会改变在哪里调用函数或调用多少次的变换，编译器会非常小心。他们不能够可靠的发现一个函数是否会有副作用，因而会假设函数有副作用。例如，vec_length函数由某周副作用，那combine1和combine2可能就会有不同的行为。为了改进代码，程序员一般要显式的完成代码移动。<br>减少过程调用如我们所知，过程调用会带来开销，而且妨碍大多数形式的程序优化。从combine2的代码可以看出，每次循环都要调用get_vec_element来获取下一个向量元素。对于每个向量调用，这个函数要把向量索引i与循环边界做比较，很明显会造成低效率。在处理任意的数组访问时，边界检查是很有用的特性，但是对combine2代码的简单分析表明所有的引用都是合法的。<br>作为替代，假设为我们的抽象数据类型增加一个函数get_vec_start。这个函数返回数组的起始地址。之后我们可以写出图三的函数，其内循环里没有函数调用。它没有用函数调用来获取每个向量元素，而是直接访问数组。虽说这种变换损害了程序的模块性，但是在获取高性能结果的路上，这是必要步骤。<br>data_t *get_vec_start(vec_ptr v){    return v-&gt;data;}void combine3(vec_ptr v, data_t *dest){    long i;    long length &#x3D; vec_length(v);    data_t *data &#x3D; get_vec_start(v);    *dest &#x3D; IDENT;    for (i &#x3D; 0; i &lt; vec_length(v); i++) {        *dest &#x3D; <em>dest OP data[i];    }}函数方法整数浮点数+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Combine2Combine3移出vec_length直接数据访问7.02 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.03&nbsp;7.17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.02&nbsp;9.02 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.039.02 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.03ok，我们可以看到，性能提升和理论配合的并不是很好，显然内循环中有其他的操作形成了瓶颈，限制性能超过了调用get_vec_element。我们继续做优化。<br>消除不必要的内存引用combine3的代码将合并运算计算的值累积在dest指定的位置。在dest指针地址存放在寄存器中时，考虑到底层汇编，累计变量的数值都需要从内存读出再写入到内存。这样的读写是很浪费的。为了消除这种不必要的读写，我们按如下生成了combine4的代码。<br>把结果累积在临时变量中，将累积值存放在局部变量acc中，消除了每次循环迭代中从内存中读出并将更新值写回的需要:</p>
-<p>void combine4 (vec_ptr v, data_t *dest){    long i;    long length &#x3D; vec_length(v);    data_t *data &#x3D; get_vec_start(v);    data_t acc &#x3D; IDENT;    for (i &#x3D; 0; i &lt; length; i++) {        acc &#x3D; acc OP data[i];    }    <em>dest &#x3D; acc}<br>函数方法整数浮点数+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Combine3Combine4直接数据访问直接数据访问7.17 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9.02&nbsp;&nbsp;1.27&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.01&nbsp;9.02 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.033.01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.01在这操作之后，我们可以看到程序的性能有了显著的提升。</p>
+<p>&#x2F;* Create vector of specified length <em>&#x2F;vec_ptr new_vec(long len){    &#x2F;</em> Allocate header structure *&#x2F;    vec_ptr result &#x3D; (vec_ptr) malloc(sizeof(vec_rec));    data_t <em>data &#x3D; NULL;    if (!result)        return NULL;  &#x2F;</em> Couldn’t allocate storage <em>&#x2F;    result-&gt;len &#x3D; len;&#x2F;</em> $end vec <em>&#x2F;    &#x2F;</em> We don’t show this in the book <em>&#x2F;    result-&gt;allocated_len &#x3D; len;&#x2F;</em> $begin vec <em>&#x2F;    &#x2F;</em> Allocate array *&#x2F;    if (len &gt; 0) {        data &#x3D; (data_t *)calloc(len, sizeof(data_t));if (!data) {    free((void <em>) result);     return NULL; &#x2F;</em> Couldn’t allocate storage <em>&#x2F;}    }    &#x2F;</em> data will either be NULL or allocated array <em>&#x2F;    result-&gt;data &#x3D; data;    return result;}&#x2F;</em> Free storage used by vector <em>&#x2F;void free_vec(vec_ptr v) {    if (v-&gt;data)free(v-&gt;data);    free(v);}&#x2F;</em> * Retrieve vector element and store at dest. * Return 0 (out of bounds) or 1 (successful) *&#x2F;int get_vec_element(vec_ptr v, long index, data_t *dest){    if (index &lt; 0 || index &gt;&#x3D; v-&gt;len)return 0;    <em>dest &#x3D; v-&gt;data[index];    return 1;}&#x2F;</em> Return length of vector <em>&#x2F;long vec_length(vec_ptr v){    return v-&gt;len;}<br>作为一个优化的示例，如下的代码会使用某种运算，将一个向量中所有的元素合并为一个值，通过使用编译时常数IDENT和OP的不同定义，这段代码可以重编译为对数据进行不同的运算。<br>这是一个合并运算的初始实现，通过定义IDENT和OP，可以用来测试该函数对不同运算的性能：<br>&#x2F;</em> Implementation with maximum use of data abstraction *&#x2F;void combine1(vec_ptr v, data_t *dest){    long i;    *dest &#x3D; IDENT;    for(i &#x3D; 0; i &lt; vec_length(v); i++) {        data_t val;        get_vec_element(v, i, &amp;val);        *dest &#x3D; *dest OP val;    }}在之后我们会对这段代码进行一系列的优化，为评估性能优化，会在一个参考机上测量函数的CPE性能。<br>以下是combine1的CPE度量值</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>方法</th>
+<th>整数 (+)</th>
+<th>整数 (*)</th>
+<th>浮点数 (+)</th>
+<th>浮点数 (*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>combine1</td>
+<td>抽象的未优化的</td>
+<td>22.68</td>
+<td>20.02</td>
+<td>10.12</td>
+<td>10.12</td>
+</tr>
+<tr>
+<td>combine1</td>
+<td>抽象的-O1</td>
+<td>19.98</td>
+<td>20.18</td>
+<td>10.17</td>
+<td>11.14</td>
+</tr>
+</tbody></table>
+<p>未经优化的代码是从C语言代码到机器代码的直接翻译，通常效率较低，简单的使用命令行选项”-O1”，就会进行一些基本的优化，这样就可以显著提升性能。<br>消除循环的低效率可以观察到，过程combine1调用函数vec_length作为for循环的测试条件。在循环中，每次循环迭代时都必须对测试条件求值。另一方面，向量的长度并不会随着循环的进行而改变。因此，我们只需要计算一次向量的长度，然后在我们的测试条件中都会使用这个值。<br>以下是一个修改了的版本，称为combine2，它在开始时就调用了vec_length,并且将结果赋值给局部变量length。对于某些数据类型和操作，这个变换明显地影响了某些数据类型和操作的整体性能，对于其他的则很小甚至没有影响。无论哪种情况，都需要这种变化来消除这个低效率，这有可能称为尝试进一步优化时的瓶颈。<br>改进循环测试的效率，通过把vec_length的调用移出循环，不需要每次迭代都执行该函数。</p>
+<p>void combine2(vec_ptr v, data_t *dest){    long i;    long length &#x3D; vec_length(v);    *dest &#x3D; IDENT;    for (i &#x3D; 0; i &lt; length; i++) {        data_t val;        get_vec_element(v, i, &amp;val);        *dest &#x3D; *dest OP val;    }}</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>方法</th>
+<th>整数 (+)</th>
+<th>整数 (*)</th>
+<th>浮点数 (+)</th>
+<th>浮点数 (*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>combine1</td>
+<td>抽象的-O1</td>
+<td>10.12</td>
+<td>10.12</td>
+<td>10.17</td>
+<td>11.14</td>
+</tr>
+<tr>
+<td>combine2</td>
+<td>移出vec_length</td>
+<td>7.02</td>
+<td>9.03</td>
+<td>9.02</td>
+<td>11.03</td>
+</tr>
+</tbody></table>
+<p>这是一类常见的优化，称为代码移动（code motion）。这类优化需要识别执行多次但是计算结果不会改变的计算。因而可以将计算移动到代码前面不会被多次求值的部分。<br>优化编译器会试着进行代码移动。不过，对于会改变在哪里调用函数或调用多少次的变换，编译器会非常小心。他们不能够可靠的发现一个函数是否会有副作用，因而会假设函数有副作用。例如，vec_length函数由某周副作用，那combine1和combine2可能就会有不同的行为。为了改进代码，程序员一般要显式的完成代码移动。<br>减少过程调用如我们所知，过程调用会带来开销，而且妨碍大多数形式的程序优化。从combine2的代码可以看出，每次循环都要调用get_vec_element来获取下一个向量元素。对于每个向量调用，这个函数要把向量索引i与循环边界做比较，很明显会造成低效率。在处理任意的数组访问时，边界检查是很有用的特性，但是对combine2代码的简单分析表明所有的引用都是合法的。<br>作为替代，假设为我们的抽象数据类型增加一个函数get_vec_start。这个函数返回数组的起始地址。之后我们可以写出图三的函数，其内循环里没有函数调用。它没有用函数调用来获取每个向量元素，而是直接访问数组。虽说这种变换损害了程序的模块性，但是在获取高性能结果的路上，这是必要步骤。</p>
+<p>data_t *get_vec_start(vec_ptr v){    return v-&gt;data;}void combine3(vec_ptr v, data_t *dest){    long i;    long length &#x3D; vec_length(v);    data_t *data &#x3D; get_vec_start(v);    *dest &#x3D; IDENT;    for (i &#x3D; 0; i &lt; vec_length(v); i++) {        <em>dest &#x3D; <em>dest OP data[i];    }}| 函数 | 方法 | 整数 (+) | 整数 (</em>) | 浮点数 (+) | 浮点数 (</em>) |<br>|——|——|———|———|———-|———-|<br>| Combine2 | 移出vec_length | 7.02 | 9.03 | 9.02 | 11.03 |<br>| Combine3 | 直接数据访问 | 7.17 | 9.02 | 9.02 | 11.03 |</p>
+<p>OK，我们可以看到，性能提升和理论配合的并不是很好，显然内循环中有其他的操作形成了瓶颈，限制性能超过了调用get_vec_element。我们继续做优化。<br>消除不必要的内存引用combine3的代码将合并运算计算的值累积在dest指定的位置。在dest指针地址存放在寄存器中时，考虑到底层汇编，累计变量的数值都需要从内存读出再写入到内存。这样的读写是很浪费的。为了消除这种不必要的读写，我们按如下生成了combine4的代码。<br>把结果累积在临时变量中，将累积值存放在局部变量acc中，消除了每次循环迭代中从内存中读出并将更新值写回的需要:</p>
+<p>void combine4 (vec_ptr v, data_t *dest){    long i;    long length &#x3D; vec_length(v);    data_t *data &#x3D; get_vec_start(v);    data_t acc &#x3D; IDENT;    for (i &#x3D; 0; i &lt; length; i++) {        acc &#x3D; acc OP data[i];    }    *dest &#x3D; acc}</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>方法</th>
+<th>整数 (+)</th>
+<th>整数 (*)</th>
+<th>浮点数 (+)</th>
+<th>浮点数 (*)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Combine3</td>
+<td>直接数据访问</td>
+<td>7.17</td>
+<td>9.02</td>
+<td>9.02</td>
+<td>11.03</td>
+</tr>
+<tr>
+<td>Combine4</td>
+<td>直接数据访问</td>
+<td>1.27</td>
+<td>3.01</td>
+<td>3.01</td>
+<td>5.01</td>
+</tr>
+</tbody></table>
+<p>在这操作之后，我们可以看到程序的性能有了显著的提升。</p>
 
                 
             </div>

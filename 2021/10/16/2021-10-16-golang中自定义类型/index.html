@@ -5,7 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Golang中自定义类型, programming,learning,blog">
-    <meta name="description" content="Go 允许定义新的类型，可以通过关键字 type 实现：type foo int如上我们创建了一个新的类型 foo 作用跟 int 一样。创建更加复杂的类型需要用到 struct 关键字。这有个在一个数据结构中记录某人的姓名（string）">
+    <meta name="description" content="Go 允许定义新的类型，可以通过关键字 type 实现：
+1type foo int
+
+如上我们创建了一个新的类型 foo 作用跟 int 一样。创建更加复杂的类型需要用到 struct 关键字。这有个在一个数据结构中记录某人的姓名（str">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -398,10 +401,43 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Go 允许定义新的类型，可以通过关键字 type 实现：<br>type foo int<br>如上我们创建了一个新的类型 foo 作用跟 int 一样。创建更加复杂的类型需要用到 struct 关键字。这有个在一个数据结构中记录某人的姓名（string）和年龄（int），并且使其成为一个新的类型的例子：<br>package mainimport “fmt”type NameAge struct {    name string &#x2F;&#x2F; 不导出    age int &#x2F;&#x2F; 不导出}func main() {    a :&#x3D; new(NameAge)    a.name &#x3D; “Pete” ; a.age &#x3D; 42    fmt.Printf(“%v\n”, a)}通常，fmt.Printf(“%v\n”, a) 的输出是&amp;{Pete 42}<br>Go 知道如何打印结构。如果仅想打印某一个，或者某几个结构中的字段，需<br>要使用 .。例如，仅仅打印名字：</p>
-<p>fmt.Printf(“%s”, a.name) &#x2F;&#x2F; %s 格式化字符串<br>结构字段之前已经提到结构中的项目被称为field。没有字段的结构：struct {}<br>或者有四个c 字段的：</p>
-<p>struct {    x, y int    A *[]int    F func()}<br>如果省略字段的名字，可以创建匿名字段，例如：<br>struct {    T1 &#x2F;&#x2F; 字段名字是 T1    *T2 &#x2F;&#x2F; 字段名字是 T2    P.T3 &#x2F;&#x2F; 字段名字是 T3    x, y int &#x2F;&#x2F; 字段名字是 x 和 y }<br>注意首字母大写的字段可以被导出，也就是说，在其他包中可以进行读写。字段名以小写字母开头是当前包的私有的。<br>方法可以对新定义的类型创建函数以便操作，可以通过两种途径：<br>创建一个函数接受这个类型的参数。func doSomething(n1 <em>NameAge, n2 int) { &#x2F;</em> *&#x2F; }（你可能已经猜到了）这是 函数调用。创建一个工作在这个类型上的函数（参阅在 2.1 中定义的接收方）：func (n1 <em>NameAge) doSomething(n2 int) { &#x2F;</em> *&#x2F; }这是方法调用，可以类似这样使用：var n *NameAgen.doSomething(2)使用函数还是方法是由程序员决定的，但是如果想要满足接口就只能使用方法。如果没有这方面的需求，那就由个人品味决定了。下面的类型定义中有一些微小但是很重要的不同之处。<br>我们假设有如下代码：</p>
-<p>&#x2F;&#x2F; Mutex 数据类型有两个方法，Lock 和 Unlock。type Mutex struct { &#x2F;* Mutex 字段 *&#x2F; }func (m <em>Mutex) Lock() { &#x2F;</em> Lock 实现 *&#x2F; }func (m <em>Mutex) Unlock() { &#x2F;</em> Unlock 实现 *&#x2F; }<br>现在用两种不同的风格创建了两个数据类型:<br>type NewMutex Mutextype PrintableMutex struct {Mutex }<br>现在 NewMutux 等同于 Mutex，但是它没有任何 Mutex 的方法。换句话说，它的方法<br>是空的。但是 PrintableMutex 已经从 Mutex 继承了方法集合。*PrintableMutex 的方法集合包含了 Lock 和 Unlock 方法，被绑定到其匿名字段 Mutex。</p>
+                <p>Go 允许定义新的类型，可以通过关键字 type 实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> foo <span class="type">int</span></span><br></pre></td></tr></table></figure>
+
+<p>如上我们创建了一个新的类型 foo 作用跟 int 一样。创建更加复杂的类型需要用到 struct 关键字。这有个在一个数据结构中记录某人的姓名（string）和年龄（int），并且使其成为一个新的类型的例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> NameAge <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="type">string</span> <span class="comment">// 不导出</span></span><br><span class="line">    age <span class="type">int</span> <span class="comment">// 不导出</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    a := <span class="built_in">new</span>(NameAge)</span><br><span class="line">    a.name = <span class="string">&quot;Pete&quot;</span> ; a.age = <span class="number">42</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%v\n&quot;</span>, a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通常，<code>fmt.Printf(&quot;%v\n&quot;, a)</code> 的输出是<code>&amp;{Pete 42}</code></p>
+<p>Go 知道如何打印结构。如果仅想打印某一个，或者某几个结构中的字段，需要使用 <code>.</code>。例如，仅仅打印名字：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fmt.Printf(<span class="string">&quot;%s&quot;</span>, a.name) <span class="comment">// %s 格式化字符串</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>结构字段</strong></p>
+<p>之前已经提到结构中的项目被称为field。没有字段的结构：<code>struct {}</code></p>
+<p>或者有四个字段的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> &#123;</span><br><span class="line">    x, y <span class="type">int</span></span><br><span class="line">    A *[]<span class="type">int</span></span><br><span class="line">    F <span class="function"><span class="keyword">func</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果省略字段的名字，可以创建匿名字段，例如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> &#123;</span><br><span class="line">    T1 <span class="comment">// 字段名字是 T1</span></span><br><span class="line">    *T2 <span class="comment">// 字段名字是 T2</span></span><br><span class="line">    P.T3 <span class="comment">// 字段名字是 T3</span></span><br><span class="line">    x, y <span class="type">int</span> <span class="comment">// 字段名字是 x 和 y</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意首字母大写的字段可以被导出，也就是说，在其他包中可以进行读写。字段名以小写字母开头是当前包的私有的。</p>
+<p><strong>方法</strong></p>
+<p>可以对新定义的类型创建函数以便操作，可以通过两种途径：</p>
+<ol>
+<li><p>创建一个函数接受这个类型的参数：<code>func doSomething(n1 *NameAge, n2 int) { /* */ }</code>（你可能已经猜到了）这是函数调用。</p>
+</li>
+<li><p>创建一个工作在这个类型上的函数（参阅在 2.1 中定义的接收方）：<code>func (n1 *NameAge) doSomething(n2 int) { /* */ }</code>这是方法调用，可以类似这样使用：</p>
+</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> n *NameAge</span><br><span class="line">n.doSomething(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用函数还是方法是由程序员决定的，但是如果想要满足接口就只能使用方法。如果没有这方面的需求，那就由个人品味决定了。下面的类型定义中有一些微小但是很重要的不同之处。</p>
+<p>我们假设有如下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Mutex 数据类型有两个方法，Lock 和 Unlock。</span></span><br><span class="line"><span class="keyword">type</span> Mutex <span class="keyword">struct</span> &#123; <span class="comment">/* Mutex 字段 */</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *Mutex)</span></span> Lock() &#123; <span class="comment">/* Lock 实现 */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *Mutex)</span></span> Unlock() &#123; <span class="comment">/* Unlock 实现 */</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在用两种不同的风格创建了两个数据类型:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> NewMutex Mutex</span><br><span class="line"><span class="keyword">type</span> PrintableMutex <span class="keyword">struct</span> &#123;</span><br><span class="line">    Mutex</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在 NewMutux 等同于 Mutex，但是它没有任何 Mutex 的方法。换句话说，它的方法是空的。但是 PrintableMutex 已经从 Mutex 继承了方法集合。<code>*PrintableMutex</code> 的方法集合包含了 Lock 和 Unlock 方法，被绑定到其匿名字段 Mutex。</p>
 
                 
             </div>

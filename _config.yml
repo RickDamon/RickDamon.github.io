@@ -102,5 +102,5 @@ theme: matery
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:rickdamon/rickdamon.github.io.git
+  repo: https://github.com/RickDamon/RickDamon.github.io.git
   branch: master

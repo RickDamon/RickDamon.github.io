@@ -187,6 +187,16 @@ pre code {
     background-color: #272822;
 }
 
+/* 代码块中函数名等 span 标签样式修复 */
+span.function,
+span.title,
+span.keyword,
+span.type,
+span.params {
+    font-weight: normal !important;
+    font-size: 1em !important;
+}
+
 /* 键盘 kbd 标签样式 */
 kbd {
     margin: 0 3px;

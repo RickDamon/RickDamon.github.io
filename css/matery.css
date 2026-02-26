@@ -187,6 +187,115 @@ pre code {
     background-color: #272822;
 }
 
+/* 代码块中函数名/类名等元素样式修复，防止被全局 .title 规则影响 */
+figure.highlight span.title,
+figure.highlight span.function,
+pre code span.title,
+pre code span.function {
+    font-weight: normal !important;
+    font-size: inherit !important;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Hexo highlight.js 语法高亮配色 (Monokai 风格) */
+figure.highlight .comment,
+figure.highlight .quote {
+    color: #75715e;
+    font-style: italic;
+}
+
+figure.highlight .keyword,
+figure.highlight .selector-tag,
+figure.highlight .tag {
+    color: #f92672;
+}
+
+figure.highlight .title.function_,
+figure.highlight .title.class_ {
+    color: #a6e22e;
+    font-weight: normal;
+    font-size: inherit;
+}
+
+figure.highlight .string,
+figure.highlight .attr,
+figure.highlight .symbol,
+figure.highlight .bullet,
+figure.highlight .addition {
+    color: #e6db74;
+}
+
+figure.highlight .number,
+figure.highlight .literal {
+    color: #ae81ff;
+}
+
+figure.highlight .built_in {
+    color: #66d9ef;
+}
+
+figure.highlight .variable,
+figure.highlight .template-variable,
+figure.highlight .variable.language_ {
+    color: #fd971f;
+}
+
+figure.highlight .type,
+figure.highlight .params {
+    color: #66d9ef;
+    font-style: italic;
+}
+
+figure.highlight .meta {
+    color: #75715e;
+}
+
+figure.highlight .deletion {
+    color: #f92672;
+}
+
+figure.highlight .section {
+    color: #a6e22e;
+}
+
+figure.highlight .name {
+    color: #f92672;
+}
+
+figure.highlight .attr {
+    color: #a6e22e;
+}
+
+figure.highlight .attribute {
+    color: #66d9ef;
+}
+
+figure.highlight .regexp {
+    color: #e6db74;
+}
+
+figure.highlight .subst {
+    color: #f8f8f2;
+}
+
+figure.highlight .doctag {
+    color: #75715e;
+}
+
+figure.highlight .selector-id {
+    color: #a6e22e;
+}
+
+figure.highlight .selector-class {
+    color: #a6e22e;
+}
+
+figure.highlight .selector-attr,
+figure.highlight .selector-pseudo {
+    color: #a6e22e;
+}
+
 /* 键盘 kbd 标签样式 */
 kbd {
     margin: 0 3px;
@@ -1683,10 +1792,12 @@ thead {
 }
 
 .post-charts,
-.title,
-.my-projects .title,
-.my-skills .title,
-.my-gallery .title {
+.my-projects > .title,
+.my-skills > .title,
+.my-gallery > .title,
+.about-content > .title,
+.post-charts + .title,
+section > .title {
     font-size: 2rem;
     margin-bottom: 2.25rem;
 }

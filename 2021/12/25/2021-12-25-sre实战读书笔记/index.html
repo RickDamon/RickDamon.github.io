@@ -1,0 +1,1054 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="SRE实战读书笔记, programming,learning,blog">
+    <meta name="description" content="SRE的概念   近些年来随着越来越多团队采用微服务、容器或者是其他分布式技术和产品，虽然效率提升了，但复杂架构的稳定性变得难以保障，Google一直以来作为互联网产业的先驱在十年前提出了SRE(Site Reliability Engin">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>SRE实战读书笔记 | RickDamon&#39;s Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/images/image.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">RickDamon&#39;s Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/images/image.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">RickDamon&#39;s Blog</div>
+        <div class="logo-desc">
+            
+            Personal blog about programming, learning, and life
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">SRE实战读书笔记</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/SRE/">
+                                <span class="chip bg-color">SRE</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-12-25
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>SRE的概念   近些年来随着越来越多团队采用微服务、容器或者是其他分布式技术和产品，虽然效率提升了，但复杂架构的稳定性变得难以保障，Google一直以来作为互联网产业的先驱在十年前提出了SRE(Site Reliability Engineering)这个概念,中文一般译为网站可靠性工程师，做的工作主要是监控告警、运维自动化、故障处理以及复盘等工作。<br>系统故障阶段<br>   从图中我们可以看到，把故障处理分了两个个阶段，MTBF（Mean Time Between Failure）,MTTR（Mean Time To Repair），MTBF指示的是系统正常运行的阶段，MTTR则是系统的故障状态。看到这幅图大致也能想到提升稳定性的两个方向：提升MTBF，减少故障发生次数，提升故障发生的间隔时长；降低MTTR，使故障的影响时长降低。<br>  从图中也可以看到将MTTR分了四个阶段：<br>MTTI（Mean Time To Identify，平均故障发生时间）：即故障实际发生到我们真正开始相应的时间。这个过程可能是用户或客服反馈或是监控告警等渠道触发。MTTK（Mean Time To Know，平均故障认知时间）：也就是常说的故障定位时间，这里指到根因（root cause）被定位出来为止。MTTF（Mean Time To Fix，平均故障解决时间）：也就是定位到了根因，到采取措施让业务回复为止，采取的手段可能是限流，降级，熔断甚至是重启。MTTV（Mean Time To Verity，平均故障修复验证时间）：即故障解决后，通过用户反馈、监控指标观察等手段来确认业务是否真正恢复所用的时间。了解了故障处理的各个阶段后我们来大概看下要做的事情：<br>  SRE在Pre-MTBF阶段要做好架构设计提供限流、降级熔断这些服务治理手段，以具备故障快速隔离的条件；还可以考虑混沌工程这些故障模拟机制，在线上模拟故障以便提前发现问题。混沌工程即通过主动制造故障，测试系统在各种压力下的行为，识别并修复故障问题，避免造成严重后果。<br>  在Post-MTBF阶段，即上一故障刚刚结束，要做的就是故障复盘，总结经验，找到不足和落地改进措施等。<br>  在MTTI阶段需要依赖监控系统及时发现问题，对于复杂度较高和体量很大的系统要依赖AIops的能力，提升告警准确率，以便做出精准响应。<br>  同样AIOps能力在大规模分布式系统中，在MTTK阶段也很关键，因为我们需要在这个阶段确认根因，起码得是根因的范围。<br>  当然要做的主要事情就是“提升MTBF、降低MTTR”。<br>系统可用性目前系统可用性由两个衡量方式，时间维度和请求维度：<br>时间维度：Availability &#x3D; Uptime &#x2F; （Uptime + Downtime）请求维度：Availability &#x3D; Successful request &#x2F; Total request<br>时间维度是从故障角度出发对系统稳定性进行评估，这种衡量方式的问题是稳定性只与故障发生挂钩，如果一个系统，因为网络抖动，有短暂的几秒或十几秒异常，但自身恢复了，业务没发生中断，那不会被认为是系统故障。但如果这种影响频度很高的话，运行情况也不能算作是正常的，也属于不稳定的范围内。<br>从请求维度衡量可用性时是从成功请求占比的角度出发，来对系统的稳定性进行评估。这种评估方式有三个关键要素：衡量指标，衡量目标以及统计周期。比方说我们的衡量指标指定为请求成功率，之后衡量目标确定为成功率达到95%才算正常，统计周期确定为一周。这种方式对系统稳定状况监管的更为严格，不会漏掉任何一次问题的影响。<br>从这里我们可以看出来：故障一定代表不稳定，但不稳定并不代表有故障发生。<br>之后来看一下设定系统稳定性目标要考虑的三个因素：<br>成本因素业务容忍度系统当前的稳定性状况<br>成本因素很好理解，我们当然希望稳定性达到非常好，但相应的付出的成本和代价也是很高的。为了更好的可用性，可能要很多的冗余资源投入，不是所有的事情哦都需要付出这么高的成本，还是要考虑回报率。<br>业务容忍度方面，对于非核心业务的容忍度可以设定的低一些，而核心业务的稳定性肯定是越高越好。<br>谁当稳定性目标肯定要结合系统现状，如果说系统的可用性低于99%，第一步肯定是先做上99%再说，而不是直接99.999999%。如果目标太高达不到会打击团队的积极性和自信心。<br>SLI、SLO、SLA   确保应用程序可用性的很大部分是在建立和监控服务级别指标(service-level metrics)上,service-level在商业级别上主要指的是SLA，而在SRE的规划和事件中会使用SLO和SLI，这里的A，O，I指的是Objective，Agreement以及indicator。<br>  SLO指的是每个服务的用户可接受的最低可靠性级别，通过这项数据，团队就可以决定是要将服务变得更加可靠，还是降低其可靠性进行一个原则性的判断，因为越可靠往往意味着运营成本越高，这就是SLO对于开发团队的作用。<br>  SLI就是一个对于服务行为的直接衡量了，定义为系统成功探测的频率，当我们去评估过去一周内我们的系统是否在SLO内运行时，会查看SLI来得到服务可用性的百分比，如果低于定义的SLO，那说明系统有问题，需要去提升系统的可用性了。<br>  而SLA相对于SLO来说，通常涉及到对服务用户的承诺，即服务可用性SLO应该在特定的时期达到一个特定的级别，之前有说过SLA是商业级别的，那么达不到对用户的承诺的话，必然也会导致某种惩罚，一般都是经济性的。<br>  通俗一点来讲，SLI指的是服务等级指标，即QPS，响应时间等，而SLO是对SLI中指标设立的目标，即QPS要达到99.99%,响应时间应该为10ms等。<br>  SLO和SLI的设立标准化一点可以套用《谷歌SRE工作手册》的方法:VALET,即Volume、Availability、Latency、Error和Ticket。<br>  Volume指的是容量，也就是常来衡量吞吐量的QPS和TPS等等。<br>  Availability即可用性，之前有讲到相关的概念。<br>  Latency即延迟，这个反应的就是响应是否够快，如果是一个任务类的作业，我们会看每个任务是否在规定的时间完成了。通常对于时延这个指标，我们不会直接做所有请求时延的平均，因为整个时延的分布也符合正态分布，所以通常会以类似“90% 请求的时延 &lt;&#x3D; 80ms，或者 95% 请求的时延 &lt;&#x3D;120ms ”这样的方式来设定时延 SLO，数理统计中，这个 90% 或 95% 称之为置信区间。这样选择的原因也是因为不排除很多请求从业务逻辑层面是不成功的，这时业务逻辑的处理时长就会非常短（可能 10ms），或者出现 404 这样的状态码（可能就 1ms）。从可用性来讲，这些请求也算成功，但是这样的请求会拉低整个均值。<br>  Latency的延迟选择应该就是类似“90% 请求的时延 &lt;&#x3D; 80ms，或者 95% 请求的时延 &lt;&#x3D;120ms ”这样的方式来设定SLO。<br>  Error就是我们最常见的错误，最能想到的就是状态码，不光是4xx还是5xx都可以列进来，也可以去自定义一些状态码，比如创建一个用户的时候老报错什么的，也可以作为衡量的标准。我们可以用 正常的返回状态 &#x2F; 总的返回状态 得到一个Error的SLO。<br>  Tickets是故障单，如果说一项任务需要去人工介入的话，类似于数据无法恢复，超时了，这些都需要人工介入，中断任务或者重新跑等等。对于Tickets的SLO就像是一个人工介入的门票一样，比如说我给SLO设置为10，那就说明我这个月每人工介入那就消耗一张Ticket，如果这十张消耗完了，那还要人工介入，那么这个月系统就不达标了。所以Ticket的SLO通常是一个整数值。<br>错误预算  在SLO的目标设定之后，我们还是需要一个允许犯错的次数标准，就和考驾照一样，虽然你过了，但是不能你犯了一次问题就给你12分全扣了，得有一个提示你还有多少犯错机会的东西。在SRE这里，这个概念就是Error Budget，即错误预算，一般是通过SLO反向推导出来的。比方说有个应用请求总次数是10000，你设定的SLO其中一条是延迟&lt;&#x3D;80ms要达到90%，那你在这里的错误预算就是1000了。在SLO落地实践时，通常就把SLO转化为错误预算来推进稳定性目标达成。<br>那么如何应用错误预算呢？可以通过四种方式。<br>  1.稳定性燃尽图<br>  应用方面可以指定稳定性燃尽图来把错误预算直观的表达出来，可以参考Google给的错误预算燃尽图。</p>
+<p>  在应用错误预算的时候，需要设定一个合理的周期，一天或一周较短，通常设定为4个自然周，这也是谷歌给出的建议。选择月份容易导致跨周的情况出现，所以选为自然周。<br>  2.故障定级<br>  评估问题影响程度有多大除了看影响的时长外可以按照问题消耗的错误预算比例来进行评判。书中以蘑菇街的例子将故障定级为P0~P4，具体工作中的定级可以根据实际业务情况和容忍度来判定。<br>  3.稳定性共识机制<br>  当错误预算处于不同的状态时采取的措施时不一样的。<br>  在剩余预算充足或为消耗完之前，对问题的发生要有容忍度；剩余预算消耗过快或者即将消耗完前，SRE有权中止和拒绝任何线上变更；<br>  4.基于错误预算的告警<br>  很多告警如CPU使用率、成功率低于多少百分点等如果接收次数过多会使警惕性放松，所以需要对告警进行一定收敛：<br>对于相同相似告警合并后发送，比方同一应用集群内同一时间内，同一异常告警，先进行合并，对外只发送一条，比较简单直接。<br>基于错误预算来进行告警，只关注对稳定性造成影响的告警，涉及到AIOps的领域。<br>衡量SLO的有效性衡量SLO和错误预算策略是否有效，就是要看实际运行后是否能达到期望，可从三个关键维度来看：<br>SLO达成情况。有达成（Met）和未达成（Missed）来表示。“人肉“投入程度，英文为toil，一般指需要大量人工投入、重复繁琐且没价值的事，用投入的程度的多少（High）和（Low）来表示。用户满意度。三个维度分别有两种情况，一共就是八种情况，下图是Google给出的相应情况的建议。</p>
+<p>应对方式大致可以分为三类：<br>收紧SLO，在目标太低，达成了但用户不满意的情况下。放宽SLO，用户反馈很好但是目标太高难以达成。保持现状，有针对性地对有问题的维度进行优化。设定SLO的原则核心应用的SLO要更严格，非核心应用可以方宽。核心应用和非核心需要根据业务场景和特点来进行分析和讨论，核心应用之间的依赖关系我们称为强依赖，其他应用间的关系称为弱依赖。强依赖间的核心应用，SLO要一致。弱依赖中，核心应用对非核心的依赖要有降级、熔断和限流等服务治理手段。Error Budget策略，核心应用的错误预算要共享，即如果某个核心应用错误预算消耗完，SLO没有达成，那整条链路，原则上都是要全部暂停操作的。验证核心链路的SLO  验证方式主要是容量压测和混沌工程，容量压测的主要作用是看SLO中的Volume即容量目标是否可以达成，混沌工程则是线上模拟真实的故障，做线上应急演练来提前发现隐患，混沌工程是在SRE体系在服务治理、容量压测、链路跟踪、监控告警、运维自动化等相对基础和必需的部分非常完善的情况下才会考虑，简而言之这东西急不来。<br>  做系统验证也要在保证生产系统的稳定性的情况下，不能因为演练导致系统异常或故障，要在错误预算充足的情况下来尝试，尽量避开错误预算不足的时间段，毕竟正常业务下，要完成SLO已经有了很大压力，不能给系统稳定性增加新风险。<br>故障发现<br>在分布式系统中MTTR的各环节所占时长如图所示，我们针对故障处理的目的是比较明确的，就是要提升每个环节的处理效率，缩短它们的处理时间，才能缩短整个MTTR，减少不必要的时长消耗。<br>MTTI此环节有两件事要做：第一是判断出现的问题是不是故障；第二是确定由谁来响应和召集。<br>判断是否为故障以及故障的相应方式就如错误预算中故障等级设定所述来进行响应。<br>第二件事就要提到SRE中的On-Call机制。<br>在On-Call阶段并非所有的告警都要响应，若不影像稳定性，一般的告警可以降低相应级别，只需要响应基于SLO的告警。<br>有使用高峰期的产品On-Call机制设立可以用错时保障机制，确保关键角色必须在线，随时应急响应。<br>On-Call的流程机制建设蘑菇街团队的流程是“On-Call关键5步法”。<br>1.确保关键角色在线。<br>关键角色并非单指运维或SRE人员，而是整个产品体系的所有关键角色，比方电商中需要安排核心业务应用(用户、商品、交易、优惠、支付等)的Owner，或Backup中至少有人参与On-Call轮班。当然，接收故障告警或第一时间响应故障的还是运维、PE或SRE类角色。<br>2.组织War Room应急组织。<br>设立专门处理故障的“消防群”，当有故障发生时第一时间在消防群通报，这时对应的On-Call同事要在第一时间最高优先级响应呼叫。<br>3.建立合理呼叫方式。<br>在On-Call机制中，最熟悉系统的人很容易被7*24小时打扰。比如系统或应用的Owner或架构师会被默认为On-Call。<br>这样做的后果会很影响这些同时在正常业务开发上的精力投入。总是被打断或通宵处理问题。为解决这种情况建议使用固定的On-Call手机，建立手机与所有On-Call系统的对应关系，比如一个手机对应交易核心应用，另一个手机对应IDC机房运维。手机在谁手中谁承担On-Call的职责。熟悉某个系统的最快最好方式就是参与On-Call而非看架构图和代码。<br>4.确保资源投入的升级机制。<br>分布式系统中On-Call机制的设立并不能单单让几个人值班或者将所有事情交给冲在前线的运维或SRE来完成。在这里需要给运维或SRE进行授权，当他们发现问题非现有人员能解决时，有权调动其他必要的资源投入，若故障等级偏高可以直接上升到主管要求上级主管协调资源投入。<br>5.与云厂商联合的On-Call<br>在企业上云大趋势的情况下，对问题和故障的处理离不开与云产品工程师一起联动，云厂商也应考虑将客户业务作为自身业务的一部分，双方实现紧密合作。<br>对监控体系和ON-Call来说，On-Call机制更重要，毕竟监控体系是持续优化进步的过程，而业务的故障是随时发生，优先恢复业务是最高优先级。良好的On-Call机制既能保障业务，也能将处理过的故障快速反馈到监控体系，进一步优化监控体系，达到双赢。<br>建立有效的故障应急响应机制Google的故障只会体系参考了美国消防员处理1968年森林大火时建立的应急指挥体系。<br>体系中的三个重要核心角色为：<br>1.IC（Incident Commander），故障指挥官，此角色是整个指挥体系的核心，最重要的职责是组织和协调而非执行，下面俩角色要接受他的指令并严格执行。<br>2.CL（Communication Lead），沟通引导，负责对内和对外的信息收集和同胞，此角色一般相对固定，由技术支持、QA或某个SRE来承担皆可，但要求沟通表达能力较强。<br>3.OL（Operations Lead），运维指挥，负责指挥或指导各种故障预案的执行和业务恢复。<br>还有一个角色IR（incident responders）不在体系内，但也发挥了重要作用，就是所有需要参与到故障修复中的各类人员，真正的故障定位和业务恢复都由他们来完成。<br>流程机制：<br>1.故障发现后，On-Call的SRE或是运维，最一开始就是IC，有权召集相应的业务开发或其它必要资源，快速组织WarRoom。<br>2.若问题和恢复过程很明确，IC仍为SRE，不做转移，由他来指挥每个人要做的具体事情，以恢复业务为优先。<br>3.若问题疑难，影响范围很大，此时SRE可要求更高级的主管接入。<br>反馈机制：<br>以团队为单位，每10-15分钟做一次反馈，反馈当前处理进展及下一步行动，若中途有需要马上执行操作，也需事先通报，且要求通报的内容包括对业务和系统的影响是什么，最后由IC决策后再执行。没有进展也要及时反馈，若长时间未定位结果，可能需要选择有损的降级服务，不让故障蔓延。<br>CL在沟通时要尽量以业务化的语言描述，且要给到对方大致的预期。<br>故障复盘故障根因往往不止一个，与其争论根因是啥，不妨一起看看引起故障的原因都有哪些，是不是有改进的空间。<br>故障三问：<br>1.故障原因有哪些？<br>2.做什么，怎么做才能确保下次不会再出现类似故障？<br>3.做什么可以用更短的时间回复业务？<br>故障复盘过程中避免出现相互指责和埋怨的情况，若出现应让会议主持者及时控制并打断。<br>故障判定三原则：<br>1.健壮性原则<br>每个部件自身都具有一定自愈能力，如主备、集群、限流、降级和重试等，例如在B依赖A的情况下，被依赖方A出现问题，但能快速恢复但B无法快速恢复，这种情况下承担主要责任的是依赖方B而不是被依赖方A。<br>2.第三方默认无责<br>若使用到了第三方的服务，如公有云各类服务，包括IaaS、PaaS、CDN或视频等原则上就是默认第三方无责。涉及第三方服务的情况，再判定改进责任时分为对内和对外两部分，对内谁的服务受影响谁改进，对外推进第三方改进，稳定性要做到相对自我可控，并非完全依赖外部。<br>3.分段判定原则<br>当发生衍生故障，或是故障蔓延的原因与触发原因不同时，我们会将一次故障分段判断，这样会让故障问题更聚焦，改进措施更有针对性。<br>互联网典型的SRE组织架构落地SRE应该注意组织架构需要与技术架构相匹配<br>SRE是微服务和分布式架构的产物，因此想要引入SRE体系，首先要看技术架构是否再朝着服务化和分布式的方向演进。架构不复杂其实是没必要引入SRE这样的运维体系的。<br>当技术架构朝着微服务和分布式的方向演进时，需要落地SRE，此时组织架构就需要和技术架构相匹配，需要对原有技术团队的组织架构做出一些变革。<br>从组织架构角度来说：SRE &#x3D; PE（Production Engineer）+ 工具平台开发 + 稳定性平台开发<br>其中PE负责业务中台和前台这两层的运维职责，前台层用案例的产品体系举例可以类比为淘宝、天猫等业务产品，而中台包括技术中台与业务中台，业务中台就是将具有业务共性的产品能力提炼出来，比如用户、商品、交易、支付和优惠等，上面支撑着业务前台应用；技术中台包括使用到的各种分布式部件，比如缓存、消息、数据库、对象存储和大数据等产品，这一层最大的特点是“有状态”，即要存储数据的产品。<br>工具平台团队负责效能工具的研发，如CMDB、运维自动化、持续交付以及部分技术运营报表的实现，为基础运维和应用运维提供效率平台支撑，团队对于业务理解和系统集成能力要求比较强，但是对技术能力没有很高的要求。<br>稳定性平台团队负责稳定性保障相关的标准和平台，如监控、服务治理相关的限流降级、全链路跟踪、容量压测和规划。此团队主要是为稳定性保障提供支撑，平台提供出来的能力可以直接支撑业务开发团队。<br>总结SRE的核心理念是如何打造自治的系统，而非主要靠人工来手动维护。为了实现这一点，成员又至少50%的时间用于自治系统开发，剩下的时间就是on-call，当然完全自治的系统是一个理想的目标，SRE理念倡导用机器代替人力，提升效率的方式是很值得学习的。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">RickDamon</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://rickdamon.github.io/2021/12/25/2021-12-25-sre%E5%AE%9E%E6%88%98%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">https://rickdamon.github.io/2021/12/25/2021-12-25-sre%E5%AE%9E%E6%88%98%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">RickDamon</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/SRE/">
+                                    <span class="chip bg-color">SRE</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/01/03/2022-01-03-%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%86/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="金字塔原理">
+                        
+                        <span class="card-title">金字塔原理</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            RickDamon
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/">
+                        <span class="chip bg-color">软技能</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/12/12/2021-12-12-golang%E4%B8%AD%E9%80%9A%E8%AE%AF/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Golang中通讯">
+                        
+                        <span class="card-title">Golang中通讯</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            RickDamon
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2026</span>
+            
+            <a href="/about" target="_blank">RickDamon</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/rickdamon" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:719196134@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=719196134" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 719196134" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

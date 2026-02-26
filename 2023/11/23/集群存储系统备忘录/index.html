@@ -1,0 +1,1206 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="集群存储系统备忘录, programming,learning,blog">
+    <meta name="description" content="在微服务环境中，由于服务的动态性和分布性，存储问题变得比较棘手。一方面，我们需要确保数据的一致性和可靠性；另一方面，我们也需要提供足够的性能和可扩展性来满足服务的需求。此外，由于存储系统通常是底层基础设施的一部分，它的问题往往很难排查，而且">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>集群存储系统备忘录 | RickDamon&#39;s Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/images/image.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">RickDamon&#39;s Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/images/image.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">RickDamon&#39;s Blog</div>
+        <div class="logo-desc">
+            
+            Personal blog about programming, learning, and life
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">集群存储系统备忘录</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Kubernetes/">
+                                <span class="chip bg-color">Kubernetes</span>
+                            </a>
+                        
+                            <a href="/tags/CSI/">
+                                <span class="chip bg-color">CSI</span>
+                            </a>
+                        
+                            <a href="/tags/Ceph/">
+                                <span class="chip bg-color">Ceph</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%9D%97%E5%AD%98%E5%82%A8/">
+                                <span class="chip bg-color">块存储</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8/">
+                                <span class="chip bg-color">文件存储</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/">
+                                <span class="chip bg-color">对象存储</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Kubernetes/" class="post-category">
+                                Kubernetes
+                            </a>
+                        
+                            <a href="/categories/Kubernetes/%E5%AD%98%E5%82%A8/" class="post-category">
+                                存储
+                            </a>
+                        
+                            <a href="/categories/Kubernetes/%E5%AD%98%E5%82%A8/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                分布式系统
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-11-23
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>在微服务环境中，由于服务的动态性和分布性，存储问题变得比较棘手。一方面，我们需要确保数据的一致性和可靠性；另一方面，我们也需要提供足够的性能和可扩展性来满足服务的需求。此外，由于存储系统通常是底层基础设施的一部分，它的问题往往很难排查，而且也难以为上层服务带来直接的收益（难以说服客户为解决这块的工单花钱买专门对应的维保）。</p>
+<p>Kubernetes 作为目前最被广泛使用的容器编排平台，提供了容器存储接口 (CSI Container Storage Interface) 来帮助使用者解决存储相关的问题，是一种将存储系统集成到 Kubernetes 的标准化方法。在这篇文章中，我们以 Ceph CSI 来举例，对集群中存储系统从底层磁盘到pod使用做一个分析。</p>
+<span id="more"></span>
+
+<h2 id="存储系统概述"><a href="#存储系统概述" class="headerlink" title="存储系统概述"></a>存储系统概述</h2><p>首先介绍下 Kubernetes 和容器存储接口（CSI）的概念，以及它们如何从底层磁盘存储到 PV、PVC 等 Kubernetes 存储相关的组件。</p>
+<h3 id="Kubernetes-存储概述"><a href="#Kubernetes-存储概述" class="headerlink" title="Kubernetes 存储概述"></a>Kubernetes 存储概述</h3><p>K8s 本身提供了一套灵活且可扩展的存储解决方案，包括以下几个主要组件：</p>
+<ul>
+<li><strong>Persistent Volume（PV）</strong>：PV 是集群中的一块物理存储，可以是网络存储、本地磁盘等。它提供了一种让用户不用关心底层存储设备的具体实现。</li>
+<li><strong>Persistent Volume Claim（PVC）</strong>：PVC ，从名字里加了个Claim可以看出来是对 PV 的一种申请，用户可以通过 PVC 请求存储资源。K8s 则会根据 PVC 的申请自动分配合适的 PV。</li>
+<li><strong>Storage Class</strong>：Storage Class 是一种描述不同类型存储的模板，用于动态创建 PV。它可以包含存储类型、分配策略、回收策略等信息。</li>
+</ul>
+<h3 id="容器存储接口（CSI）"><a href="#容器存储接口（CSI）" class="headerlink" title="容器存储接口（CSI）"></a>容器存储接口（CSI）</h3><p>容器存储接口（CSI）是一种标准化的接口，提供她的目的是将第三方存储系统集成到K8s和其他容器编排平台。通过 CSI，存储提供商就可以直接通过开发插件来支持K8s，而无需修改其对应的核心代码。当然，CSI也提供了一组通用的 API，使得K8s可以与各种存储系统进行交互，包括创建、删除、扩展、挂载和卸载存储卷等操作。</p>
+<h3 id="从存储提供者的服务到-PV、PVC-的过程"><a href="#从存储提供者的服务到-PV、PVC-的过程" class="headerlink" title="从存储提供者的服务到 PV、PVC 的过程"></a>从存储提供者的服务到 PV、PVC 的过程</h3><ol>
+<li><p>存储提供者通过实现 CSI 插件来支持 Kubernetes。这个插件通常包括了控制器组件（负责处理创建、删除、扩展等操作）和节点组件（负责处理挂载和卸载操作）。</p>
+</li>
+<li><p>集群管理员根据存储提供商的文档创建一个或多个 Storage Class，描述不同类型的存储。这些 Storage Class 可以包含预配置的参数，如性能、分配策略、回收策略等。</p>
+</li>
+<li><p>用户根据需要创建 PVC，请求存储资源。在 PVC 中，用户可以指定所需的存储大小、访问模式（如只读、读写等）和 Storage Class。</p>
+</li>
+<li><p>Kubernetes 根据 PVC 的请求和 Storage Class 的配置，自动创建一个匹配的 PV。如果使用动态存储分配，Kubernetes 的 External Provisioner（是 Kubernetes 中的一个组件，用于动态创建 PV） 会通过 CSI 插件调用存储系统的 API，创建一个新的存储卷。</p>
+</li>
+<li><p>用户在 Pod 的配置文件中引用 PVC，将存储卷挂载到容器中。当 Pod 被调度到节点上时，Kubernetes 会通过 CSI 插件将存储卷挂载到容器的指定目录。</p>
+</li>
+<li><p>当 Pod 和 PVC 不再需要时，用户可以删除它们。Kubernetes 会根据 Storage Class 的reclaimPolicy字段定义的回收策略来处理 PV，例如释放存储资源或保留数据。</p>
+</li>
+</ol>
+<p>通过这种方式，Kubernetes 和 CSI 共同实现了从存储服务商提供的存储到集群中 PV、PVC 等存储相关组件的管理。给用户提供了一种灵活且可扩展的存储解决方案，使得用户可以更加专注于应用程序侧的开发和运维。</p>
+<p><img src="/images/image1_%E9%9B%86%E7%BE%A4%E5%AD%98%E5%82%A8.png" alt="K8s集群存储流程"></p>
+<h2 id="三种不同的存储技术"><a href="#三种不同的存储技术" class="headerlink" title="三种不同的存储技术"></a>三种不同的存储技术</h2><p>而在了解ceph之前，先看下三种不同的ceph会用到的存储技术，分别是块存储，文件存储和对象存储</p>
+<h3 id="块存储（Block-Storage）"><a href="#块存储（Block-Storage）" class="headerlink" title="块存储（Block Storage）"></a>块存储（Block Storage）</h3><p><strong>数据组织</strong>：块存储将数据分割成固定大小的块，每个块都有一个唯一的地址。这些块在逻辑上是连续的，但在物理存储设备上可能是分散的。块存储本身提供了一种底层的、灵活的数据存储方式，它允许用户自定义数据的组织和访问方式。甚至你可以理解块存储就类似于给了你一块磁盘，你自己去定义文件的存储访问方式。</p>
+<p><strong>访问方式</strong>：块存储使用块地址进行数据访问，一般通过 SCSI、iSCSI、Fibre Channel 等常见的数据存储和传输协议实现。操作系统可以将块设备抽象为一个虚拟磁盘，并在其上创建文件系统。</p>
+<p><strong>使用场景</strong>：块存储一般用于需要低延迟、高吞吐量和高 IOPS 的场景，如数据库、虚拟机等。它可以提供高性能的随机读写能力，但需要操作系统来管理文件系统和数据的组织。</p>
+<h3 id="文件存储（File-Storage）"><a href="#文件存储（File-Storage）" class="headerlink" title="文件存储（File Storage）"></a>文件存储（File Storage）</h3><p><strong>数据组织</strong>：文件存储以文件和目录的形式组织数据，提供了一种层次化的命名空间。文件系统负责管理文件的元数据（如文件名、大小、权限等）和数据块的映射关系，目前QAPM依赖TCS的存储主要也是用的文件存储。</p>
+<p><strong>访问方式</strong>：文件存储使用文件路径进行数据访问，支持标准的文件操作（如打开、关闭、读取、写入等）。文件存储可以通过网络文件系统协议（如 NFS、SMB&#x2F;CIFS 等）在多个客户端之间共享。</p>
+<p><strong>使用场景</strong>：文件存储适用于需要共享数据、简化数据管理的场景，如文件服务器、备份、归档等。它提供了一种直观的数据访问方式，但相较于块存储，性能可能较低，因为构造文件系统会带来额外的文件系统开销(需要维护文件的元数据、目录结构以及数据块的映射关系)及文件锁还有文件存储系统多端同步时造成的网络延迟问题。</p>
+<h3 id="对象存储（Object-Storage）"><a href="#对象存储（Object-Storage）" class="headerlink" title="对象存储（Object Storage）"></a>对象存储（Object Storage）</h3><p><strong>数据组织</strong>：对象存储将数据存储为一个个对象，每个对象包含了数据(Data)、元数据(MetaData)和唯一标识符(Unique Identifier)，元数据也就是些文件名、文件大小、创建时间、修改时间、权限等信息。元数据使得存储系统能够组织、管理和检索数据。对象存储提供了一个扁平的地址空间，对象之间没有层次关系(或者说是没有文件层级关系)。</p>
+<p><strong>访问方式</strong>：对象存储使用唯一标识符（如 URL）进行数据访问，支持简单的操作（如创建、删除、读取、写入等）。对象存储通常通过 RESTful API、HTTP&#x2F;HTTPS 协议实现，可以方便地进行互联网访问。</p>
+<p><strong>使用场景</strong>：对象存储适用于需要大规模、高可扩展、高可用性的场景，如云存储、大数据、备份、归档等。它可以轻松地存储和管理海量数据，但不支持随机读写和文件系统语义，即对象存储的 API 通常只支持对整个对象的读取和写入，而不支持对对象内部的特定位置进行随机读写，且没有提供类似于文件系统的层次化命名空间和文件操作语义。</p>
+<p><img src="/images/image2_%E9%9B%86%E7%BE%A4%E5%AD%98%E5%82%A8.png" alt="三种存储方式对比"></p>
+<p>当然Ceph的三种存储的实现方式和此理念相同，但是作为一个分布式的系统，增加了一些特性，这里不多去赘述，文章主要目的也是从上到下捋一下集群存储的过程，而不是详述每个细节。</p>
+<h2 id="Ceph-CSI-概述"><a href="#Ceph-CSI-概述" class="headerlink" title="Ceph CSI 概述"></a>Ceph CSI 概述</h2><p>作为我们例子重的存储提供者Ceph和K8s交互的桥梁，Ceph CSI（Container Storage Interface for Ceph）顾名思义，是一个用于将 Ceph 存储系统集成到 Kubernetes 和其他容器编排平台的插件。是一个目前被广泛应用的高性能、可扩展的分布式存储系统，适用于各种场景，如对象存储、块存储和文件系统。遵循K8s的CSI规范，提供了一组标准化的 API，使得K8s能和Ceph 存储系统进行交互，完成诸如创建、删除、扩展、挂载和卸载存储卷等操作。</p>
+<h3 id="Ceph-CSI-的特点"><a href="#Ceph-CSI-的特点" class="headerlink" title="Ceph CSI 的特点"></a>Ceph CSI 的特点</h3><ul>
+<li><p><strong>支持多种 Ceph 存储类型</strong>：Ceph CSI 插件支持 Ceph 的多种存储类型，包括了我们介绍过的 Ceph RBD（块存储）、CephFS（文件系统）和 Ceph Object Storage（对象存储）。让用户能根据应用程序的需求灵活选择合适的存储类型。</p>
+</li>
+<li><p><strong>动态存储分配</strong>：Ceph CSI 插件支持 K8s 的动态存储分配功能。用户可以通过创建 PVC 来请求存储资源，然后 K8s 会自动创建和分配一个匹配的 PV。这个过程是通过 Ceph CSI 插件与 Ceph 存储系统的 API 进行交互来完成的，用户不需要做什么操作。</p>
+</li>
+<li><p><strong>存储卷快照和克隆</strong>：插件支持存储卷快照和克隆功能。用户可以创建存储卷的快照，用于数据备份或者创建新的存储卷。此外，用户还可以通过克隆功能创建一个与现有存储卷相同的副本，用于测试或者数据分析等场景。</p>
+</li>
+<li><p><strong>数据加密</strong>：插件支持存储卷的数据加密功能。用户可以选择在 Ceph 存储系统中对数据进行加密，来增强数据的安全性和隐私性。</p>
+</li>
+</ul>
+<h3 id="Ceph-CSI-的工作原理"><a href="#Ceph-CSI-的工作原理" class="headerlink" title="Ceph CSI 的工作原理"></a>Ceph CSI 的工作原理</h3><p>插件主要由两部分组成：控制器组件和节点组件。</p>
+<ul>
+<li><p><strong>控制器组件</strong>：负责处理存储卷的生命周期管理操作，如创建、删除、扩展、快照和克隆等。控制器组件通常部署在 K8s 控制平面上，通过与 Ceph 存储系统的 API 进行交互。</p>
+</li>
+<li><p><strong>节点组件</strong>：负责在 K8s 工作节点上处理存储卷的挂载和卸载操作。节点组件部署在每个工作节点上，通过与 Ceph 存储系统的 API 或者直接访问存储设备来实现存储卷的挂载和卸载。</p>
+</li>
+</ul>
+<p>如果你选择Ceph来作为存储提供者，那么当用户创建一个 PVC 时，流程就是K8s 的 External Provisioner 会根据 PVC 的请求和 Storage Class 的配置，通过 Ceph CSI 插件调用 Ceph 存储系统的 API，在底层磁盘中创建一个新的存储卷。然后，当 Pod 被调度到节点上时，Kubernetes 会通过 Ceph CSI 插件将存储卷挂载到容器的指定目录。</p>
+<p>至于Ceph本身，已经有大量文档去做详细的剖析和介绍，这里也不多赘述了。</p>
+<p><img src="/images/image3_%E9%9B%86%E7%BE%A4%E5%AD%98%E5%82%A8.png" alt="Ceph CSI架构"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，在设计分布式集群的存储系统时，为了确保高可用性和性能，通常会选择使用类似于Ceph这样的分布式存储服务，而不是直接依赖本地磁盘作为持久化存储卷（PV）。K8s通过容器存储接口（CSI）为开发者提供了一种更加灵活和简化的方式来管理存储资源，让开发者可以更加专注于应用程序的开发，而不需要过多地关注底层基础设施的细节。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">RickDamon</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://rickdamon.github.io/2023/11/23/%E9%9B%86%E7%BE%A4%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E5%A4%87%E5%BF%98%E5%BD%95/">https://rickdamon.github.io/2023/11/23/%E9%9B%86%E7%BE%A4%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E5%A4%87%E5%BF%98%E5%BD%95/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">RickDamon</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Kubernetes/">
+                                    <span class="chip bg-color">Kubernetes</span>
+                                </a>
+                            
+                                <a href="/tags/CSI/">
+                                    <span class="chip bg-color">CSI</span>
+                                </a>
+                            
+                                <a href="/tags/Ceph/">
+                                    <span class="chip bg-color">Ceph</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%9D%97%E5%AD%98%E5%82%A8/">
+                                    <span class="chip bg-color">块存储</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8/">
+                                    <span class="chip bg-color">文件存储</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/">
+                                    <span class="chip bg-color">对象存储</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/11/23/2024-%E4%B8%9A%E5%8A%A1%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F%E6%94%B9%E9%80%A0%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="业务基础镜像改造最佳实践">
+                        
+                        <span class="card-title">业务基础镜像改造最佳实践</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            导语在云原生火热的当下，大量业务不得不和docker打交道。开发者往往会有很多疑问，该用哪个镜像？安全漏洞怎么修？跨架构镜像如何处理？开发环境和测试环境如何统一？本篇介绍了QAPM项目的第三次业务基础镜像改造，将您的疑问一一解答！
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-11-23
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Docker/" class="post-category">
+                                    Docker
+                                </a>
+                            
+                            <a href="/categories/Docker/DevOps/" class="post-category">
+                                    DevOps
+                                </a>
+                            
+                            <a href="/categories/Docker/DevOps/%E4%BA%91%E5%8E%9F%E7%94%9F/" class="post-category">
+                                    云原生
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Docker/">
+                        <span class="chip bg-color">Docker</span>
+                    </a>
+                    
+                    <a href="/tags/%E9%95%9C%E5%83%8F/">
+                        <span class="chip bg-color">镜像</span>
+                    </a>
+                    
+                    <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">
+                        <span class="chip bg-color">云原生</span>
+                    </a>
+                    
+                    <a href="/tags/Debian/">
+                        <span class="chip bg-color">Debian</span>
+                    </a>
+                    
+                    <a href="/tags/Alpine/">
+                        <span class="chip bg-color">Alpine</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">
+                        <span class="chip bg-color">最佳实践</span>
+                    </a>
+                    
+                    <a href="/tags/QAPM/">
+                        <span class="chip bg-color">QAPM</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/01/03/2022-01-03-%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%86/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="金字塔原理">
+                        
+                        <span class="card-title">金字塔原理</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            RickDamon
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/">
+                        <span class="chip bg-color">软技能</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2026</span>
+            
+            <a href="/about" target="_blank">RickDamon</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/rickdamon" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:719196134@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=719196134" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 719196134" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

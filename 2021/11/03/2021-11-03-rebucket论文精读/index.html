@@ -398,7 +398,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本篇文章是对缺陷分析算法相关论文ReBucket A method for clustering duplicate crash reports based on call stack similarity的精读。<br>论文原链接：<br>ReBucket<br>tips: 图片加载不出来可能是被墙的原因<br>Rebucket概述关键词：<br>crash reports——崩溃报告hierarchical clustering method——层次聚类方法 duplicate crash report——重复的崩溃报告 WER——Windows Error Reporting，微软的及时告警分布系统。在WER中，崩溃报告被扔到了一个个桶（bucket）里，每个桶里包含的崩溃报告在理想状态下被认为是一致的，桶中的崩溃信息对于开发人员解决问题的优先级有很大的重要性（桶中信息到一定程度生成错误报告）。Rebucket的提出主要就是为了为了提高分桶的准确性。<br>文章提出了一个测量两个调用堆栈之间相似度的模型，称为PDM(Position Dependent Model-位置相关模型)。此模型依据两个调用堆栈上的函数数量，这些函数到堆栈顶部的距离，以及函数间的偏移距离来判断调用堆栈的相似度。在Rebucket中还有一个训练过程用来调整PDM所需的参数。<br>算法的实现流程算法的整体结构<br>我们首先来看一下算法的流程图，可以看到对于新到达的崩溃报告，Rebucket首先对他们进行了预处理来简化调用堆栈，之后用PDM模型计算调用堆栈的相似性，最终用层次聚类方法将崩溃报告聚类到相应的桶中。<br>数据预处理删除以下两个函数：<br>Immue Functions：简单到我们认为不会发生问题的函数递归函数：递归函数是很常见的，在通常情况下不包含有效信息，也会影响PDM对堆栈相似性的测量,因此删除了递归函数。计算堆栈间的相似性keywords在介绍计算过程之前需要注意的两个量：<br>当前帧到调用堆栈顶部帧间的距离对齐偏移(Alignment Offset)：两个堆栈中匹配的函数到顶部帧间的偏移量,也就是两者的差值<br>我们通过上面这张图理解下两个概念，对于两个堆栈$C_1$和$C_2$，崩溃点都在顶部帧。$C_1$中的$f_0$，$f_1$，$f_4$与$C_2$中的$f_0$，$f_2$，$f_6$匹配,对于$C_1$中的$f_4$函数,它到栈顶的距离是4。在$C_2$中的$f_6$函数到栈顶的距离是6。而对齐偏移就是两者的差，也就是2。<br>PDM在理解了这两个概念之后，我们来看一下一早就提到的位置相关模型(PDM)。<br>PDM的设计基于以下两个原理：<br>离栈顶越近的地方权重越大，因为bug更容易发生在栈顶附近两匹配的堆栈间对齐偏移应该是更小的而两个堆栈$C_1$和$C_2$间的相似度计算的流程如下：<br>定义L作为$C_1$和$C_2$间所有公共帧序列的集合,$L_i$是其中一个公共帧序列，$S_{i, 1}, S_{i, 2},\ldots S_{i, k}$是$C_1$和$C_2$中都具有的匹配函数。<br>$L&#x3D;\left{L_{1}, L_{s}, L_{3} \ldots\right} \quad L_{i}&#x3D;\left{S_{i, 1}, S_{i, 2}, S_{i, 3}, \ldots S_{i, k} \ldots\right}$<br>定义$POS(C_q, S_{i,k})$作为$S_{i,k}$在$C_q$堆栈中的位置，l作为$C_1$和$C_2$间帧数的最小值，那么$C_1$和$C_2$间的相似度可以由公式（1）来定义：<br>$\left{ \begin{array}{lr}\operatorname{sim}\left(C_{1}, C_{2}\right)&#x3D;\frac{\max_{L_{i}\in L} \left[ Q\left(L_{i}\right) \right] }{\sum_{j&#x3D;0}^{l} e^{-cj}}\\Q\left(L_{i}\right)&#x3D;\sum_{s_{i, k} \in L_{i}} e^{-c \min \left( \operatorname{Pos}\left(C_{1}, s_{i, k}\right), \operatorname{Pos}\left(C_{2}, s_{i, k}\right) \right)}e^{-o \mid \operatorname{Pos}\left(C_{1}, s_{i, k}\right)-\operatorname{Pos}\left(C_{2}, s_{i, k}\right) \mid}\end{array}\right.\quad (1)$<br>其中c是到顶部帧的距离系数，o是对齐偏移的系数。c和o的值可以根据过去的经验来手动设置。本文之后还提出了一种学习方法去自动获取最佳的系数值。$Q\left(L_{i}\right)$用来衡量$L_i$匹配函数的相似度的值。第一个指数函数考虑了一对匹配函数到顶部帧的最小距离。第二个指数函数考虑了一对匹配函数的最小对齐偏移。到顶部的距离和对齐偏移越小那么函数的返回值$Q\left( L_i \right)$也就越大。<br>根据公式（1），调用栈相似度的度量由能让$Q\left( L_i \right)$达到最大值的公共帧序列来决定。它是通过穷举来找到这个公共帧序列的，这样效率是较为低下的。根据最长公共子序列问题，文章提出了一个动态规划算法去解决这个问题：<br>定义一个相似矩阵$M\left[i,j\right]$，表示量子序列的相似性。第一个子序列是从$C_1$的顶部帧到i个帧，第二个是从顶部帧到$C_2$的第j个帧。根据$M\left[i,j\right]$的定义，堆栈的相似性计算可以转化为M[m,n]的计算,其中$m$为$C_1$的长度，$n$为$C_2$的长度，具体见公式(4)M[i,j]可以被分解为几个子问题，见公式（2）和公式（3）。相似度矩阵M[i,j]可以通过逐步计算矩阵元素来获得。<br>通过PDM，两个调用堆栈间的相似性就被定义了，这样就可以确定两个崩溃报告是否合适归在一个聚类中了。<br>Clustering通过PDM计算堆栈相似度之后，若两堆栈相似性很高，那么相关的崩溃报告就会被归到一个桶里。<br>本文使用了一种凝聚力分层聚类方法——Agglomerative Hierarchical clustering technique,是一种自下而上的聚类方法。在聚类开始时，每个调用堆栈都归到属于他自己的集群。之后最近的集群会进行合并。本文采用两个集群所有元素配对的最大距离作为集群间距离的度量。换句话说，集群间距离的度量依据两个集群间堆栈的最大距离。集群间的距离被定义为公式（5）和公式（6），其中$Cl_i$和$Cl_j$时一对集群，而$C_1$和$C_2$分别为$Cl_i$和$Cl_j$中的堆栈。<br>$\begin{array}{lr}\operatorname{distance}\left({Cl}<em>{i}, {Cl}</em>{j}\right)&#x3D;\max_{C_{1} \in {Cl}<em>{i}, C</em>{2} \in {Cl}<em>{j}}\operatorname{ dist }\left(C</em>{1}, C_{2}\right)&amp; (5)\\operatorname{ dist }\left(C_{1}, C_{2}\right)&#x3D;1-\operatorname{sim}\left(C_{1}, C_{2}\right)&amp; (6)\end{array}$</p>
+                <p>本篇文章是对缺陷分析算法相关论文ReBucket A method for clustering duplicate crash reports based on call stack similarity的精读。<br>论文原链接：<br>ReBucket<br>tips: 图片加载不出来可能是被墙的原因<br>Rebucket概述关键词：<br>crash reports——崩溃报告hierarchical clustering method——层次聚类方法 duplicate crash report——重复的崩溃报告 WER——Windows Error Reporting，微软的及时告警分布系统。在WER中，崩溃报告被扔到了一个个桶（bucket）里，每个桶里包含的崩溃报告在理想状态下被认为是一致的，桶中的崩溃信息对于开发人员解决问题的优先级有很大的重要性（桶中信息到一定程度生成错误报告）。Rebucket的提出主要就是为了为了提高分桶的准确性。<br>文章提出了一个测量两个调用堆栈之间相似度的模型，称为PDM(Position Dependent Model-位置相关模型)。此模型依据两个调用堆栈上的函数数量，这些函数到堆栈顶部的距离，以及函数间的偏移距离来判断调用堆栈的相似度。在Rebucket中还有一个训练过程用来调整PDM所需的参数。<br>算法的实现流程算法的整体结构<br>我们首先来看一下算法的流程图，可以看到对于新到达的崩溃报告，Rebucket首先对他们进行了预处理来简化调用堆栈，之后用PDM模型计算调用堆栈的相似性，最终用层次聚类方法将崩溃报告聚类到相应的桶中。<br>数据预处理删除以下两个函数：<br>Immue Functions：简单到我们认为不会发生问题的函数递归函数：递归函数是很常见的，在通常情况下不包含有效信息，也会影响PDM对堆栈相似性的测量,因此删除了递归函数。计算堆栈间的相似性keywords在介绍计算过程之前需要注意的两个量：<br>当前帧到调用堆栈顶部帧间的距离对齐偏移(Alignment Offset)：两个堆栈中匹配的函数到顶部帧间的偏移量,也就是两者的差值<br>我们通过上面这张图理解下两个概念，对于两个堆栈$C_1$和$C_2$，崩溃点都在顶部帧。$C_1$中的$f_0$，$f_1$，$f_4$与$C_2$中的$f_0$，$f_2$，$f_6$匹配,对于$C_1$中的$f_4$函数,它到栈顶的距离是4。在$C_2$中的$f_6$函数到栈顶的距离是6。而对齐偏移就是两者的差，也就是2。<br>PDM在理解了这两个概念之后，我们来看一下一早就提到的位置相关模型(PDM)。<br>PDM的设计基于以下两个原理：<br>离栈顶越近的地方权重越大，因为bug更容易发生在栈顶附近两匹配的堆栈间对齐偏移应该是更小的而两个堆栈$C_1$和$C_2$间的相似度计算的流程如下：<br>定义L作为$C_1$和$C_2$间所有公共帧序列的集合,$L_i$是其中一个公共帧序列，$S_{i, 1}, S_{i, 2},\ldots S_{i, k}$是$C_1$和$C_2$中都具有的匹配函数。<br>$L&#x3D;\left{L_{1}, L_{s}, L_{3} \ldots\right} \quad L_{i}&#x3D;\left{S_{i, 1}, S_{i, 2}, S_{i, 3}, \ldots S_{i, k} \ldots\right}$<br>定义$POS(C_q, S_{i,k})$作为$S_{i,k}$在$C_q$堆栈中的位置，l作为$C_1$和$C_2$间帧数的最小值，那么$C_1$和$C_2$间的相似度可以由公式（1）来定义：<br>$$\left{ \begin{array}{l}<br>\operatorname{sim}\left(C_{1}, C_{2}\right)&#x3D;\frac{\max_{L_{i}\in L} \left[ Q\left(L_{i}\right) \right] }{\sum_{j&#x3D;0}^{l} e^{-cj}} \<br>Q\left(L_{i}\right)&#x3D;\sum_{s_{i, k} \in L_{i}} e^{-c \min \left( \operatorname{Pos}\left(C_{1}, s_{i, k}\right), \operatorname{Pos}\left(C_{2}, s_{i, k}\right) \right)}e^{-o \mid \operatorname{Pos}\left(C_{1}, s_{i, k}\right)-\operatorname{Pos}\left(C_{2}, s_{i, k}\right) \mid}<br>\end{array}\right.\quad (1)$$<br>其中c是到顶部帧的距离系数，o是对齐偏移的系数。c和o的值可以根据过去的经验来手动设置。本文之后还提出了一种学习方法去自动获取最佳的系数值。$Q\left(L_{i}\right)$用来衡量$L_i$匹配函数的相似度的值。第一个指数函数考虑了一对匹配函数到顶部帧的最小距离。第二个指数函数考虑了一对匹配函数的最小对齐偏移。到顶部的距离和对齐偏移越小那么函数的返回值$Q\left( L_i \right)$也就越大。<br>根据公式（1），调用栈相似度的度量由能让$Q\left( L_i \right)$达到最大值的公共帧序列来决定。它是通过穷举来找到这个公共帧序列的，这样效率是较为低下的。根据最长公共子序列问题，文章提出了一个动态规划算法去解决这个问题：<br>定义一个相似矩阵$M\left[i,j\right]$，表示量子序列的相似性。第一个子序列是从$C_1$的顶部帧到i个帧，第二个是从顶部帧到$C_2$的第j个帧。根据$M\left[i,j\right]$的定义，堆栈的相似性计算可以转化为M[m,n]的计算,其中$m$为$C_1$的长度，$n$为$C_2$的长度，具体见公式(4)M[i,j]可以被分解为几个子问题，见公式（2）和公式（3）。相似度矩阵M[i,j]可以通过逐步计算矩阵元素来获得。<br>通过PDM，两个调用堆栈间的相似性就被定义了，这样就可以确定两个崩溃报告是否合适归在一个聚类中了。<br>Clustering通过PDM计算堆栈相似度之后，若两堆栈相似性很高，那么相关的崩溃报告就会被归到一个桶里。<br>本文使用了一种凝聚力分层聚类方法——Agglomerative Hierarchical clustering technique,是一种自下而上的聚类方法。在聚类开始时，每个调用堆栈都归到属于他自己的集群。之后最近的集群会进行合并。本文采用两个集群所有元素配对的最大距离作为集群间距离的度量。换句话说，集群间距离的度量依据两个集群间堆栈的最大距离。集群间的距离被定义为公式（5）和公式（6），其中$Cl_i$和$Cl_j$时一对集群，而$C_1$和$C_2$分别为$Cl_i$和$Cl_j$中的堆栈。<br>$$\begin{align}<br>\operatorname{distance}\left({Cl}<em>{i}, {Cl}</em>{j}\right) &amp;&#x3D; \max_{C_{1} \in {Cl}<em>{i}, C</em>{2} \in {Cl}<em>{j}}\operatorname{dist}\left(C</em>{1}, C_{2}\right) \quad (5) \<br>\operatorname{dist}\left(C_{1}, C_{2}\right) &amp;&#x3D; 1-\operatorname{sim}\left(C_{1}, C_{2}\right) \quad (6)<br>\end{align}$$</p>
 <p>在一次聚类的过程中，如果所有的堆栈被合并为了一个集群，那么这个凝聚力分层聚类方法的时间复杂度就是$O(n^3)$，在这个例子里，我们采用一个距离阈值d作为聚类过程的停止标准。d的值可以手动设置，或者通过一个学习模型来训练。一旦一对集群间的最大距离超过了这个阈值d，这次的聚类过程就会被停止。最终，集群的结果就是装着相似崩溃报告的buckets。如上图所示，最终生成了两个集群，他们分别是装着A,B报告的bucket和装着C,D,E报告的bucket。<br>训练算法相关参数PDM使用两个系数：<br>c是到顶部框架的距离o是对齐偏移分层聚类中的距离阈值也是一个应该调整的参数。<br>如果这些参数设置不好，肯定会有明显不同的相似性结果。参数也可能会因为项目的不同而异。<br>下面是这些参数值的训练过程（D为一些调用堆栈对）：<br>1.给c一个较小的初始值$c_0$<br>2.给o一个较小的初始值$o_0$<br>3.对于D中的每个调用堆栈 (for循环)<br>4.用公式(1)，c以及o计算p的相似度<br>5.结束for循环<br>6.给距离阈值一个较小的初始值$d_0$<br>7.对于D中的每个调用堆栈 (for循环)<br>8.if p的相似度大于1-d，那么p被标记为相似；else p被标记为不相似<br>9.结束for循环<br>10.计算D中所有调用堆栈对的F-measure<br>11.将d增加一小步$s_1$<br>12.重复步骤7-11，直至d达到最大阈值$d_max$<br>13.将o增加一小步$s_2$<br>14.重复步骤3-13，直至o到达最大阈值$o_max$<br>15.将c增加一小步$s_3$<br>16.重复步骤2-15，直至c达到最大阈值$c_max$<br>17.选择达到最佳F-measure的$c_optimal$，$o_optimal$和$d_optimal$<br>18.返回三个值$c_optimal$，$o_optimal$和$d_optimal$<br>在训练算法中，初始化$c_0$ &#x3D; 0，$o_max$ &#x3D; 2，$s_2$ &#x3D; 0.1，$c_0$ &#x3D; 0，$c_max$ &#x3D; 2，$s_3$ &#x3D; 0.1，这就代表训练过程中每次都给c和o增加0.1进行迭代。对于距离阈值d，$d_0$ &#x3D; 0，$d_max$ &#x3D; 1，$s_1$ &#x3D; 0.01，从0到1，步长为0.01。最终选择最好的F-measure。</p>
 
                 
@@ -713,10 +713,35 @@
 </main>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script>
     MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+        tex2jax: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        TeX: {
+            equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"],
+            Macros: {
+                operatorname: "\\mathop{\\mathrm{#1}}\\nolimits"
+            }
+        },
+        "HTML-CSS": {
+            availableFonts: ["TeX"],
+            preferredFont: "TeX",
+            webFont: "TeX",
+            imageFont: null
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
     });
 </script>
 

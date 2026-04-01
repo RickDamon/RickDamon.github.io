@@ -1,0 +1,1466 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="从 LangChain 到 Harness：Coding Agent 的架构演进之路, programming,learning,blog">
+    <meta name="description" content="导语2024 年底到 2025 年初，Coding Agent 赛道迎来了一次范式跳跃。
+从最早的 LangChain 式”显式编排”，到 AutoGPT 式”自主循环”，再到如今以 Claude Code 为代表的 Harness 范式—">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>从 LangChain 到 Harness：Coding Agent 的架构演进之路 | RickDamon&#39;s Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/images/image.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">RickDamon&#39;s Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/images/image.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">RickDamon&#39;s Blog</div>
+        <div class="logo-desc">
+            
+            Personal blog about programming, learning, and life
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">从 LangChain 到 Harness：Coding Agent 的架构演进之路</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Coding-Agent/">
+                                <span class="chip bg-color">Coding Agent</span>
+                            </a>
+                        
+                            <a href="/tags/LLM/">
+                                <span class="chip bg-color">LLM</span>
+                            </a>
+                        
+                            <a href="/tags/Claude-Code/">
+                                <span class="chip bg-color">Claude Code</span>
+                            </a>
+                        
+                            <a href="/tags/Harness/">
+                                <span class="chip bg-color">Harness</span>
+                            </a>
+                        
+                            <a href="/tags/Agent-Loop/">
+                                <span class="chip bg-color">Agent Loop</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1/">
+                                <span class="chip bg-color">工程设计</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/AI/" class="post-category">
+                                AI
+                            </a>
+                        
+                            <a href="/categories/AI/Agent/" class="post-category">
+                                Agent
+                            </a>
+                        
+                            <a href="/categories/AI/Agent/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                架构设计
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2026-04-01
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>2024 年底到 2025 年初，Coding Agent 赛道迎来了一次范式跳跃。</p>
+<p>从最早的 LangChain 式”显式编排”，到 AutoGPT 式”自主循环”，再到如今以 Claude Code 为代表的 <strong>Harness 范式</strong>——AI 编程助手的架构设计在短短两年内经历了三次根本性的转变。</p>
+<p>我最近花了不少时间深入研究了 Claude Code 的源码架构（基于其 <code>src</code> 目录的完整代码），试图回答一个核心问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
+<p>这篇文章不是一篇源码导读，而是我对 Coding Agent 架构演进的思考总结。我会从以下几个维度展开：</p>
+<ol>
+<li>🔄 Agent 架构的三次范式转变</li>
+<li>🏗️ Harness 范式的工程设计哲学</li>
+<li>🧠 如何让 Agent 不丢失上下文</li>
+<li>🎯 如何让模型减少幻觉</li>
+<li>🔧 工具系统的精妙设计</li>
+<li>⚡ Edge Case 的工程化处理</li>
+</ol>
+<span id="more"></span>
+
+<hr>
+<h2 id="一、Agent-架构的三次范式转变"><a href="#一、Agent-架构的三次范式转变" class="headerlink" title="一、Agent 架构的三次范式转变"></a>一、Agent 架构的三次范式转变</h2><h3 id="1-1-第一代：显式编排时代（LangChain-LangGraph）"><a href="#1-1-第一代：显式编排时代（LangChain-LangGraph）" class="headerlink" title="1.1 第一代：显式编排时代（LangChain &#x2F; LangGraph）"></a>1.1 第一代：显式编排时代（LangChain &#x2F; LangGraph）</h3><p>2023 年，LangChain 几乎是所有 LLM 应用的标准起点。它的核心思想是<strong>显式编排</strong>：开发者用 Chain、Pipe、DAG 把 LLM 的调用流程”画”出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># LangChain 的典型模式：开发者预定义工作流</span></span><br><span class="line">chain = (</span><br><span class="line">    prompt_template </span><br><span class="line">    | llm </span><br><span class="line">    | output_parser </span><br><span class="line">    | tool_selector </span><br><span class="line">    | tool_executor</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这个模式的问题在于：<strong>开发者必须预先知道所有可能的执行路径</strong>。每当你想支持一个新场景，就必须回去修改 chain 定义。这在面对代码编辑这种高度动态的场景时，几乎不可能穷举。</p>
+<p>更致命的是状态管理。LangChain 把状态管理的责任完全交给了开发者——你需要手动管理对话历史、手动处理上下文窗口溢出、手动定义错误恢复路径。当你的 Agent 需要在一个 10 万行的项目里做跨文件重构时，这种手动管理几乎是不可能完成的任务。</p>
+<h3 id="1-2-第二代：自主循环时代（AutoGPT-BabyAGI）"><a href="#1-2-第二代：自主循环时代（AutoGPT-BabyAGI）" class="headerlink" title="1.2 第二代：自主循环时代（AutoGPT &#x2F; BabyAGI）"></a>1.2 第二代：自主循环时代（AutoGPT &#x2F; BabyAGI）</h3><p>2023 年中，AutoGPT 的出现让所有人兴奋了一阵子。它的思路很简单：<strong>让 LLM 自己决定下一步做什么，循环执行直到任务完成</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">while not done:</span><br><span class="line">    thought = llm.think(context)</span><br><span class="line">    action = llm.decide_action(thought)</span><br><span class="line">    result = execute(action)</span><br><span class="line">    context.append(result)</span><br></pre></td></tr></table></figure>
+
+<p>这个方向是对的，但当时的执行有严重缺陷：</p>
+<ul>
+<li><strong>上下文快速爆炸</strong>：没有压缩策略，几轮循环就塞满了上下文窗口</li>
+<li><strong>幻觉失控</strong>：缺乏环境反馈的 grounding，LLM 经常在想象中”完成”了任务</li>
+<li><strong>没有安全边界</strong>：<code>rm -rf /</code> 说执行就执行，没有任何防护</li>
+<li><strong>工具原始</strong>：只有最基本的文件读写和 shell 执行</li>
+</ul>
+<p>AutoGPT 的方向正确但时机不对——当时的模型能力不足以支撑自主决策，而工程基础设施也远远不够。</p>
+<h3 id="1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）"><a href="#1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）" class="headerlink" title="1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）"></a>1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）</h3><p>到了 2025 年，一种新的范式逐渐成型，我称之为 <strong>Harness 范式</strong>。它的核心理念用一句话概括就是：</p>
+<blockquote>
+<p><strong>不要编排 LLM，要为 LLM 构建一个丰富的运行时环境，然后让它自己决定怎么做。</strong></p>
+</blockquote>
+<p>“Harness” 这个词很精妙——它既有”驾驭、利用”的意思，也有”安全带、保护装置”的含义。一个好的 Harness 既要<strong>赋能</strong>（给 LLM 足够的工具和信息），又要<strong>约束</strong>（确保安全、防止失控）。</p>
+<p>Claude Code 是这个范式目前最极致的实现。它的 Agent Loop 核心逻辑简洁得令人惊叹：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">while (模型未停止):</span><br><span class="line">    response = callAPI(messages)</span><br><span class="line">    if response 包含 tool_use:</span><br><span class="line">        results = executeTools(tool_calls)</span><br><span class="line">        messages.append(results)</span><br><span class="line">        continue  // 模型自己决定下一步</span><br><span class="line">    else:</span><br><span class="line">        break  // 模型认为任务完成</span><br></pre></td></tr></table></figure>
+
+<p>就这么几行伪代码，支撑起了一个能做跨文件重构、多代理协作、无限对话的编程助手。所有的”智能”不是来自复杂的编排逻辑，而是来自三个方面：</p>
+<ol>
+<li><strong>模型本身的推理能力</strong></li>
+<li><strong>精心设计的系统提示</strong></li>
+<li><strong>丰富且高质量的工具反馈</strong></li>
+</ol>
+<h3 id="1-4-三代对比"><a href="#1-4-三代对比" class="headerlink" title="1.4 三代对比"></a>1.4 三代对比</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>显式编排 (LangChain)</th>
+<th>自主循环 (AutoGPT)</th>
+<th>Harness (Claude Code)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>控制流</strong></td>
+<td>开发者定义 DAG</td>
+<td>LLM 自主但粗糙</td>
+<td>LLM 自主 + 精密环境</td>
+</tr>
+<tr>
+<td><strong>状态管理</strong></td>
+<td>手动管理</td>
+<td>几乎没有</td>
+<td>多层自动管理</td>
+</tr>
+<tr>
+<td><strong>安全性</strong></td>
+<td>开发者负责</td>
+<td>几乎没有</td>
+<td>多层权限 + 沙箱</td>
+</tr>
+<tr>
+<td><strong>扩展性</strong></td>
+<td>改 chain 定义</td>
+<td>改代码</td>
+<td>加工具&#x2F;MCP 服务器</td>
+</tr>
+<tr>
+<td><strong>上下文</strong></td>
+<td>固定窗口</td>
+<td>快速溢出</td>
+<td>多层压缩 + 无限对话</td>
+</tr>
+<tr>
+<td><strong>核心瓶颈</strong></td>
+<td>开发者的想象力</td>
+<td>模型的自控力</td>
+<td>模型的推理能力</td>
+</tr>
+</tbody></table>
+<p>这个演进的本质是：<strong>随着模型能力的提升，控制权从开发者逐渐转移到模型本身</strong>。LangChain 时代，开发者不信任模型，所以要用 DAG 来”管”它；Harness 时代，模型已经足够强，开发者要做的是构建好环境，然后 <strong>get out of the way</strong>。</p>
+<hr>
+<h2 id="二、Harness-范式的工程设计哲学"><a href="#二、Harness-范式的工程设计哲学" class="headerlink" title="二、Harness 范式的工程设计哲学"></a>二、Harness 范式的工程设计哲学</h2><p>理解了范式差异之后，让我们深入看看 Harness 范式在工程层面是怎么落地的。</p>
+<h3 id="2-1-“操作系统”而非”框架”"><a href="#2-1-“操作系统”而非”框架”" class="headerlink" title="2.1 “操作系统”而非”框架”"></a>2.1 “操作系统”而非”框架”</h3><p>Claude Code 的定位不是一个”调用 LLM 的应用”，而是一个<strong>为 LLM 构建的完整操作系统</strong>。就像 Linux 为用户程序提供文件系统、进程管理、网络栈一样，Claude Code 为 LLM 提供：</p>
+<ul>
+<li><strong>文件系统访问</strong>：读&#x2F;写&#x2F;精确编辑任意文件</li>
+<li><strong>进程执行</strong>：运行 Shell 命令，支持超时和中断</li>
+<li><strong>代码搜索</strong>：文件名匹配 + 内容正则搜索</li>
+<li><strong>网络访问</strong>：搜索互联网 + 抓取网页</li>
+<li><strong>子进程（子代理）</strong>：递归启动子代理处理复杂任务</li>
+<li><strong>外部协议</strong>：通过 MCP 协议接入任意外部工具</li>
+<li><strong>语言服务器</strong>：实时获取代码诊断、定义跳转</li>
+</ul>
+<p>这些能力不是简单的 API wrapper，每一个都经过了精心的工程设计。比如文件编辑不是简单的”覆写文件”，而是支持精确的行级编辑，并且会自动检测冲突、处理并发。</p>
+<h3 id="2-2-Agent-Loop-的极简之美"><a href="#2-2-Agent-Loop-的极简之美" class="headerlink" title="2.2 Agent Loop 的极简之美"></a>2.2 Agent Loop 的极简之美</h3><p>整个系统的心脏是一个流式的 Agent Loop。它的设计体现了一个深刻的工程洞察：<strong>复杂的行为应该涌现自简单的规则，而不是被硬编码</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">用户输入</span><br><span class="line">   ↓</span><br><span class="line">┌──────────────────────────────────────────────────┐</span><br><span class="line">│                  Agent Loop                       │</span><br><span class="line">│                                                   │</span><br><span class="line">│  1. 构建请求 (系统提示 + 历史消息 + 上下文)      │</span><br><span class="line">│  2. 调用 API (流式)                               │</span><br><span class="line">│  3. 处理流式响应:                                 │</span><br><span class="line">│     ├── 文本块 → 实时渲染给用户                   │</span><br><span class="line">│     ├── tool_use 块 → 立即执行工具                │</span><br><span class="line">│     └── thinking 块 → 内部推理（不展示）          │</span><br><span class="line">│  4. 收集工具结果                                  │</span><br><span class="line">│  5. 判断是否继续:                                 │</span><br><span class="line">│     ├── 有 tool_use → 工具结果追加，回到步骤 2    │</span><br><span class="line">│     ├── end_turn → 结束                           │</span><br><span class="line">│     ├── max_output_tokens → 自动恢复 (最多3次)    │</span><br><span class="line">│     └── prompt_too_long → 自动压缩，回到步骤 2    │</span><br><span class="line">│  6. Token 预算检查                                │</span><br><span class="line">│  7. Turn 计数检查                                 │</span><br><span class="line">│                                                   │</span><br><span class="line">│  [循环直到模型决定停止或触发终止条件]             │</span><br><span class="line">└──────────────────────────────────────────────────┘</span><br><span class="line">   ↓</span><br><span class="line">输出结果</span><br></pre></td></tr></table></figure>
+
+<p>注意这里没有任何”if 用户要求重构 then 走重构流程”这样的分支逻辑。<strong>所有的任务路由、工具选择、执行策略都由模型在运行时动态决定</strong>。</p>
+<h3 id="2-3-流式执行：与时间赛跑"><a href="#2-3-流式执行：与时间赛跑" class="headerlink" title="2.3 流式执行：与时间赛跑"></a>2.3 流式执行：与时间赛跑</h3><p>传统的工具执行是”请求-响应”模式——等 API 返回完整响应，解析出工具调用，再逐个执行。Claude Code 的做法更激进：</p>
+<p><strong>在 API 流式返回的过程中就开始执行工具</strong>。</p>
+<p>第一个 <code>tool_use</code> block 的 JSON 一完成解析，就立刻开始执行。后续的 block 继续接收，继续排队。这意味着网络传输和工具执行是<strong>重叠进行</strong>的，整体延迟大幅降低。</p>
+<p>这种设计在编程场景下尤其重要——当模型决定同时读取 5 个文件时，你不需要等 5 个 <code>tool_use</code> block 全部接收完才开始读文件。第一个文件名一确定，文件读取就开始了。</p>
+<hr>
+<h2 id="三、如何让-Agent-不丢失上下文"><a href="#三、如何让-Agent-不丢失上下文" class="headerlink" title="三、如何让 Agent 不丢失上下文"></a>三、如何让 Agent 不丢失上下文</h2><p>上下文管理是 Coding Agent 最核心也最容易被忽视的问题。一个典型的编程会话可能持续数小时，涉及几十个文件、上百次工具调用。如果每隔 20 分钟就”忘了”之前在干什么，体验就会断崖式下跌。</p>
+<h3 id="3-1-问题的本质"><a href="#3-1-问题的本质" class="headerlink" title="3.1 问题的本质"></a>3.1 问题的本质</h3><p>LLM 的上下文窗口是有限的。即使是 200K token 的窗口，在一个复杂的编程会话中也会很快填满——每次文件读取、每次命令输出、每条对话消息都在消耗 token。</p>
+<p>传统方案很粗暴：要么截断历史消息（丢失上下文），要么限制对话长度（限制能力）。Claude Code 的方案精妙得多：<strong>多层压缩 + 持久记忆</strong>。</p>
+<h3 id="3-2-六层上下文压缩策略"><a href="#3-2-六层上下文压缩策略" class="headerlink" title="3.2 六层上下文压缩策略"></a>3.2 六层上下文压缩策略</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────────────────────────────┐</span><br><span class="line">│           上下文管理的六道防线                  │</span><br><span class="line">│                                               │</span><br><span class="line">│  第一层: Auto Compact (自动压缩)              │</span><br><span class="line">│  - 监控 token 使用量                          │</span><br><span class="line">│  - 达到阈值时自动触发                         │</span><br><span class="line">│  - 将历史对话压缩为简洁摘要                   │</span><br><span class="line">│  - 保留关键决策和当前任务上下文               │</span><br><span class="line">│                                               │</span><br><span class="line">│  第二层: Micro Compact (微压缩)               │</span><br><span class="line">│  - 针对单次工具调用结果的即时压缩             │</span><br><span class="line">│  - 比如一个 grep 返回了 500 行结果            │</span><br><span class="line">│  - 自动提取关键信息，压缩为摘要              │</span><br><span class="line">│  - 缓存压缩结果，避免重复计算                │</span><br><span class="line">│                                               │</span><br><span class="line">│  第三层: Reactive Compact (响应式压缩)        │</span><br><span class="line">│  - API 返回 prompt_too_long 错误时触发        │</span><br><span class="line">│  - 紧急压缩以恢复对话                        │</span><br><span class="line">│  - 这是&quot;最后一道防线&quot;                        │</span><br><span class="line">│                                               │</span><br><span class="line">│  第四层: Snip Compact (裁剪压缩)              │</span><br><span class="line">│  - 对历史消息进行智能裁剪                     │</span><br><span class="line">│  - 保留开头和结尾，压缩中间部分              │</span><br><span class="line">│                                               │</span><br><span class="line">│  第五层: Session Memory (会话记忆)            │</span><br><span class="line">│  - 跨压缩边界保持关键信息                     │</span><br><span class="line">│  - 即使历史消息被压缩，关键决策仍然保留       │</span><br><span class="line">│  - 持久化到磁盘                              │</span><br><span class="line">│                                               │</span><br><span class="line">│  第六层: Context Collapse (上下文折叠)        │</span><br><span class="line">│  - 实验性的更激进压缩策略                     │</span><br><span class="line">│  - 将多轮工具调用折叠为单条摘要              │</span><br><span class="line">└──────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>这套系统的精妙之处在于<strong>层层递进、各有侧重</strong>：</p>
+<ul>
+<li><strong>Auto Compact</strong> 是常规操作，温和地压缩历史</li>
+<li><strong>Micro Compact</strong> 解决单次工具返回结果过大的问题</li>
+<li><strong>Reactive Compact</strong> 是紧急兜底</li>
+<li><strong>Session Memory</strong> 确保即使压缩了，关键信息也不丢失</li>
+</ul>
+<h3 id="3-3-Session-Memory：跨越压缩边界的记忆"><a href="#3-3-Session-Memory：跨越压缩边界的记忆" class="headerlink" title="3.3 Session Memory：跨越压缩边界的记忆"></a>3.3 Session Memory：跨越压缩边界的记忆</h3><p>这是我认为最精妙的设计之一。</p>
+<p>想象一个场景：你和 Agent 讨论了一个小时，做了很多决策——“我们决定用 Strategy 模式重构这个模块”、”这个 API 的返回格式必须保持向后兼容”、”测试覆盖率要达到 80%”。然后上下文满了，触发了自动压缩。</p>
+<p>如果只做简单的摘要压缩，这些关键决策很可能被淹没在”读取了 file_a.ts”这样的工具调用记录中。</p>
+<p>Session Memory 的做法是：在压缩之前，<strong>提取并持久化关键的上下文信息</strong>——用户的偏好、重要决策、当前任务状态。即使历史消息被大幅压缩，这些”记忆”仍然会被注入到后续的对话中。</p>
+<p>这就像人类的记忆系统：你可能忘了上周二下午 3 点读了哪些代码，但你记得”我们决定用 Redis 做缓存”。</p>
+<h3 id="3-4-System-Prompt-缓存：被忽视的成本杀手"><a href="#3-4-System-Prompt-缓存：被忽视的成本杀手" class="headerlink" title="3.4 System Prompt 缓存：被忽视的成本杀手"></a>3.4 System Prompt 缓存：被忽视的成本杀手</h3><p>上下文管理不只是关于”不丢信息”，还关于<strong>成本</strong>。</p>
+<p>Claude Code 的系统提示词有近千行，每次 API 调用都要发送。如果不做优化，光系统提示就要消耗大量 token。</p>
+<p>它的解决方案是将系统提示分为两部分：</p>
+<ul>
+<li><strong>静态部分</strong>：工具定义、行为规范、安全规则——这些跨会话不变</li>
+<li><strong>动态部分</strong>：当前 Git 状态、项目配置、用户自定义规则——这些每次可能不同</li>
+</ul>
+<p>通过在两部分之间插入一个特殊的分隔标记，API 层可以对静态部分做全局缓存，<strong>Prompt Cache 命中率最大化</strong>。据分析，仅仅将代理列表从工具描述移到附件中，就减少了 10.2% 的 cache_creation tokens。</p>
+<p>这种”抠 token”的精神贯穿了整个系统。</p>
+<hr>
+<h2 id="四、如何让模型减少幻觉"><a href="#四、如何让模型减少幻觉" class="headerlink" title="四、如何让模型减少幻觉"></a>四、如何让模型减少幻觉</h2><p>幻觉（Hallucination）是 LLM 的天敌，在编程场景下尤其致命——模型”幻觉”出一个不存在的 API、一个错误的文件路径，就可能浪费用户大量时间。</p>
+<p>Claude Code 的防幻觉策略可以归纳为一个核心原则：<strong>用环境事实来 ground 模型的每一步决策</strong>。</p>
+<h3 id="4-1-Tool-Grounded-Reasoning：用工具结果锚定推理"><a href="#4-1-Tool-Grounded-Reasoning：用工具结果锚定推理" class="headerlink" title="4.1 Tool-Grounded Reasoning：用工具结果锚定推理"></a>4.1 Tool-Grounded Reasoning：用工具结果锚定推理</h3><p>这是最根本的防幻觉机制。模型不是在”想象”代码库长什么样，而是通过工具调用<strong>实际查看</strong>代码库。</p>
+<p>当模型需要修改一个文件时，它不会凭记忆”猜”文件内容，而是：</p>
+<ol>
+<li>先用 <code>GrepTool</code> 搜索相关代码</li>
+<li>用 <code>FileReadTool</code> 读取完整文件</li>
+<li>基于<strong>实际读取的内容</strong>生成编辑</li>
+<li>用 <code>FileEditTool</code> 执行精确编辑（而不是覆写整个文件）</li>
+</ol>
+<p>每一步都有真实的文件系统反馈。如果文件不存在，工具会返回明确的错误信息，而不是让模型在幻觉中继续。</p>
+<h3 id="4-2-环境上下文注入：让模型知道自己在哪"><a href="#4-2-环境上下文注入：让模型知道自己在哪" class="headerlink" title="4.2 环境上下文注入：让模型知道自己在哪"></a>4.2 环境上下文注入：让模型知道自己在哪</h3><p>Claude Code 会在每次对话中自动注入丰富的环境上下文：</p>
+<table>
+<thead>
+<tr>
+<th>上下文类型</th>
+<th>注入内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Git 状态</strong></td>
+<td>当前分支、最近提交、未提交的修改</td>
+</tr>
+<tr>
+<td><strong>项目配置</strong></td>
+<td>CLAUDE.md 项目级规则、技术栈信息</td>
+</tr>
+<tr>
+<td><strong>LSP 诊断</strong></td>
+<td>实时的编译错误、类型警告</td>
+</tr>
+<tr>
+<td><strong>文件结构</strong></td>
+<td>项目目录树的概览</td>
+</tr>
+</tbody></table>
+<p>这些信息让模型在开始推理之前就对”当前环境的真实状态”有准确的认知，而不是基于训练数据中的通用知识来猜测。</p>
+<h3 id="4-3-精确编辑-vs-全文覆写"><a href="#4-3-精确编辑-vs-全文覆写" class="headerlink" title="4.3 精确编辑 vs 全文覆写"></a>4.3 精确编辑 vs 全文覆写</h3><p>这是一个常被忽视但极其重要的设计决策。</p>
+<p>很多 Coding Agent 的文件编辑方式是”生成新的完整文件内容然后覆写”。这有两个严重问题：</p>
+<ol>
+<li><strong>幻觉风险高</strong>：模型需要”记住”文件的所有内容，很容易遗漏或修改不该改的部分</li>
+<li><strong>Token 浪费</strong>：一个 1000 行的文件，改了 3 行，却要重新生成 1000 行</li>
+</ol>
+<p>Claude Code 的 <code>FileEditTool</code> 采用的是<strong>精确编辑</strong>模式——指定要替换的旧字符串和新字符串。模型只需要关注需要修改的部分，大幅降低了幻觉的概率。</p>
+<h3 id="4-4-LSP-集成：编译器级别的事实核查"><a href="#4-4-LSP-集成：编译器级别的事实核查" class="headerlink" title="4.4 LSP 集成：编译器级别的事实核查"></a>4.4 LSP 集成：编译器级别的事实核查</h3><p>当模型完成代码编辑后，LSP（Language Server Protocol）会立刻提供诊断信息——类型错误、语法错误、未解析的引用等。</p>
+<p>这相当于给模型配了一个”编译器级别的事实核查员”。如果模型幻觉出了一个不存在的函数调用，LSP 会立刻报告 <code>Cannot find name &#39;xxx&#39;</code>，模型可以据此自我修正。</p>
+<hr>
+<h2 id="五、工具系统的精妙设计"><a href="#五、工具系统的精妙设计" class="headerlink" title="五、工具系统的精妙设计"></a>五、工具系统的精妙设计</h2><p>工具系统是 Harness 的核心——它决定了 LLM 能做什么、做得多好。Claude Code 的工具系统有几个令我印象深刻的设计。</p>
+<h3 id="5-1-智能并发编排"><a href="#5-1-智能并发编排" class="headerlink" title="5.1 智能并发编排"></a>5.1 智能并发编排</h3><p>当模型在一次回复中调用了多个工具时，系统不是简单地顺序执行，而是<strong>根据工具的特性自动决定并行还是串行</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">模型一次性发出工具调用:</span><br><span class="line">  [ReadFile(&quot;a.ts&quot;), GrepTool(&quot;TODO&quot;), ReadFile(&quot;b.ts&quot;), FileEdit(&quot;c.ts&quot;), ReadFile(&quot;d.ts&quot;)]</span><br><span class="line"></span><br><span class="line">系统自动分区执行:</span><br><span class="line">  ┌─ ReadFile(&quot;a.ts&quot;)  ─┐</span><br><span class="line">  ├─ GrepTool(&quot;TODO&quot;)   ├── 并行执行 (都是只读操作)</span><br><span class="line">  ├─ ReadFile(&quot;b.ts&quot;)   ┘</span><br><span class="line">  │</span><br><span class="line">  ├─ FileEdit(&quot;c.ts&quot;)   ←── 串行执行 (写操作，必须独占)</span><br><span class="line">  │</span><br><span class="line">  └─ ReadFile(&quot;d.ts&quot;)   ←── 继续执行 (只读操作)</span><br></pre></td></tr></table></figure>
+
+<p>每个工具自己声明”我是否可以安全并发”，系统据此自动编排。读操作之间自由并行（最高 10 并发），遇到写操作立刻切换为串行，写操作完成后再恢复并行。</p>
+<p>这种设计在大型项目中效果显著——当模型需要同时读取 5 个文件来理解一个功能的实现时，5 次 IO 操作是并行的，而不是串行等待。</p>
+<h3 id="5-2-元工具：ToolSearchTool"><a href="#5-2-元工具：ToolSearchTool" class="headerlink" title="5.2 元工具：ToolSearchTool"></a>5.2 元工具：ToolSearchTool</h3><p>当 Agent 接入了大量 MCP 服务器后，可用工具数量可能达到上百个。把所有工具的 Schema 都塞进每次 API 调用会浪费大量 token。</p>
+<p>Claude Code 的解决方案是引入一个**”元工具”**——ToolSearchTool：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">工具数量 &gt; 阈值时:</span><br><span class="line">  1. 只加载核心工具 + ToolSearchTool</span><br><span class="line">  2. 模型需要特定能力时，先调用 ToolSearchTool 描述需求</span><br><span class="line">  3. 系统根据语义匹配返回相关工具</span><br><span class="line">  4. 模型再调用匹配到的具体工具</span><br></pre></td></tr></table></figure>
+
+<p>这是”延迟加载”思想在工具系统中的体现——不预加载所有能力，而是按需发现和加载。</p>
+<h3 id="5-3-子代理系统：分而治之"><a href="#5-3-子代理系统：分而治之" class="headerlink" title="5.3 子代理系统：分而治之"></a>5.3 子代理系统：分而治之</h3><p>AgentTool 是整个工具系统中最复杂也最强大的工具。它允许主代理启动子代理来处理子任务，支持多种模式：</p>
+<ul>
+<li><strong>同步子代理</strong>：阻塞主对话，等待子任务完成</li>
+<li><strong>后台异步子代理</strong>：不阻塞主对话，子任务在后台执行</li>
+<li><strong>Fork 子代理</strong>：继承父代理的完整对话上下文，共享 Prompt Cache</li>
+<li><strong>Worktree 隔离</strong>：在独立的 Git worktree 中执行，避免冲突</li>
+</ul>
+<p>其中 <strong>Fork 子代理</strong>的设计尤其精妙——子代理不从零开始，而是”站在父代理的肩膀上”。它继承了父代理积累的所有上下文（项目结构、已做的决策、当前任务状态），同时共享 Prompt Cache，几乎不产生额外的缓存成本。</p>
+<h3 id="5-4-Coordinator-模式：生产级多代理协作"><a href="#5-4-Coordinator-模式：生产级多代理协作" class="headerlink" title="5.4 Coordinator 模式：生产级多代理协作"></a>5.4 Coordinator 模式：生产级多代理协作</h3><p>在更复杂的场景下，Claude Code 可以进入 <strong>Coordinator 模式</strong>——一个主代理编排多个 Worker 的完整工作流：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Coordinator (主代理)</span><br><span class="line">│</span><br><span class="line">├── Research 阶段 (并行)</span><br><span class="line">│   ├── Worker A: 分析代码结构</span><br><span class="line">│   ├── Worker B: 分析测试覆盖</span><br><span class="line">│   └── Worker C: 检查依赖关系</span><br><span class="line">│</span><br><span class="line">├── Synthesis 阶段 (Coordinator 自己做)</span><br><span class="line">│   └── 综合所有 Worker 的研究结果</span><br><span class="line">│</span><br><span class="line">├── Implementation 阶段 (串行)</span><br><span class="line">│   └── Worker D: 基于综合分析实现修复</span><br><span class="line">│</span><br><span class="line">└── Verification 阶段 (独立)</span><br><span class="line">    └── Worker E: 用全新视角验证修复</span><br></pre></td></tr></table></figure>
+
+<p>注意一个关键设计：<strong>Synthesis 阶段由 Coordinator 自己完成，而不是委托给 Worker</strong>。这确保了主代理始终掌握全局视图，不会在信息传递中丢失关键细节。</p>
+<p>Worker 之间通过消息路由系统通信，支持直接消息、广播、关闭请求等多种消息类型，并有完整的计划审批流程。</p>
+<hr>
+<h2 id="六、Edge-Case-的工程化处理"><a href="#六、Edge-Case-的工程化处理" class="headerlink" title="六、Edge Case 的工程化处理"></a>六、Edge Case 的工程化处理</h2><p>一个 Coding Agent 从”能用”到”好用”，差距往往在 Edge Case 的处理上。Claude Code 在这方面的工程投入令人尊敬。</p>
+<h3 id="6-1-max-output-tokens-截断恢复"><a href="#6-1-max-output-tokens-截断恢复" class="headerlink" title="6.1 max_output_tokens 截断恢复"></a>6.1 max_output_tokens 截断恢复</h3><p>LLM API 有输出 token 的限制。当模型的回复太长时（比如在生成一个很长的文件），输出会被截断。</p>
+<p>大多数 Agent 遇到这种情况要么报错，要么丢失截断的部分。Claude Code 的做法是<strong>自动恢复循环</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">API 返回 stop_reason = &quot;max_output_tokens&quot;</span><br><span class="line">↓</span><br><span class="line">自动将已有的输出追加到消息历史</span><br><span class="line">↓</span><br><span class="line">重新调用 API，让模型继续从截断处生成</span><br><span class="line">↓</span><br><span class="line">最多自动恢复 3 次</span><br></pre></td></tr></table></figure>
+
+<p>对用户来说，这个过程完全透明——你看到的只是一段很长的输出流畅地生成出来。</p>
+<h3 id="6-2-prompt-too-long-紧急恢复"><a href="#6-2-prompt-too-long-紧急恢复" class="headerlink" title="6.2 prompt_too_long 紧急恢复"></a>6.2 prompt_too_long 紧急恢复</h3><p>当消息历史过长导致 API 返回 <code>prompt_too_long</code> 错误时，不是直接报错，而是触发 <strong>Reactive Compact</strong>——紧急压缩上下文，然后自动重试。</p>
+<p>这个设计的价值在于：用户永远不会遇到”对话太长了，请开一个新会话”这种体验断裂。系统在后台悄悄处理了所有的复杂性。</p>
+<h3 id="6-3-Shell-命令的多层安全验证"><a href="#6-3-Shell-命令的多层安全验证" class="headerlink" title="6.3 Shell 命令的多层安全验证"></a>6.3 Shell 命令的多层安全验证</h3><p>BashTool 是安全风险最高的工具——它可以执行任意 Shell 命令。Claude Code 为它构建了极其严格的多层验证：</p>
+<ol>
+<li><strong>路径验证</strong>：确保命令不操作项目目录之外的路径</li>
+<li><strong>sed 命令解析</strong>：专门解析 sed 命令判断是否修改文件（因为 <code>sed -i</code> 是一种隐蔽的写操作）</li>
+<li><strong>破坏性命令检测</strong>：识别 <code>rm -rf</code>、<code>git push --force</code>、<code>chmod 777</code> 等危险模式</li>
+<li><strong>只读验证</strong>：在只读模式下拦截所有写操作</li>
+<li><strong>沙箱限制</strong>：在沙箱环境中限制网络访问和文件系统权限</li>
+</ol>
+<p>仅这个安全验证模块就超过了 100KB 的代码量。</p>
+<h3 id="6-4-权限的分层设计"><a href="#6-4-权限的分层设计" class="headerlink" title="6.4 权限的分层设计"></a>6.4 权限的分层设计</h3><p>安全不只是”拦截危险命令”，还需要一个完整的权限体系：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">第一层: Permission Mode (权限模式)</span><br><span class="line">├── default: 每次询问用户</span><br><span class="line">├── auto: 自动分类器判断风险级别</span><br><span class="line">└── bypass: 跳过所有权限检查 (仅限信任环境)</span><br><span class="line"></span><br><span class="line">第二层: Tool Permission (工具级权限)</span><br><span class="line">├── allow: 始终允许</span><br><span class="line">├── deny: 始终拒绝</span><br><span class="line">└── ask: 每次询问</span><br><span class="line"></span><br><span class="line">第三层: Hooks (钩子系统)</span><br><span class="line">├── pre-tool: 工具执行前的自定义校验</span><br><span class="line">├── post-tool: 工具执行后的检查</span><br><span class="line">└── user-prompt-submit: 用户提交前的过滤</span><br><span class="line"></span><br><span class="line">第四层: Sandbox (沙箱)</span><br><span class="line">├── 网络白名单</span><br><span class="line">├── 文件系统读写权限</span><br><span class="line">└── Unix socket 限制</span><br></pre></td></tr></table></figure>
+
+<p>这种分层设计让安全策略可以根据场景灵活调整——本地开发可以宽松一些，CI&#x2F;CD 环境需要严格锁定，企业环境需要审计日志。</p>
+<h3 id="6-5-优雅的中断与恢复"><a href="#6-5-优雅的中断与恢复" class="headerlink" title="6.5 优雅的中断与恢复"></a>6.5 优雅的中断与恢复</h3><p>当用户按下 Ctrl+C 中断一个正在执行的操作时，系统不是粗暴地终止一切，而是通过 <code>AbortController</code> 体系实现优雅的中断：</p>
+<ul>
+<li>正在进行的 API 调用被取消</li>
+<li>正在执行的工具收到中断信号</li>
+<li>已分配的资源被正确释放</li>
+<li>对话状态保持一致</li>
+</ul>
+<p>用户可以在中断后继续对话，之前积累的上下文不会丢失。</p>
+<h3 id="6-6-Token-预算控制"><a href="#6-6-Token-预算控制" class="headerlink" title="6.6 Token 预算控制"></a>6.6 Token 预算控制</h3><p>在 SDK 模式下（作为其他程序的子组件运行时），支持 API 级别的 <strong>Token Budget</strong> 控制。超过预算时自动停止，而不是无限消耗。</p>
+<p>这对于在 CI&#x2F;CD 中使用 Agent、或者按成本计费的商业场景来说至关重要。</p>
+<hr>
+<h2 id="七、MCP-协议：开放的扩展体系"><a href="#七、MCP-协议：开放的扩展体系" class="headerlink" title="七、MCP 协议：开放的扩展体系"></a>七、MCP 协议：开放的扩展体系</h2><p>值得单独提一下的是 <strong>MCP（Model Context Protocol）</strong> 的角色。它是 Claude Code 扩展能力的核心通道。</p>
+<p>Claude Code 同时扮演两个角色：</p>
+<ul>
+<li><strong>作为 MCP Client</strong>：连接外部的 MCP Server，获取新的工具能力</li>
+<li><strong>作为 MCP Server</strong>：将自己的所有工具暴露出去，供其他程序调用</li>
+</ul>
+<p>这意味着：</p>
+<ul>
+<li>想让 Agent 操作数据库？接入一个数据库 MCP Server</li>
+<li>想让 Agent 管理 Kubernetes？接入一个 K8s MCP Server</li>
+<li>想让 Agent 调用内部 API？写一个自定义 MCP Server</li>
+</ul>
+<p>无需修改 Claude Code 的任何代码，<strong>通过协议扩展能力</strong>。这是真正的”开放架构”。</p>
+<hr>
+<h2 id="八、总结：好的-Agent-框架就是没有框架"><a href="#八、总结：好的-Agent-框架就是没有框架" class="headerlink" title="八、总结：好的 Agent 框架就是没有框架"></a>八、总结：好的 Agent 框架就是没有框架</h2><p>写到这里，我想回到文章开头的问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
+<p>答案是：<strong>差距不在 LLM 本身，而在 Harness 的深度</strong>。</p>
+<p>一个优秀的 Coding Agent 需要同时做好六件事：</p>
+<ol>
+<li><strong>🔧 丰富的工具</strong>：让 LLM 有足够的”手脚”</li>
+<li><strong>🧠 智能的上下文管理</strong>：让 LLM 不会”失忆”</li>
+<li><strong>🎯 充分的环境反馈</strong>：让 LLM 不会”幻觉”</li>
+<li><strong>⚡ 高效的执行</strong>：让交互不会”卡顿”</li>
+<li><strong>🔒 严密的安全</strong>：让操作不会”失控”</li>
+<li><strong>🌐 开放的扩展</strong>：让能力不会”封顶”</li>
+</ol>
+<p>LangChain 时代，我们试图用复杂的编排逻辑来弥补模型能力的不足。如今，模型已经足够强大，最好的策略是：</p>
+<blockquote>
+<p><strong>构建一个极其丰富的 Harness——工具、上下文、安全、协作——然后让 LLM 自己决定怎么做。</strong></p>
+</blockquote>
+<p>这就是 Harness 范式的核心，也是 Claude Code 的成功之处。它证明了一个反直觉的结论：<strong>最好的 Agent 框架，就是没有框架</strong>。</p>
+<p>不需要 DAG，不需要 Chain，不需要 Pipe。只需要一个简洁的 Agent Loop + 精心设计的环境，剩下的交给模型自己。</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>Claude Code 源码分析（基于 claude-code&#x2F;src 目录）</li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/research/building-effective-agents">Anthropic: Building Effective Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/">Model Context Protocol (MCP) 规范</a></li>
+<li><a target="_blank" rel="noopener" href="https://services.google.com/fh/files/misc/startup_technical_guide_ai_agents_final.pdf">Google AI Agents Technical Guide</a></li>
+</ul>
+<hr>
+<p><em>这篇文章是我基于 Claude Code 源码研究的思考总结。在 AI 编程助手快速演进的今天，理解架构设计背后的取舍，比知道某个具体功能怎么用更有长期价值。</em></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">RickDamon</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://rickdamon.github.io/2026/04/01/%E4%BB%8ELangChain%E5%88%B0Harness-Coding-Agent%E7%9A%84%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF/">https://rickdamon.github.io/2026/04/01/%E4%BB%8ELangChain%E5%88%B0Harness-Coding-Agent%E7%9A%84%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">RickDamon</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Coding-Agent/">
+                                    <span class="chip bg-color">Coding Agent</span>
+                                </a>
+                            
+                                <a href="/tags/LLM/">
+                                    <span class="chip bg-color">LLM</span>
+                                </a>
+                            
+                                <a href="/tags/Claude-Code/">
+                                    <span class="chip bg-color">Claude Code</span>
+                                </a>
+                            
+                                <a href="/tags/Harness/">
+                                    <span class="chip bg-color">Harness</span>
+                                </a>
+                            
+                                <a href="/tags/Agent-Loop/">
+                                    <span class="chip bg-color">Agent Loop</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1/">
+                                    <span class="chip bg-color">工程设计</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2026/04/01/%E4%BB%8ELangChain%E5%88%B0Harness-Coding-Agent%E7%9A%84%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="从 LangChain 到 Harness：Coding Agent 的架构演进之路">
+                        
+                        <span class="card-title">从 LangChain 到 Harness：Coding Agent 的架构演进之路</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            导语2024 年底到 2025 年初，Coding Agent 赛道迎来了一次范式跳跃。
+从最早的 LangChain 式”显式编排”，到 AutoGPT 式”自主循环”，再到如今以 Claude Code 为代表的 Harness 范式—
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-04-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/AI/" class="post-category">
+                                    AI
+                                </a>
+                            
+                            <a href="/categories/AI/Agent/" class="post-category">
+                                    Agent
+                                </a>
+                            
+                            <a href="/categories/AI/Agent/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                    架构设计
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Coding-Agent/">
+                        <span class="chip bg-color">Coding Agent</span>
+                    </a>
+                    
+                    <a href="/tags/LLM/">
+                        <span class="chip bg-color">LLM</span>
+                    </a>
+                    
+                    <a href="/tags/Claude-Code/">
+                        <span class="chip bg-color">Claude Code</span>
+                    </a>
+                    
+                    <a href="/tags/Harness/">
+                        <span class="chip bg-color">Harness</span>
+                    </a>
+                    
+                    <a href="/tags/Agent-Loop/">
+                        <span class="chip bg-color">Agent Loop</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1/">
+                        <span class="chip bg-color">工程设计</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2026/01/03/%E5%9F%BA%E4%BA%8Egoogle%E6%9C%80%E6%96%B0agents%E8%AE%BA%E6%96%87%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%96%87%E6%A1%A3/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="基于Google最新Agents论文的学习文档">
+                        
+                        <span class="card-title">基于Google最新Agents论文的学习文档</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            导语原链接：Google AI Agents Technical Guide
+这份白皮书是 Google 对AI Agent 从概念到生产部署的完整技术路线图，涵盖了：
+
+✅ AI Agent 的定义和分类
+✅ Agent 开发框架（ADK
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-01-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/AI/" class="post-category">
+                                    AI
+                                </a>
+                            
+                            <a href="/categories/AI/Agent/" class="post-category">
+                                    Agent
+                                </a>
+                            
+                            <a href="/categories/AI/Agent/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                    架构设计
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/LLM/">
+                        <span class="chip bg-color">LLM</span>
+                    </a>
+                    
+                    <a href="/tags/AI-Agents/">
+                        <span class="chip bg-color">AI Agents</span>
+                    </a>
+                    
+                    <a href="/tags/ADK%E6%A1%86%E6%9E%B6/">
+                        <span class="chip bg-color">ADK框架</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
+                        <span class="chip bg-color">系统设计</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%94%9F%E4%BA%A7%E9%83%A8%E7%BD%B2/">
+                        <span class="chip bg-color">生产部署</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="6891570000"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2026</span>
+            
+            <a href="/about" target="_blank">RickDamon</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/rickdamon" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:719196134@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=719196134" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 719196134" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="https://music.163.com/#/artist?id=12662548" class="tooltipped" target="_blank" data-tooltip="听听我的音乐" data-position="top" data-delay="50">
+        <i class="fas fa-music"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

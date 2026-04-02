@@ -1,5 +1,5 @@
 ---
-title: 从 LangChain 到 Harness：Coding Agent 的架构演进之路
+title: 从 Claude Code 源码泄漏看 Coding Agent 的架构演进之路
 date: 2026-04-01
 top: true
 categories: 

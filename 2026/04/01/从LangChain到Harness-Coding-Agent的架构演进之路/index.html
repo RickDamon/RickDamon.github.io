@@ -649,15 +649,93 @@
 <p>注意一个关键设计：<strong>Synthesis 阶段由 Coordinator 自己完成，而不是委托给 Worker</strong>。这确保了主代理始终掌握全局视图，不会在信息传递中丢失关键细节。</p>
 <p>Worker 之间通过消息路由系统通信，支持直接消息、广播、关闭请求等多种消息类型，并有完整的计划审批流程。</p>
 <hr>
-<h2 id="六、Edge-Case-的工程化处理"><a href="#六、Edge-Case-的工程化处理" class="headerlink" title="六、Edge Case 的工程化处理"></a>六、Edge Case 的工程化处理</h2><p>一个 Coding Agent 从”能用”到”好用”，差距往往在 Edge Case 的处理上。Claude Code 使用的方式是对于现实世界复杂度造成的问题都做了edge case的处理（多达数百个），而不是很多人臆测的某种特殊高雅处理方式。下面举一些例子。</p>
-<h3 id="6-1-max-output-tokens-截断恢复"><a href="#6-1-max-output-tokens-截断恢复" class="headerlink" title="6.1 max_output_tokens 截断恢复"></a>6.1 max_output_tokens 截断恢复</h3><p>LLM API 有输出 token 的限制。当模型的回复太长时（比如在生成一个很长的文件），输出会被截断。</p>
-<p>大多数 Agent 遇到这种情况要么报错，要么丢失截断的部分。Claude Code 的做法是<strong>自动恢复循环</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">API 返回 stop_reason = &quot;max_output_tokens&quot;</span><br><span class="line">↓</span><br><span class="line">自动将已有的输出追加到消息历史</span><br><span class="line">↓</span><br><span class="line">重新调用 API，让模型继续从截断处生成</span><br><span class="line">↓</span><br><span class="line">最多自动恢复 3 次</span><br></pre></td></tr></table></figure>
-
-<p>对用户来说，这个过程完全透明——你看到的只是一段很长的输出流畅地生成出来。</p>
-<h3 id="6-2-prompt-too-long-紧急恢复"><a href="#6-2-prompt-too-long-紧急恢复" class="headerlink" title="6.2 prompt_too_long 紧急恢复"></a>6.2 prompt_too_long 紧急恢复</h3><p>当消息历史过长导致 API 返回 <code>prompt_too_long</code> 错误时，不是直接报错，而是触发 <strong>Reactive Compact</strong>——紧急压缩上下文，然后自动重试。</p>
-<p>这个设计的价值在于：用户永远不会遇到”对话太长了，请开一个新会话”这种体验断裂。系统在后台悄悄处理了所有的复杂性。</p>
-<h3 id="6-3-Shell-命令的多层安全验证"><a href="#6-3-Shell-命令的多层安全验证" class="headerlink" title="6.3 Shell 命令的多层安全验证"></a>6.3 Shell 命令的多层安全验证</h3><p>BashTool 是安全风险最高的工具——它可以执行任意 Shell 命令。Claude Code 为它构建了极其严格的多层验证：</p>
+<h2 id="六、Edge-Case-的工程化处理"><a href="#六、Edge-Case-的工程化处理" class="headerlink" title="六、Edge Case 的工程化处理"></a>六、Edge Case 的工程化处理</h2><p>一个 Coding Agent 从”能用”到”好用”，差距往往不在核心架构，而在 <strong>Edge Case 的处理深度</strong>。</p>
+<p>很多人可能会臆测 Claude Code 使用了某种特别高雅的处理方式——比如一个统一的错误恢复框架，或者什么高级的形式化验证。实际上不是的。翻看源码你会发现，它的做法非常朴素：<strong>面向体验，逐个击破</strong>。源码中藏着数百个 edge case 的专项处理，每一个都针对某个真实用户会遇到的具体问题。</p>
+<p>这种”笨功夫”恰恰是产品质量的护城河。下面按类别展开。</p>
+<h3 id="6-1-会话恢复：让对话”看起来没断过”"><a href="#6-1-会话恢复：让对话”看起来没断过”" class="headerlink" title="6.1 会话恢复：让对话”看起来没断过”"></a>6.1 会话恢复：让对话”看起来没断过”</h3><p>用户随时可能 Ctrl+C、网络断开、程序崩溃。恢复会话时，必须让对话无缝继续。这听起来简单，实际上要处理至少 7-8 种”脏数据”：</p>
+<p><strong>① 未配对的工具调用</strong></p>
+<p>最常见的场景：模型正在调用工具，用户此时 Ctrl+C。此时对话历史中会留下只有 <code>tool_use</code> 但没有对应 <code>tool_result</code> 的消息。如果不处理，下次 API 调用会直接报错 “tool_use ids were found without tool_result blocks”，对话彻底卡死。</p>
+<p>处理方式：恢复时自动扫描所有消息，过滤掉没有匹配 <code>tool_result</code> 的 <code>tool_use</code> 块。</p>
+<p><strong>② 孤儿消息清理</strong></p>
+<p>流式传输时，模型可能先输出了两个换行符 <code>&quot;\n\n&quot;</code>，然后开始内部推理（thinking），用户此时取消——留下一条只有空白文本的 assistant 消息。如果不清理，API 会拒绝处理。</p>
+<p>类似的还有”只含 thinking block 的孤儿消息”——流式传输产生了独立的 thinking 消息片段，但因为中途中断没有被正确合并。这些都需要在恢复时逐一过滤。</p>
+<p>而且这些过滤操作之间还有<strong>顺序依赖</strong>：必须先处理 thinking 块，再处理空白消息。反过来做会导致部分脏数据漏网。</p>
+<p><strong>③ 中断类型的精确识别</strong></p>
+<p>中断不是一种状态，而是至少三种：</p>
+<ul>
+<li><strong>正常完成</strong>：模型完整回复了</li>
+<li><strong>用户输入中断</strong>：用户输入了新问题但模型还没来得及回复</li>
+<li><strong>回复中断</strong>：模型回复到一半被打断</li>
+</ul>
+<p>系统需要精确区分这三种状态，因为恢复策略完全不同。更复杂的是，有些消息看起来像中断但其实不是——比如系统进度消息、API 错误消息都不应该被计入中断判断。</p>
+<p><strong>④ 版本兼容</strong></p>
+<p>老版本保存的 session 数据可能使用了新版本不认识的字段值（比如某个权限模式在内部版本有但在公开版本没有）。恢复时需要透明地迁移这些数据，否则 API 调用会因为无效参数而报 400 错误。</p>
+<p>这些看起来都是小问题，但<strong>任何一个没处理好，用户就会卡在”无法恢复会话”的死胡同里</strong>。</p>
+<h3 id="6-2-API-错误的精细化处理"><a href="#6-2-API-错误的精细化处理" class="headerlink" title="6.2 API 错误的精细化处理"></a>6.2 API 错误的精细化处理</h3><p>一个面向海量用户的产品，API 调用失败是家常便饭。Claude Code 对 <strong>30+ 种 API 错误</strong>做了逐一分类，每种都给出针对性的用户提示，而不是笼统的 “Something went wrong”。</p>
+<p><strong>① 重试策略的分级设计</strong></p>
+<p>不是所有错误都值得重试，也不是所有场景的重试策略都一样：</p>
+<ul>
+<li><strong>前台任务</strong>（用户在等待的）：529 过载 → 最多重试 3 次，然后降级到备用模型</li>
+<li><strong>后台任务</strong>（摘要生成、分类器等）：529 过载 → <strong>直接放弃不重试</strong>，因为后台任务的重试会造成 3-10 倍的网关放大效应</li>
+<li><strong>无人值守模式</strong>（CI&#x2F;CD 场景）：429&#x2F;529 → 无限重试，每 30 秒发心跳防止宿主标记 session 为空闲</li>
+</ul>
+<p><strong>② 连接池的陈旧连接修复</strong></p>
+<p>HTTP keep-alive 连接池中的连接可能已经被服务端关闭了，但客户端不知道。每次请求都会先触发一次 ECONNRESET 错误。</p>
+<p>处理方式：检测到 ECONNRESET&#x2F;EPIPE → 关闭整个连接池 → 用新连接重试。不做这个处理，用户会感觉”每个请求都要失败一次才能成功”。</p>
+<p><strong>③ Context Window 溢出的自动调整</strong></p>
+<p>当 <code>input_tokens + max_tokens &gt; context_limit</code> 时，不是简单报错，而是解析错误消息中的具体数字 → 计算可用空间 → 自动调低 <code>max_tokens</code>（但不低于 3000，也要保证 thinking 预算的最小需求）→ 重试。对用户完全透明。</p>
+<p><strong>④ 认证凭证的透明刷新</strong></p>
+<p>OAuth Token 过期、AWS Bedrock 凭证失效、GCP Vertex 认证失败——每种认证错误都有独立的检测和刷新路径。而且还要处理”另一个进程已经刷新了 token”的竞态场景。</p>
+<p><strong>⑤ 错误消息的极致精确</strong></p>
+<p>源码中的错误分类函数长达 600+ 行，针对每种错误给出极其具体的提示。举几个例子：</p>
+<table>
+<thead>
+<tr>
+<th>错误场景</th>
+<th>提示内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>使用了 Pro 计划不支持的模型</td>
+<td>“Opus not available on Pro plan, try &#x2F;logout + &#x2F;login”</td>
+</tr>
+<tr>
+<td>模型名无效（内部用户）</td>
+<td>“Your org isn’t gated, try ANTHROPIC_MODEL&#x3D;…”</td>
+</tr>
+<tr>
+<td>PDF 超页数限制</td>
+<td>交互模式: “esc esc to go back”；非交互: “try pdftotext”</td>
+</tr>
+<tr>
+<td>余额不足</td>
+<td>专门的计费错误提示</td>
+</tr>
+</tbody></table>
+<p>这种精确到场景的错误提示，让用户能<strong>自助解决问题</strong>，而不是去论坛发帖求助。</p>
+<h3 id="6-3-对话历史的”防腐蚀”设计"><a href="#6-3-对话历史的”防腐蚀”设计" class="headerlink" title="6.3 对话历史的”防腐蚀”设计"></a>6.3 对话历史的”防腐蚀”设计</h3><p>对话历史是整个系统最核心的状态。一旦被”腐蚀”（数据不一致），轻则某条消息丢失，重则对话永久损坏无法继续。源码中对此有多重防护：</p>
+<p><strong>① tool_use &#x2F; tool_result 配对修复</strong></p>
+<p>恢复会话或跨设备迁移（teleport）时，<code>tool_use</code> 和 <code>tool_result</code> 可能不匹配。处理方式：</p>
+<ul>
+<li>为孤儿 <code>tool_use</code> 插入合成的错误 <code>tool_result</code>（内容：”[Tool result missing due to internal error]”）</li>
+<li>剥离引用了不存在 <code>tool_use</code> 的孤儿 <code>tool_result</code></li>
+</ul>
+<p>更细致的是：合成的 placeholder 会被人类反馈（HFI）系统识别并拒绝提交，<strong>避免脏数据污染训练集</strong>。</p>
+<p><strong>② 重复 tool_use ID 检测</strong></p>
+<p>理论上 <code>tool_use</code> 的 ID 是唯一的，但在某些异常路径下（比如 SDK 重连后发送了重复的权限响应），可能产生重复 ID。如果不检测，对话会进入死循环——每次重试都累积更多重复。</p>
+<p><strong>③ 权限响应的去重</strong></p>
+<p>VS Code 等 IDE 通过 WebSocket 发送权限响应时，如果网络断开重连，可能重复发送同一个工具的权限确认。如果不去重，同一个工具会被执行两次 → 产生重复 tool_use ID → API 返回 400 → 对话永久损坏。</p>
+<h3 id="6-4-上下文压缩的防御性处理"><a href="#6-4-上下文压缩的防御性处理" class="headerlink" title="6.4 上下文压缩的防御性处理"></a>6.4 上下文压缩的防御性处理</h3><p>前面讲了六层压缩策略，但”压缩”本身也可能出问题：</p>
+<p><strong>① 压缩的熔断器</strong></p>
+<p>有时上下文已经不可恢复地超过了限制，autocompact 注定会失败。真实数据显示，有 1,279 个 session 出现了 50+ 次连续压缩失败（最高 3,272 次），全局浪费了约 25 万次 API 调用&#x2F;天。</p>
+<p>解决方案很直接：连续失败 3 次后停止尝试。数据驱动，不是拍脑袋。</p>
+<p><strong>② 压缩的递归防护</strong></p>
+<p><code>session_memory</code> 和 <code>compact</code> 本身就是通过 forked agent 实现的。如果它们自己也触发了 autocompact，就会死锁。因此需要对这些特殊的查询来源直接跳过压缩检查。</p>
+<p><strong>③ 压缩请求本身太长</strong></p>
+<p>这是一个很微妙的问题：当对话太长时触发压缩，但压缩请求（需要把整个对话发给 API 来生成摘要）本身就超过了上下文限制。解决方案：从最老的对话回合开始逐步截断，利用错误消息中的 token 差值一次跳过多个回合（而不是逐个剥离），直到压缩请求能发出去。同时设置兜底——截断后仍然太长就抛出明确错误，而不是无限循环。</p>
+<p><strong>④ 图片剥离</strong></p>
+<p>频繁附加截图的用户，压缩时把图片也发给 API 很容易超限。处理方式：压缩前将所有图片替换为 “[image was shared]” 文本标记。</p>
+<h3 id="6-5-Shell-命令的多层安全验证"><a href="#6-5-Shell-命令的多层安全验证" class="headerlink" title="6.5 Shell 命令的多层安全验证"></a>6.5 Shell 命令的多层安全验证</h3><p>BashTool 是安全风险最高的工具——它可以执行任意 Shell 命令。Claude Code 为它构建了极其严格的多层验证：</p>
 <ol>
 <li><strong>路径验证</strong>：确保命令不操作项目目录之外的路径</li>
 <li><strong>sed 命令解析</strong>：专门解析 sed 命令判断是否修改文件（因为 <code>sed -i</code> 是一种隐蔽的写操作）</li>
@@ -665,21 +743,32 @@
 <li><strong>只读验证</strong>：在只读模式下拦截所有写操作</li>
 <li><strong>沙箱限制</strong>：在沙箱环境中限制网络访问和文件系统权限</li>
 </ol>
-<p>仅这个安全验证模块就超过了 100KB 的代码量。</p>
-<h3 id="6-4-权限的分层设计"><a href="#6-4-权限的分层设计" class="headerlink" title="6.4 权限的分层设计"></a>6.4 权限的分层设计</h3><p>安全不只是”拦截危险命令”，还需要一个完整的权限体系：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">第一层: Permission Mode (权限模式)</span><br><span class="line">├── default: 每次询问用户</span><br><span class="line">├── auto: 自动分类器判断风险级别</span><br><span class="line">└── bypass: 跳过所有权限检查 (仅限信任环境)</span><br><span class="line"></span><br><span class="line">第二层: Tool Permission (工具级权限)</span><br><span class="line">├── allow: 始终允许</span><br><span class="line">├── deny: 始终拒绝</span><br><span class="line">└── ask: 每次询问</span><br><span class="line"></span><br><span class="line">第三层: Hooks (钩子系统)</span><br><span class="line">├── pre-tool: 工具执行前的自定义校验</span><br><span class="line">├── post-tool: 工具执行后的检查</span><br><span class="line">└── user-prompt-submit: 用户提交前的过滤</span><br><span class="line"></span><br><span class="line">第四层: Sandbox (沙箱)</span><br><span class="line">├── 网络白名单</span><br><span class="line">├── 文件系统读写权限</span><br><span class="line">└── Unix socket 限制</span><br></pre></td></tr></table></figure>
-
-<p>这种分层设计让安全策略可以根据场景灵活调整——本地开发可以宽松一些，CI&#x2F;CD 环境需要严格锁定，企业环境需要审计日志。</p>
-<h3 id="6-5-优雅的中断与恢复"><a href="#6-5-优雅的中断与恢复" class="headerlink" title="6.5 优雅的中断与恢复"></a>6.5 优雅的中断与恢复</h3><p>当用户按下 Ctrl+C 中断一个正在执行的操作时，系统不是粗暴地终止一切，而是通过 <code>AbortController</code> 体系实现优雅的中断：</p>
+<p>仅这个安全验证模块就超过了 100KB 的代码量。配合四层权限体系（权限模式 → 工具级权限 → 钩子系统 → 沙箱隔离），安全策略可以根据场景灵活调整——本地开发可以宽松一些，CI&#x2F;CD 环境严格锁定，企业环境需要审计日志。</p>
+<h3 id="6-6-Git-操作的多级-Fallback"><a href="#6-6-Git-操作的多级-Fallback" class="headerlink" title="6.6 Git 操作的多级 Fallback"></a>6.6 Git 操作的多级 Fallback</h3><p>Git 是编码场景的基础设施，但 Git 仓库的状态千奇百怪。源码中对此设计了三种退化模式，每种都有独立的恢复路径：</p>
+<ol>
+<li><strong>Detached HEAD</strong>：无法获取分支名 → fallback 到用 merge-base 与默认分支比较</li>
+<li><strong>No Remote</strong>：没有远端仓库 → 只用 HEAD-only 模式</li>
+<li><strong>Shallow Clone</strong>：浅克隆没有完整历史 → 检测后 fallback 到 HEAD-only 模式</li>
+<li><strong>Merge-base 失败</strong>：即使上面都通过了，merge-base 本身也可能失败 → 再次 fallback</li>
+</ol>
+<p>原则很清楚：<strong>无论 Git 仓库处于什么奇怪的状态，Agent 都不能卡死</strong>。</p>
+<h3 id="6-7-第三方依赖的-Workaround"><a href="#6-7-第三方依赖的-Workaround" class="headerlink" title="6.7 第三方依赖的 Workaround"></a>6.7 第三方依赖的 Workaround</h3><p>现实世界的工程不只是写自己的代码，还要和各种有 bug 的第三方依赖共存：</p>
 <ul>
-<li>正在进行的 API 调用被取消</li>
-<li>正在执行的工具收到中断信号</li>
-<li>已分配的资源被正确释放</li>
-<li>对话状态保持一致</li>
+<li><strong>GrowthBook SDK 的 Remote Eval bug</strong>：SDK 在远程评估模式下返回值格式不对、<code>evalFeature()</code> 忽略预计算值、<code>setForcedFeatures</code> 也不可靠——三层 workaround 层层兜底</li>
+<li><strong>Bun 运行时的文件监视器死锁</strong>：chokidar 4+ 放弃了 fsevents，Bun 用 kqueue 实现 <code>fs.watch</code>，git 操作触碰多个目录时会导致死锁——改用 <code>stat()</code> 轮询代替</li>
+<li><strong>Axios 代理兼容性 bug</strong>：手动创建 proxy agent 绕过 axios 的已知问题</li>
+<li><strong>WebSocket 重连的事件处理器泄漏</strong>：网络不稳时频繁重连，每次重连都注册新的事件监听器导致内存泄漏——重连前显式清除旧 WS 的所有事件处理器</li>
 </ul>
-<p>用户可以在中断后继续对话，之前积累的上下文不会丢失。</p>
-<h3 id="6-6-Token-预算控制"><a href="#6-6-Token-预算控制" class="headerlink" title="6.6 Token 预算控制"></a>6.6 Token 预算控制</h3><p>在 SDK 模式下（作为其他程序的子组件运行时），支持 API 级别的 <strong>Token Budget</strong> 控制。超过预算时自动停止，而不是无限消耗。</p>
-<p>这对于在 CI&#x2F;CD 中使用 Agent、或者按成本计费的商业场景来说至关重要。</p>
+<p>这些 workaround 大多附带了详细的注释和 issue 编号（如 CC-1180、#21931、axios&#x2F;axios#4531），说明了”为什么”而不仅仅是”怎么做”。</p>
+<h3 id="6-8-Edge-Case-处理的设计哲学"><a href="#6-8-Edge-Case-处理的设计哲学" class="headerlink" title="6.8 Edge Case 处理的设计哲学"></a>6.8 Edge Case 处理的设计哲学</h3><p>回过头来看，这数百个 edge case 处理展现了几个核心原则：</p>
+<ol>
+<li><strong>永不卡死</strong>：无论发生什么错误，都有退化路径。从 fallback 模型到 HEAD-only git mode 到截断式压缩，用户永远能继续工作</li>
+<li><strong>透明降级</strong>：错误发生时用户甚至感知不到，系统在后台默默处理了一切</li>
+<li><strong>数据驱动</strong>：阈值和策略来自真实的用户数据（”1,279 个 session 有 50+ 次连续失败”），不是拍脑袋的猜测</li>
+<li><strong>防腐蚀设计</strong>：对话历史是最核心的状态，任何可能腐蚀它的操作都有多重防护</li>
+<li><strong>注释即文档</strong>：几乎每个 workaround 都有 issue 编号和详细的”为什么”注释</li>
+</ol>
+<p>这种”笨功夫”是没有捷径的——你必须真的遇到了每一个问题，理解了它的根因，然后逐个修复。这也解释了为什么新的 Coding Agent 产品层出不穷，但体验上能接近 Claude Code 的寥寥无几：<strong>核心架构可以被借鉴，但数百个 edge case 的积累不能被速成</strong>。</p>
 <hr>
 <h2 id="七、MCP-协议：开放的扩展体系"><a href="#七、MCP-协议：开放的扩展体系" class="headerlink" title="七、MCP 协议：开放的扩展体系"></a>七、MCP 协议：开放的扩展体系</h2><p>值得单独提一下的是 <strong>MCP（Model Context Protocol）</strong> 的角色。它是 Claude Code 扩展能力的核心通道。</p>
 <p>Claude Code 同时扮演两个角色：</p>

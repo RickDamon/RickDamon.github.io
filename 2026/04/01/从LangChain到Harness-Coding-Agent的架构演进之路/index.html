@@ -438,24 +438,24 @@
             <div id="articleContent">
                 <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>2024 年底到 2025 年初，Coding Agent 赛道迎来了一次范式跳跃。</p>
 <p>从最早的 LangChain 式”显式编排”，到 AutoGPT 式”自主循环”，再到如今以 Claude Code 为代表的 <strong>Harness 范式</strong>——AI 编程助手的架构设计在短短两年内经历了三次根本性的转变。</p>
-<p>昨晚 Claude Code 的源码意外泄露，我第一时间通读了其完整架构，试图回答一个核心问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
-<p>这篇文章不是一篇源码导读，而是我对 Coding Agent 架构演进的思考总结。我会从以下几个维度展开：</p>
+<p>昨晚 Claude Code 的源码意外泄露，fork了一份看看源码，试图回答一个核心问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
+<p>这篇文章不是一篇源码导读，而是对 Coding Agent 架构演进的思考总结。会从以下几个维度展开：</p>
 <ol>
-<li>🔄 Agent 架构的三次范式转变</li>
-<li>🏗️ Harness 范式的工程设计哲学</li>
-<li>🧠 如何让 Agent 不丢失上下文</li>
-<li>🎯 如何让模型减少幻觉</li>
-<li>🔧 工具系统的精妙设计</li>
-<li>⚡ Edge Case 的工程化处理</li>
+<li>Agent 架构的三次范式转变</li>
+<li>Harness 范式的工程设计哲学</li>
+<li>如何让 Agent 不丢失上下文</li>
+<li>如何让模型减少幻觉</li>
+<li>工具系统的精妙设计</li>
+<li>Edge Case 的工程化处理</li>
 </ol>
 <span id="more"></span>
 
 <hr>
-<h2 id="一、Agent-架构的三次范式转变"><a href="#一、Agent-架构的三次范式转变" class="headerlink" title="一、Agent 架构的三次范式转变"></a>一、Agent 架构的三次范式转变</h2><h3 id="1-1-第一代：显式编排时代（LangChain-LangGraph）"><a href="#1-1-第一代：显式编排时代（LangChain-LangGraph）" class="headerlink" title="1.1 第一代：显式编排时代（LangChain &#x2F; LangGraph）"></a>1.1 第一代：显式编排时代（LangChain &#x2F; LangGraph）</h3><p>2023 年，LangChain 几乎是所有 LLM 应用的标准起点。它的核心思想是<strong>显式编排</strong>：开发者用 Chain、Pipe、DAG 把 LLM 的调用流程”画”出来。</p>
+<h2 id="一、Agent-架构的三次范式转变"><a href="#一、Agent-架构的三次范式转变" class="headerlink" title="一、Agent 架构的三次范式转变"></a>一、Agent 架构的三次范式转变</h2><h3 id="1-1-第一代：显式编排时代（LangChain-LangGraph）"><a href="#1-1-第一代：显式编排时代（LangChain-LangGraph）" class="headerlink" title="1.1 第一代：显式编排时代（LangChain &#x2F; LangGraph）"></a>1.1 第一代：显式编排时代（LangChain &#x2F; LangGraph）</h3><p>2023 年，LangChain 几乎是所有 LLM 应用的标准起点。它的核心思想是<strong>显式编排</strong>：开发者用 Chain、Pipe、DAG 把 LLM 的调用流程”画”出来，当时这个“高大上”的使用方式让不少人作为一个新的技术范式来研究它。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># LangChain 的典型模式：开发者预定义工作流</span></span><br><span class="line">chain = (</span><br><span class="line">    prompt_template </span><br><span class="line">    | llm </span><br><span class="line">    | output_parser </span><br><span class="line">    | tool_selector </span><br><span class="line">    | tool_executor</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
-<p>这个模式的问题在于：<strong>开发者必须预先知道所有可能的执行路径</strong>。每当你想支持一个新场景，就必须回去修改 chain 定义。这在面对代码编辑这种高度动态的场景时，几乎不可能穷举。</p>
-<p>更致命的是状态管理。LangChain 把状态管理的责任完全交给了开发者——你需要手动管理对话历史、手动处理上下文窗口溢出、手动定义错误恢复路径。当你的 Agent 需要在一个 10 万行的项目里做跨文件重构时，这种手动管理几乎是不可能完成的任务。</p>
+<p>这个模式的问题在于：<strong>开发者必须预先知道所有可能的执行路径</strong>。每当你想支持一个新场景，就必须回去修改 chain 定义。这在面对代码编辑这种高度动态的场景时，说实话很难去做穷举。</p>
+<p>更致命的是状态管理。LangChain 把状态管理的责任完全交给了开发者——你需要手动管理对话历史、手动处理上下文窗口溢出、手动定义错误恢复路径。当你的 Agent 需要在一个 10 万行的项目里做跨文件重构时，这种手动管理也是个比较复杂的任务，尤其是遇到编码场景等。</p>
 <h3 id="1-2-第二代：自主循环时代（AutoGPT-BabyAGI）"><a href="#1-2-第二代：自主循环时代（AutoGPT-BabyAGI）" class="headerlink" title="1.2 第二代：自主循环时代（AutoGPT &#x2F; BabyAGI）"></a>1.2 第二代：自主循环时代（AutoGPT &#x2F; BabyAGI）</h3><p>2023 年中，AutoGPT 的出现让所有人兴奋了一阵子。它的思路很简单：<strong>让 LLM 自己决定下一步做什么，循环执行直到任务完成</strong>。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">while not done:</span><br><span class="line">    thought = llm.think(context)</span><br><span class="line">    action = llm.decide_action(thought)</span><br><span class="line">    result = execute(action)</span><br><span class="line">    context.append(result)</span><br></pre></td></tr></table></figure>
 
@@ -466,16 +466,16 @@
 <li><strong>没有安全边界</strong>：<code>rm -rf /</code> 说执行就执行，没有任何防护</li>
 <li><strong>工具原始</strong>：只有最基本的文件读写和 shell 执行</li>
 </ul>
-<p>AutoGPT 的方向正确但时机不对——当时的模型能力不足以支撑自主决策，而工程基础设施也远远不够。</p>
-<h3 id="1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）"><a href="#1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）" class="headerlink" title="1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）"></a>1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）</h3><p>到了 2025 年，一种新的范式逐渐成型，我称之为 <strong>Harness 范式</strong>。它的核心理念用一句话概括就是：</p>
+<p>AutoGPT 的方向正确但时机不对——当时的模型能力和上下文限制不足以支撑自主决策，而工程基础设施也远远不够，比方说没有稳定的长期记忆结构，没有稳定的状态压缩机制以及planning abstraction等等。</p>
+<h3 id="1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）"><a href="#1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）" class="headerlink" title="1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）"></a>1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）</h3><p>到了 2025 年，一种anthropic极力推崇的新范式逐渐成型，官方称之为 <strong>Harness 范式</strong>。它的核心理念用一句话概括就是：</p>
 <blockquote>
 <p><strong>不要编排 LLM，要为 LLM 构建一个丰富的运行时环境，然后让它自己决定怎么做。</strong></p>
 </blockquote>
-<p>“Harness” 这个词很精妙——它既有”驾驭、利用”的意思，也有”安全带、保护装置”的含义。一个好的 Harness 既要<strong>赋能</strong>（给 LLM 足够的工具和信息），又要<strong>约束</strong>（确保安全、防止失控）。</p>
-<p>Claude Code 是这个范式目前最极致的实现。它的 Agent Loop 核心逻辑简洁得令人惊叹：</p>
+<p>“Harness” 这个词很有意思——它既有”驾驭、利用”的意思，也有”安全带、保护装置”的含义。一个好的 Harness 既要<strong>赋能</strong>（给 LLM 足够的工具和信息），又要<strong>约束</strong>（确保安全、防止失控）。</p>
+<p>Claude Code 则是这个范式目前最极致的实现。它的 Agent Loop 核心逻辑其实非常简洁：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">while (模型未停止):</span><br><span class="line">    response = callAPI(messages)</span><br><span class="line">    if response 包含 tool_use:</span><br><span class="line">        results = executeTools(tool_calls)</span><br><span class="line">        messages.append(results)</span><br><span class="line">        continue  // 模型自己决定下一步</span><br><span class="line">    else:</span><br><span class="line">        break  // 模型认为任务完成</span><br></pre></td></tr></table></figure>
 
-<p>就这么几行伪代码，支撑起了一个能做跨文件重构、多代理协作、无限对话的编程助手。所有的”智能”不是来自复杂的编排逻辑，而是来自三个方面：</p>
+<p>就这么几行伪代码所覆盖的逻辑，支撑起了一个能做跨文件重构、多代理协作、无限对话的编程助手。所有的”智能”不是来自复杂的编排逻辑，而是来自三个方面：</p>
 <ol>
 <li><strong>模型本身的推理能力</strong></li>
 <li><strong>精心设计的系统提示</strong></li>
@@ -529,8 +529,8 @@
 </tbody></table>
 <p>这个演进的本质是：<strong>随着模型能力的提升，控制权从开发者逐渐转移到模型本身</strong>。LangChain 时代，开发者不信任模型，所以要用 DAG 来”管”它；Harness 时代，模型已经足够强，开发者要做的是构建好环境，然后 <strong>get out of the way</strong>。</p>
 <hr>
-<h2 id="二、Harness-范式的工程设计哲学"><a href="#二、Harness-范式的工程设计哲学" class="headerlink" title="二、Harness 范式的工程设计哲学"></a>二、Harness 范式的工程设计哲学</h2><p>理解了范式差异之后，让我们深入看看 Harness 范式在工程层面是怎么落地的。</p>
-<h3 id="2-1-“操作系统”而非”框架”"><a href="#2-1-“操作系统”而非”框架”" class="headerlink" title="2.1 “操作系统”而非”框架”"></a>2.1 “操作系统”而非”框架”</h3><p>Claude Code 的定位不是一个”调用 LLM 的应用”，而是一个<strong>为 LLM 构建的完整操作系统</strong>。就像 Linux 为用户程序提供文件系统、进程管理、网络栈一样，Claude Code 为 LLM 提供：</p>
+<h2 id="二、Harness-范式的工程设计哲学"><a href="#二、Harness-范式的工程设计哲学" class="headerlink" title="二、Harness 范式的工程设计哲学"></a>二、Harness 范式的工程设计哲学</h2><p>理解了范式差异之后，再来深入的看看 Harness 范式在Claude Code工程层面是怎么落地的。</p>
+<h3 id="2-1-“操作系统”而非”框架”"><a href="#2-1-“操作系统”而非”框架”" class="headerlink" title="2.1 “操作系统”而非”框架”"></a>2.1 “操作系统”而非”框架”</h3><p>Claude Code 的设计定位就不是一个”调用 LLM 的应用”或者中台，而是一个<strong>为 LLM 构建的完整操作系统</strong>。就像 Linux 为用户程序提供文件系统、进程管理、网络栈一样，Claude Code 为 LLM 提供：</p>
 <ul>
 <li><strong>文件系统访问</strong>：读&#x2F;写&#x2F;精确编辑任意文件</li>
 <li><strong>进程执行</strong>：运行 Shell 命令，支持超时和中断</li>
@@ -550,7 +550,7 @@
 <p>第一个 <code>tool_use</code> block 的 JSON 一完成解析，就立刻开始执行。后续的 block 继续接收，继续排队。这意味着网络传输和工具执行是<strong>重叠进行</strong>的，整体延迟大幅降低。</p>
 <p>这种设计在编程场景下尤其重要——当模型决定同时读取 5 个文件时，你不需要等 5 个 <code>tool_use</code> block 全部接收完才开始读文件。第一个文件名一确定，文件读取就开始了。</p>
 <hr>
-<h2 id="三、如何让-Agent-不丢失上下文"><a href="#三、如何让-Agent-不丢失上下文" class="headerlink" title="三、如何让 Agent 不丢失上下文"></a>三、如何让 Agent 不丢失上下文</h2><p>上下文管理是 Coding Agent 最核心也最容易被忽视的问题。一个典型的编程会话可能持续数小时，涉及几十个文件、上百次工具调用。如果每隔 20 分钟就”忘了”之前在干什么，体验就会断崖式下跌。</p>
+<h2 id="三、如何让-Agent-不丢失上下文"><a href="#三、如何让-Agent-不丢失上下文" class="headerlink" title="三、如何让 Agent 不丢失上下文"></a>三、如何让 Agent 不丢失上下文</h2><p>上下文管理是 Coding Agent 最核心也比较容易被忽视的问题。一个典型的编程会话可能持续数小时，涉及几十个文件、上百次工具调用。如果每隔 20 分钟就”忘了”之前在干什么，体验就会断崖式下跌。</p>
 <h3 id="3-1-问题的本质"><a href="#3-1-问题的本质" class="headerlink" title="3.1 问题的本质"></a>3.1 问题的本质</h3><p>LLM 的上下文窗口是有限的。即使是 200K token 的窗口，在一个复杂的编程会话中也会很快填满——每次文件读取、每次命令输出、每条对话消息都在消耗 token。</p>
 <p>传统方案很粗暴：要么截断历史消息（丢失上下文），要么限制对话长度（限制能力）。Claude Code 的方案精妙得多：<strong>多层压缩 + 持久记忆</strong>。</p>
 <h3 id="3-2-六层上下文压缩策略"><a href="#3-2-六层上下文压缩策略" class="headerlink" title="3.2 六层上下文压缩策略"></a>3.2 六层上下文压缩策略</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────────────────────────────┐</span><br><span class="line">│           上下文管理的六道防线                  │</span><br><span class="line">│                                               │</span><br><span class="line">│  第一层: Auto Compact (自动压缩)              │</span><br><span class="line">│  - 监控 token 使用量                          │</span><br><span class="line">│  - 达到阈值时自动触发                         │</span><br><span class="line">│  - 将历史对话压缩为简洁摘要                   │</span><br><span class="line">│  - 保留关键决策和当前任务上下文               │</span><br><span class="line">│                                               │</span><br><span class="line">│  第二层: Micro Compact (微压缩)               │</span><br><span class="line">│  - 针对单次工具调用结果的即时压缩             │</span><br><span class="line">│  - 比如一个 grep 返回了 500 行结果            │</span><br><span class="line">│  - 自动提取关键信息，压缩为摘要              │</span><br><span class="line">│  - 缓存压缩结果，避免重复计算                │</span><br><span class="line">│                                               │</span><br><span class="line">│  第三层: Reactive Compact (响应式压缩)        │</span><br><span class="line">│  - API 返回 prompt_too_long 错误时触发        │</span><br><span class="line">│  - 紧急压缩以恢复对话                        │</span><br><span class="line">│  - 这是&quot;最后一道防线&quot;                        │</span><br><span class="line">│                                               │</span><br><span class="line">│  第四层: Snip Compact (裁剪压缩)              │</span><br><span class="line">│  - 对历史消息进行智能裁剪                     │</span><br><span class="line">│  - 保留开头和结尾，压缩中间部分              │</span><br><span class="line">│                                               │</span><br><span class="line">│  第五层: Session Memory (会话记忆)            │</span><br><span class="line">│  - 跨压缩边界保持关键信息                     │</span><br><span class="line">│  - 即使历史消息被压缩，关键决策仍然保留       │</span><br><span class="line">│  - 持久化到磁盘                              │</span><br><span class="line">│                                               │</span><br><span class="line">│  第六层: Context Collapse (上下文折叠)        │</span><br><span class="line">│  - 实验性的更激进压缩策略                     │</span><br><span class="line">│  - 将多轮工具调用折叠为单条摘要              │</span><br><span class="line">└──────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
@@ -577,7 +577,7 @@
 <p>通过在两部分之间插入一个特殊的分隔标记，API 层可以对静态部分做全局缓存，<strong>Prompt Cache 命中率最大化</strong>。据分析，仅仅将代理列表从工具描述移到附件中，就减少了 10.2% 的 cache_creation tokens。</p>
 <p>这种”抠 token”的精神贯穿了整个系统。</p>
 <hr>
-<h2 id="四、如何让模型减少幻觉"><a href="#四、如何让模型减少幻觉" class="headerlink" title="四、如何让模型减少幻觉"></a>四、如何让模型减少幻觉</h2><p>幻觉（Hallucination）是 LLM 的天敌，在编程场景下尤其致命——模型”幻觉”出一个不存在的 API、一个错误的文件路径，就可能浪费用户大量时间。</p>
+<h2 id="四、如何让模型减少幻觉"><a href="#四、如何让模型减少幻觉" class="headerlink" title="四、如何让模型减少幻觉"></a>四、如何让模型减少幻觉</h2><p>幻觉（Hallucination）是 LLM 诞生以来就一直存在的天敌——在编码情况下模型”幻觉”出一个不存在的 API、一个错误的文件路径，就可能浪费用户大量时间。</p>
 <p>Claude Code 的防幻觉策略可以归纳为一个核心原则：<strong>用环境事实来 ground 模型的每一步决策</strong>。</p>
 <h3 id="4-1-Tool-Grounded-Reasoning：用工具结果锚定推理"><a href="#4-1-Tool-Grounded-Reasoning：用工具结果锚定推理" class="headerlink" title="4.1 Tool-Grounded Reasoning：用工具结果锚定推理"></a>4.1 Tool-Grounded Reasoning：用工具结果锚定推理</h3><p>这是最根本的防幻觉机制。模型不是在”想象”代码库长什么样，而是通过工具调用<strong>实际查看</strong>代码库。</p>
 <p>当模型需要修改一个文件时，它不会凭记忆”猜”文件内容，而是：</p>
@@ -624,7 +624,7 @@
 <h3 id="4-4-LSP-集成：编译器级别的事实核查"><a href="#4-4-LSP-集成：编译器级别的事实核查" class="headerlink" title="4.4 LSP 集成：编译器级别的事实核查"></a>4.4 LSP 集成：编译器级别的事实核查</h3><p>当模型完成代码编辑后，LSP（Language Server Protocol）会立刻提供诊断信息——类型错误、语法错误、未解析的引用等。</p>
 <p>这相当于给模型配了一个”编译器级别的事实核查员”。如果模型幻觉出了一个不存在的函数调用，LSP 会立刻报告 <code>Cannot find name &#39;xxx&#39;</code>，模型可以据此自我修正。</p>
 <hr>
-<h2 id="五、工具系统的精妙设计"><a href="#五、工具系统的精妙设计" class="headerlink" title="五、工具系统的精妙设计"></a>五、工具系统的精妙设计</h2><p>工具系统是 Harness 的核心——它决定了 LLM 能做什么、做得多好。Claude Code 的工具系统有几个令我印象深刻的设计。</p>
+<h2 id="五、工具系统的精妙设计"><a href="#五、工具系统的精妙设计" class="headerlink" title="五、工具系统的精妙设计"></a>五、工具系统的精妙设计</h2><p>工具系统是 Harness 的核心。决定了 LLM 能做什么、做得多好。Claude Code 的工具系统有几个比较典型的设计。</p>
 <h3 id="5-1-智能并发编排"><a href="#5-1-智能并发编排" class="headerlink" title="5.1 智能并发编排"></a>5.1 智能并发编排</h3><p>当模型在一次回复中调用了多个工具时，系统不是简单地顺序执行，而是<strong>根据工具的特性自动决定并行还是串行</strong>：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">模型一次性发出工具调用:</span><br><span class="line">  [ReadFile(&quot;a.ts&quot;), GrepTool(&quot;TODO&quot;), ReadFile(&quot;b.ts&quot;), FileEdit(&quot;c.ts&quot;), ReadFile(&quot;d.ts&quot;)]</span><br><span class="line"></span><br><span class="line">系统自动分区执行:</span><br><span class="line">  ┌─ ReadFile(&quot;a.ts&quot;)  ─┐</span><br><span class="line">  ├─ GrepTool(&quot;TODO&quot;)   ├── 并行执行 (都是只读操作)</span><br><span class="line">  ├─ ReadFile(&quot;b.ts&quot;)   ┘</span><br><span class="line">  │</span><br><span class="line">  ├─ FileEdit(&quot;c.ts&quot;)   ←── 串行执行 (写操作，必须独占)</span><br><span class="line">  │</span><br><span class="line">  └─ ReadFile(&quot;d.ts&quot;)   ←── 继续执行 (只读操作)</span><br></pre></td></tr></table></figure>
 
@@ -649,7 +649,7 @@
 <p>注意一个关键设计：<strong>Synthesis 阶段由 Coordinator 自己完成，而不是委托给 Worker</strong>。这确保了主代理始终掌握全局视图，不会在信息传递中丢失关键细节。</p>
 <p>Worker 之间通过消息路由系统通信，支持直接消息、广播、关闭请求等多种消息类型，并有完整的计划审批流程。</p>
 <hr>
-<h2 id="六、Edge-Case-的工程化处理"><a href="#六、Edge-Case-的工程化处理" class="headerlink" title="六、Edge Case 的工程化处理"></a>六、Edge Case 的工程化处理</h2><p>一个 Coding Agent 从”能用”到”好用”，差距往往在 Edge Case 的处理上。Claude Code 在这方面的工程投入令人尊敬。</p>
+<h2 id="六、Edge-Case-的工程化处理"><a href="#六、Edge-Case-的工程化处理" class="headerlink" title="六、Edge Case 的工程化处理"></a>六、Edge Case 的工程化处理</h2><p>一个 Coding Agent 从”能用”到”好用”，差距往往在 Edge Case 的处理上。Claude Code 使用的方式是对于现实世界复杂度造成的问题都做了edge case的处理（多达数百个），而不是很多人臆测的某种特殊高雅处理方式。下面举一些例子。</p>
 <h3 id="6-1-max-output-tokens-截断恢复"><a href="#6-1-max-output-tokens-截断恢复" class="headerlink" title="6.1 max_output_tokens 截断恢复"></a>6.1 max_output_tokens 截断恢复</h3><p>LLM API 有输出 token 的限制。当模型的回复太长时（比如在生成一个很长的文件），输出会被截断。</p>
 <p>大多数 Agent 遇到这种情况要么报错，要么丢失截断的部分。Claude Code 的做法是<strong>自动恢复循环</strong>：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">API 返回 stop_reason = &quot;max_output_tokens&quot;</span><br><span class="line">↓</span><br><span class="line">自动将已有的输出追加到消息历史</span><br><span class="line">↓</span><br><span class="line">重新调用 API，让模型继续从截断处生成</span><br><span class="line">↓</span><br><span class="line">最多自动恢复 3 次</span><br></pre></td></tr></table></figure>
@@ -699,12 +699,12 @@
 <p>答案是：<strong>差距不在 LLM 本身，而在 Harness 的深度</strong>。</p>
 <p>一个优秀的 Coding Agent 需要同时做好六件事：</p>
 <ol>
-<li><strong>🔧 丰富的工具</strong>：让 LLM 有足够的”手脚”</li>
-<li><strong>🧠 智能的上下文管理</strong>：让 LLM 不会”失忆”</li>
-<li><strong>🎯 充分的环境反馈</strong>：让 LLM 不会”幻觉”</li>
-<li><strong>⚡ 高效的执行</strong>：让交互不会”卡顿”</li>
-<li><strong>🔒 严密的安全</strong>：让操作不会”失控”</li>
-<li><strong>🌐 开放的扩展</strong>：让能力不会”封顶”</li>
+<li><strong>丰富的工具调用</strong>：让 LLM 有足够的”手脚”</li>
+<li><strong>智能的上下文管理</strong>：让 LLM 不会”失忆”</li>
+<li><strong>充分的环境反馈</strong>：让 LLM 不会”幻觉”</li>
+<li><strong>高效的执行</strong>：让交互不会”卡顿”</li>
+<li><strong>严密的安全</strong>：让操作不会”失控”</li>
+<li><strong>开放的扩展</strong>：让能力不会”封顶”</li>
 </ol>
 <p>LangChain 时代，我们试图用复杂的编排逻辑来弥补模型能力的不足。如今，模型已经足够强大，最好的策略是：</p>
 <blockquote>
@@ -720,7 +720,7 @@
 <li><a target="_blank" rel="noopener" href="https://services.google.com/fh/files/misc/startup_technical_guide_ai_agents_final.pdf">Google AI Agents Technical Guide</a></li>
 </ul>
 <hr>
-<p><em>这篇文章是我基于 Claude Code 源码研究的思考总结。在 AI 编程助手快速演进的今天，理解架构设计背后的取舍，比知道某个具体功能怎么用更有长期价值。</em></p>
+<p><em>这篇文章是基于 Claude Code 源码研究的思考总结。在 AI 编程助手快速演进的今天，理解架构设计背后的取舍，比知道某个具体功能怎么用更有长期价值。</em></p>
 
                 
             </div>

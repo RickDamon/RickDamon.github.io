@@ -1,0 +1,1717 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="从零到一理解大语言模型的构建, programming,learning,blog">
+    <meta name="description" content="从零到一理解大语言模型的构建
+写给被上班磨平棱角，数学功力尽失的你。尽量用人话和加减乘除的方式，来理解大模型的整体构建。
+
+
+
+
+写在前面：这篇文章要回答什么如果你用过 ChatGPT、Claude 或者任何大语言模型（LLM），你大概会有">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>从零到一理解大语言模型的构建 | RickDamon&#39;s Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/images/image.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">RickDamon&#39;s Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/images/image.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">RickDamon&#39;s Blog</div>
+        <div class="logo-desc">
+            
+            Personal blog about programming, learning, and life
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">从零到一理解大语言模型的构建</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/LLM/">
+                                <span class="chip bg-color">LLM</span>
+                            </a>
+                        
+                            <a href="/tags/Transformer/">
+                                <span class="chip bg-color">Transformer</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">深度学习</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                                <span class="chip bg-color">神经网络</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/">
+                                <span class="chip bg-color">机器学习入门</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/AI/" class="post-category">
+                                AI
+                            </a>
+                        
+                            <a href="/categories/AI/LLM/" class="post-category">
+                                LLM
+                            </a>
+                        
+                            <a href="/categories/AI/LLM/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                深度学习
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2025-05-30
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="从零到一理解大语言模型的构建"><a href="#从零到一理解大语言模型的构建" class="headerlink" title="从零到一理解大语言模型的构建"></a>从零到一理解大语言模型的构建</h1><blockquote>
+<p>写给被上班磨平棱角，数学功力尽失的你。尽量用人话和加减乘除的方式，来理解大模型的整体构建。</p>
+</blockquote>
+<span id="more"></span>
+
+<hr>
+<h2 id="写在前面：这篇文章要回答什么"><a href="#写在前面：这篇文章要回答什么" class="headerlink" title="写在前面：这篇文章要回答什么"></a>写在前面：这篇文章要回答什么</h2><p>如果你用过 ChatGPT、Claude 或者任何大语言模型（LLM），你大概会有这些疑问：</p>
+<ol>
+<li><strong>它到底是怎么”理解”我说的话的？</strong></li>
+<li><strong>它是怎么”生成”看起来像人写的文字的？</strong></li>
+<li><strong>它真的”懂”吗？还是在某种意义上的”高级自动补全”？</strong></li>
+<li><strong>为什么它有时候会一本正经地胡说八道（幻觉）？</strong></li>
+<li><strong>为什么 GPT-4 比 GPT-3 强那么多？到底强在哪？</strong></li>
+</ol>
+<p>这篇文章会从<strong>最基本的问题出发</strong>，一步步拆解大语言模型背后的数学和工程设计。我会尽量做到：</p>
+<ul>
+<li>每个数学概念<strong>先说人话</strong>，再给公式</li>
+<li>每个公式<strong>配一个就算数学底子很差的人也能理解的小例子</strong></li>
+<li>每个设计决策<strong>先说要解决什么问题</strong>，再说怎么解决的</li>
+</ul>
+<p>全文结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">第一章：LLM 要解决的核心问题（语言建模）</span><br><span class="line">第二章：如何用数学描述语言（概率论基础）</span><br><span class="line">第三章：如何让计算机&quot;理解&quot;文字（词向量与嵌入）</span><br><span class="line">第四章：Attention 机制——LLM 的核心发明</span><br><span class="line">第五章：Transformer 架构——把所有东西组装起来</span><br><span class="line">第六章：训练——如何让模型从&quot;白痴&quot;变&quot;天才&quot;</span><br><span class="line">第七章：从 GPT 到 Claude——现代 LLM 的演进</span><br><span class="line">第八章：为什么它会&quot;幻觉&quot;？局限性的数学解释</span><br><span class="line">第九章：总结——一张图看懂全貌</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="第一章：LLM-要解决的核心问题"><a href="#第一章：LLM-要解决的核心问题" class="headerlink" title="第一章：LLM 要解决的核心问题"></a>第一章：LLM 要解决的核心问题</h2><h3 id="1-1-一句话说清楚"><a href="#1-1-一句话说清楚" class="headerlink" title="1.1 一句话说清楚"></a>1.1 一句话说清楚</h3><p><strong>大语言模型的本质任务：给定前面的文字，预测下一个最可能出现的字（token）。</strong></p>
+<p>就这么简单。不管是写诗、写代码、回答哲学问题，模型做的事情从头到尾都是一件事：<strong>预测下一个字</strong>。</p>
+<p>举个例子。当你输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;今天天气真&quot;</span><br></pre></td></tr></table></figure>
+
+<p>模型在做的事情是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;今&quot; → 可能的下一个字：天(0.3)、年(0.2)、日(0.1)...</span><br><span class="line">&quot;今天&quot; → 可能的下一个字：天(0.4)、是(0.2)、我(0.1)...</span><br><span class="line">&quot;今天天&quot; → 可能的下一个字：气(0.8)、啊(0.05)...</span><br><span class="line">&quot;今天天气&quot; → 可能的下一个字：真(0.3)、不(0.2)、很(0.15)...</span><br><span class="line">&quot;今天天气真&quot; → 可能的下一个字：好(0.5)、热(0.2)、冷(0.1)...</span><br></pre></td></tr></table></figure>
+
+<p>它选了”好”（概率最高），然后把”好”加到后面，继续预测下一个字。如此循环，直到它觉得该停了。</p>
+<p><strong>你的整个对话体验——能聊天、能写作、能推理——都是从这个简单的”下一个字预测”任务中涌现出来的。</strong></p>
+<h3 id="1-2-为什么”预测下一个字”这么强大？"><a href="#1-2-为什么”预测下一个字”这么强大？" class="headerlink" title="1.2 为什么”预测下一个字”这么强大？"></a>1.2 为什么”预测下一个字”这么强大？</h3><p>你可能会想：就猜下一个字？这能有多厉害？</p>
+<p>想象一下，如果你真的能<strong>完美地</strong>预测任何文本的下一个字，你需要具备什么能力？</p>
+<ul>
+<li>要预测”中国的首都是___”，你需要<strong>知识</strong></li>
+<li>要预测”如果 x + 3 &#x3D; 7，那么 x &#x3D; ___”，你需要<strong>推理</strong></li>
+<li>要预测”他伤心地走开了，因为___”，你需要<strong>情感理解</strong></li>
+<li>要预测 Python 代码的下一行，你需要<strong>编程能力</strong></li>
+</ul>
+<p>换句话说，<strong>要完美地预测下一个字，你需要理解整个人类语言和知识体系</strong>。</p>
+<p>当然，当前的 LLM 远没有”完美”，但它们已经做得足够好，好到让人觉得它们”像是懂了”。</p>
+<h3 id="1-3-所以，技术问题变成了"><a href="#1-3-所以，技术问题变成了" class="headerlink" title="1.3 所以，技术问题变成了"></a>1.3 所以，技术问题变成了</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：一段文字（叫做 &quot;上下文&quot; 或 &quot;context&quot;）</span><br><span class="line">输出：下一个字的概率分布</span><br><span class="line"></span><br><span class="line">要解决的问题：如何设计一个数学模型，</span><br><span class="line">使得它看了海量文本之后，</span><br><span class="line">能够非常准确地预测下一个字？</span><br></pre></td></tr></table></figure>
+
+<p>接下来的所有章节，都是在回答这个问题。</p>
+<hr>
+<h2 id="第二章：如何用数学描述语言"><a href="#第二章：如何用数学描述语言" class="headerlink" title="第二章：如何用数学描述语言"></a>第二章：如何用数学描述语言</h2><h3 id="2-1-概率：一切的基础"><a href="#2-1-概率：一切的基础" class="headerlink" title="2.1 概率：一切的基础"></a>2.1 概率：一切的基础</h3><p>先回忆一下概率最基本的概念。</p>
+<p><strong>概率就是一件事发生的可能性，用 0 到 1 的数字表示。</strong></p>
+<ul>
+<li>抛硬币正面朝上：概率 &#x3D; 0.5（50%）</li>
+<li>明天太阳升起：概率 ≈ 1.0（几乎肯定）</li>
+<li>你明天中彩票：概率 ≈ 0.000001（几乎不可能）</li>
+</ul>
+<p>我们用 <code>P(事件)</code> 表示一个事件的概率。比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">P(硬币正面) = 0.5</span><br><span class="line">P(明天下雨) = 0.3</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-条件概率：在已知某些信息时的概率"><a href="#2-2-条件概率：在已知某些信息时的概率" class="headerlink" title="2.2 条件概率：在已知某些信息时的概率"></a>2.2 条件概率：在已知某些信息时的概率</h3><p><strong>条件概率是：在已经知道一些事情的前提下，另一件事发生的概率。</strong></p>
+<p>记作 <code>P(A | B)</code>，读作”在 B 发生的条件下，A 发生的概率”。</p>
+<p>日常例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">P(带伞 | 天气预报说下雨) = 0.9    # 知道要下雨，你带伞的概率很高</span><br><span class="line">P(带伞 | 天气预报说晴天) = 0.1    # 知道是晴天，你带伞的概率很低</span><br><span class="line">P(带伞)                 = 0.4    # 不看天气预报，随便猜你带伞的概率</span><br></pre></td></tr></table></figure>
+
+<p>看到没？<strong>有了额外信息（条件），预测就更准了</strong>。这正是 LLM 在做的事——它用前面的文字作为”条件”来预测下一个字。</p>
+<h3 id="2-3-语言模型-条件概率"><a href="#2-3-语言模型-条件概率" class="headerlink" title="2.3 语言模型 &#x3D; 条件概率"></a>2.3 语言模型 &#x3D; 条件概率</h3><p>现在我们可以用数学来描述”预测下一个字”了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">P(下一个字 | 前面所有的字)</span><br></pre></td></tr></table></figure>
+
+<p>用具体的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">P(&quot;好&quot; | &quot;今天天气真&quot;) = 0.5</span><br><span class="line">P(&quot;热&quot; | &quot;今天天气真&quot;) = 0.2</span><br><span class="line">P(&quot;冷&quot; | &quot;今天天气真&quot;) = 0.1</span><br><span class="line">P(&quot;差&quot; | &quot;今天天气真&quot;) = 0.05</span><br><span class="line">...（所有可能的字加起来 = 1.0）</span><br></pre></td></tr></table></figure>
+
+<p><strong>一个语言模型就是一个能算出这个条件概率的函数。</strong></p>
+<p>用数学符号写得更正式一点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">给定一个词序列 w₁, w₂, ..., wₙ</span><br><span class="line">语言模型要计算: P(wₙ₊₁ | w₁, w₂, ..., wₙ)</span><br><span class="line"></span><br><span class="line">其中：</span><br><span class="line">- w₁, w₂, ..., wₙ 是你已经输入的文字</span><br><span class="line">- wₙ₊₁ 是要预测的下一个字</span><br><span class="line">- P 是概率</span><br></pre></td></tr></table></figure>
+
+<p><strong>翻译成人话</strong>：给定你已经说的 n 个字，第 n+1 个字是什么的概率。</p>
+<h3 id="2-4-生成文本-反复采样"><a href="#2-4-生成文本-反复采样" class="headerlink" title="2.4 生成文本 &#x3D; 反复采样"></a>2.4 生成文本 &#x3D; 反复采样</h3><p>知道了每个字的概率，如何生成一段完整的文本？</p>
+<p><strong>反复从概率分布中”抽签”</strong>（术语叫”采样”）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">第1步：输入 &quot;今天&quot;</span><br><span class="line">       模型计算 → P(&quot;天&quot; | &quot;今天&quot;) = 0.4, P(&quot;是&quot; | &quot;今天&quot;) = 0.2, ...</span><br><span class="line">       抽签结果 → &quot;天&quot;</span><br><span class="line"></span><br><span class="line">第2步：输入 &quot;今天天&quot;</span><br><span class="line">       模型计算 → P(&quot;气&quot; | &quot;今天天&quot;) = 0.8, ...</span><br><span class="line">       抽签结果 → &quot;气&quot;</span><br><span class="line"></span><br><span class="line">第3步：输入 &quot;今天天气&quot;</span><br><span class="line">       模型计算 → P(&quot;真&quot; | &quot;今天天气&quot;) = 0.3, P(&quot;不&quot; | &quot;今天天气&quot;) = 0.2, ...</span><br><span class="line">       抽签结果 → &quot;真&quot;</span><br><span class="line"></span><br><span class="line">...如此反复，直到生成一个&quot;结束&quot;标记</span><br></pre></td></tr></table></figure>
+
+<p>这就是为什么 LLM <strong>每次回答可能不一样</strong>——因为”抽签”有随机性。概率最高的字更容易被选中，但不是每次都选概率最高的。</p>
+<blockquote>
+<p><strong>温度（Temperature）参数</strong>就是控制这个”随机性”的旋钮：</p>
+<ul>
+<li>温度 &#x3D; 0：永远选概率最高的字（确定性最强，但可能很无聊）</li>
+<li>温度 &#x3D; 1：完全按概率抽签（正常随机性）</li>
+<li>温度 &#x3D; 2：更随机（可能产生有创意但也可能胡说的结果）</li>
+</ul>
+</blockquote>
+<h3 id="2-5-关键问题：如何计算这个概率？"><a href="#2-5-关键问题：如何计算这个概率？" class="headerlink" title="2.5 关键问题：如何计算这个概率？"></a>2.5 关键问题：如何计算这个概率？</h3><p>到目前为止，我们把问题定义清楚了：<strong>LLM 就是要算出 P(下一个字 | 前面的字)</strong>。</p>
+<p>但怎么算呢？</p>
+<p>最原始的方法：<strong>数频次</strong>。翻遍所有书籍，统计”今天天气真”后面跟”好”的次数占多少比例。</p>
+<p>这有两个致命问题：</p>
+<ol>
+<li><strong>数据稀疏</strong>：大部分句子组合从来没出现过。你在任何书里都找不到你刚刚打的那句话</li>
+<li><strong>存储爆炸</strong>：中文常用字 3000+，长度为 20 的序列有 3000²⁰ 种可能——比宇宙中的原子还多</li>
+</ol>
+<p>所以我们需要一种<strong>可泛化的</strong>方法——不是死记硬背每种组合，而是<strong>学会语言的规律</strong>。</p>
+<p>这就是神经网络登场的地方。</p>
+<hr>
+<h2 id="第三章：如何让计算机”理解”文字"><a href="#第三章：如何让计算机”理解”文字" class="headerlink" title="第三章：如何让计算机”理解”文字"></a>第三章：如何让计算机”理解”文字</h2><h3 id="3-1-第一个问题：计算机不认字"><a href="#3-1-第一个问题：计算机不认字" class="headerlink" title="3.1 第一个问题：计算机不认字"></a>3.1 第一个问题：计算机不认字</h3><p>计算机只认数字。它不知道”猫”是什么，不知道”狗”和”猫”比”汽车”更相似。</p>
+<p>所以第一步是：<strong>把文字变成数字</strong>。</p>
+<h3 id="3-2-最笨的方法：独热编码（One-Hot-Encoding）"><a href="#3-2-最笨的方法：独热编码（One-Hot-Encoding）" class="headerlink" title="3.2 最笨的方法：独热编码（One-Hot Encoding）"></a>3.2 最笨的方法：独热编码（One-Hot Encoding）</h3><p>假设我们的词库只有 5 个字：[猫, 狗, 鱼, 车, 树]</p>
+<p>我们可以这样编码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">猫 = [1, 0, 0, 0, 0]</span><br><span class="line">狗 = [0, 1, 0, 0, 0]</span><br><span class="line">鱼 = [0, 0, 1, 0, 0]</span><br><span class="line">车 = [0, 0, 0, 1, 0]</span><br><span class="line">树 = [0, 0, 0, 0, 1]</span><br></pre></td></tr></table></figure>
+
+<p>每个字用一个向量（一串数字）表示，其中只有一个位置是 1，其余全是 0。</p>
+<p><strong>问题</strong>：在这种表示下，”猫”和”狗”的距离 &#x3D; “猫”和”车”的距离。计算机完全不知道猫和狗都是动物，而车不是。</p>
+<p>而且，如果词库有 10 万个词，每个词就需要一个 10 万维的向量——太浪费了。</p>
+<h3 id="3-3-聪明的方法：词嵌入（Word-Embedding）"><a href="#3-3-聪明的方法：词嵌入（Word-Embedding）" class="headerlink" title="3.3 聪明的方法：词嵌入（Word Embedding）"></a>3.3 聪明的方法：词嵌入（Word Embedding）</h3><p><strong>核心思想：用一个短短的、稠密的向量来表示每个字，并且让意思相近的字的向量也相近。</strong></p>
+<p>比如，我们用 3 个数字（3 维向量）来表示每个字：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">猫 = [0.9, 0.1, 0.3]    ← 动物、小型、毛茸茸</span><br><span class="line">狗 = [0.8, 0.3, 0.4]    ← 动物、中型、毛茸茸（和&quot;猫&quot;很近！）</span><br><span class="line">鱼 = [0.7, 0.0, -0.2]   ← 动物、但和猫狗不太一样</span><br><span class="line">车 = [-0.5, 0.8, 0.1]   ← 完全不同的类别</span><br><span class="line">树 = [0.1, 0.6, -0.3]   ← 也完全不同</span><br></pre></td></tr></table></figure>
+
+<p>虽然这些数字不是人为赋予含义的（模型自己学出来的），但训练后向量之间的关系会反映语义关系。</p>
+<p><strong>著名的例子</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;国王&quot; - &quot;男人&quot; + &quot;女人&quot; ≈ &quot;女王&quot;</span><br></pre></td></tr></table></figure>
+
+<p>真的！在训练好的词向量空间里，这种算术关系真的成立。这说明模型某种程度上<strong>学到了语义关系</strong>。</p>
+<h3 id="3-4-向量距离-语义相似度"><a href="#3-4-向量距离-语义相似度" class="headerlink" title="3.4 向量距离 &#x3D; 语义相似度"></a>3.4 向量距离 &#x3D; 语义相似度</h3><p>怎么衡量两个向量”有多近”？用<strong>余弦相似度</strong>——听着吓人，其实很简单：</p>
+<p><strong>两个向量的夹角越小，它们越相似。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">相似度的直觉：</span><br><span class="line">  猫 · 狗：方向很接近 → 相似度 0.95（很相似）</span><br><span class="line">  猫 · 车：方向很不同 → 相似度 0.1（不相似）</span><br></pre></td></tr></table></figure>
+
+<p>计算方式（以二维为例，实际类似）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">向量 A = [3, 4]</span><br><span class="line">向量 B = [4, 3]</span><br><span class="line"></span><br><span class="line">cos(A, B) = (3×4 + 4×3) / (√(3²+4²) × √(4²+3²))</span><br><span class="line">           = (12 + 12) / (5 × 5)</span><br><span class="line">           = 24 / 25</span><br><span class="line">           = 0.96    ← 非常相似！</span><br><span class="line"></span><br><span class="line">向量 C = [-3, 4]</span><br><span class="line"></span><br><span class="line">cos(A, C) = (3×(-3) + 4×4) / (5 × 5)</span><br><span class="line">           = (-9 + 16) / 25</span><br><span class="line">           = 7 / 25</span><br><span class="line">           = 0.28    ← 不太相似</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-Token：不是字，也不是词"><a href="#3-5-Token：不是字，也不是词" class="headerlink" title="3.5 Token：不是字，也不是词"></a>3.5 Token：不是字，也不是词</h3><p>最后一个细节：LLM 处理的不是”字”也不是”词”，而是 <strong>Token</strong>。</p>
+<p>Token 是一种介于字和词之间的切分单位。比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;I love playing basketball&quot;</span><br><span class="line">切分为 token: [&quot;I&quot;, &quot; love&quot;, &quot; play&quot;, &quot;ing&quot;, &quot; basket&quot;, &quot;ball&quot;]</span><br><span class="line"></span><br><span class="line">&quot;今天天气真好&quot;</span><br><span class="line">切分为 token: [&quot;今天&quot;, &quot;天气&quot;, &quot;真&quot;, &quot;好&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>为什么用 Token 而不是字或词？</p>
+<ul>
+<li>比”字”更高效（减少序列长度）</li>
+<li>比”词”更灵活（能处理从没见过的新词——拆成子词组合）</li>
+<li>词库大小可控（通常 32K-100K 个 token）</li>
+</ul>
+<p><strong>在实际的 LLM 中，每个 token 被映射为一个高维向量（如 4096 维）。这个映射就是”嵌入层”（Embedding Layer），是模型要学习的第一个参数。</strong></p>
+<h3 id="3-6-小结"><a href="#3-6-小结" class="headerlink" title="3.6 小结"></a>3.6 小结</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">文字世界                     数字世界</span><br><span class="line">─────────                   ─────────</span><br><span class="line">&quot;今天天气真好&quot;     Token化     [&quot;今天&quot;, &quot;天气&quot;, &quot;真&quot;, &quot;好&quot;]</span><br><span class="line">                    ↓</span><br><span class="line">                 嵌入（Embedding）</span><br><span class="line">                    ↓</span><br><span class="line">              每个 token 变成一个向量</span><br><span class="line">              &quot;今天&quot; → [0.2, -0.5, 0.8, ..., 0.1]  (4096个数字)</span><br><span class="line">              &quot;天气&quot; → [0.1, 0.3, -0.2, ..., 0.7]   (4096个数字)</span><br><span class="line">              ...</span><br></pre></td></tr></table></figure>
+
+<p>现在计算机有了一串数字可以处理了。下一步：怎么从这些数字中算出”下一个 token 的概率”？</p>
+<hr>
+<h2 id="第四章：Attention-机制——LLM-的核心发明"><a href="#第四章：Attention-机制——LLM-的核心发明" class="headerlink" title="第四章：Attention 机制——LLM 的核心发明"></a>第四章：Attention 机制——LLM 的核心发明</h2><h3 id="4-1-为什么需要-Attention？"><a href="#4-1-为什么需要-Attention？" class="headerlink" title="4.1 为什么需要 Attention？"></a>4.1 为什么需要 Attention？</h3><p>把每个 token 变成向量之后，我们面临一个关键问题：</p>
+<p><strong>同一个词在不同上下文中意思完全不同。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例子1：&quot;苹果发布了新手机&quot;  →  &quot;苹果&quot; = 科技公司</span><br><span class="line">例子2：&quot;我吃了一个苹果&quot;    →  &quot;苹果&quot; = 水果</span><br></pre></td></tr></table></figure>
+
+<p>如果”苹果”的向量是固定的，它怎么能同时表示公司和水果？</p>
+<p>答案是：<strong>让每个词的向量根据周围的词动态调整</strong>。</p>
+<p>“苹果”看到周围有”发布””手机”时，它的向量自动偏向”科技公司”的含义；看到”吃””一个”时，自动偏向”水果”的含义。</p>
+<p><strong>这种”看看周围的词，然后调整自己的含义”的机制，就叫 Attention（注意力）。</strong></p>
+<h3 id="4-2-Attention-的直觉"><a href="#4-2-Attention-的直觉" class="headerlink" title="4.2 Attention 的直觉"></a>4.2 Attention 的直觉</h3><p>想象你在读一句话：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;那只猫坐在垫子上，因为它觉得很舒服&quot;</span><br></pre></td></tr></table></figure>
+
+<p>当你读到”它”的时候，你的大脑会自动<strong>回头看</strong>前面的内容，找到”它”指的是”猫”。你不会平均地看每个词，而是<strong>重点关注与当前相关的词</strong>。</p>
+<p>这就是 Attention 做的事情：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">处理 &quot;它&quot; 时的 Attention 分数：</span><br><span class="line">  &quot;那&quot;   → 0.01  (不重要)</span><br><span class="line">  &quot;只&quot;   → 0.01  (不重要)</span><br><span class="line">  &quot;猫&quot;   → 0.50  (最重要！&quot;它&quot;指的就是&quot;猫&quot;)</span><br><span class="line">  &quot;坐在&quot; → 0.05  (有点关系)</span><br><span class="line">  &quot;垫子&quot; → 0.10  (有点关系)</span><br><span class="line">  &quot;上&quot;   → 0.01  (不重要)</span><br><span class="line">  &quot;因为&quot; → 0.02  (不重要)</span><br><span class="line">  &quot;它&quot;   → 0.20  (自己看自己)</span><br><span class="line">  &quot;觉得&quot; → 0.05</span><br><span class="line">  &quot;很&quot;   → 0.02</span><br><span class="line">  &quot;舒服&quot; → 0.03</span><br><span class="line">  ──────────────</span><br><span class="line">  合计     1.00   (所有分数加起来等于1)</span><br></pre></td></tr></table></figure>
+
+<p>然后，”它”的新向量 &#x3D; 按这些分数加权混合所有词的向量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">新的&quot;它&quot; = 0.50 × &quot;猫&quot;的向量 + 0.20 × &quot;它&quot;的向量 + 0.10 × &quot;垫子&quot;的向量 + ...</span><br></pre></td></tr></table></figure>
+
+<p>这样，”它”的向量就自动融合了”猫”的语义信息。模型知道了”它 &#x3D; 猫”。</p>
+<h3 id="4-3-Attention-的计算过程（用简单例子）"><a href="#4-3-Attention-的计算过程（用简单例子）" class="headerlink" title="4.3 Attention 的计算过程（用简单例子）"></a>4.3 Attention 的计算过程（用简单例子）</h3><p>Attention 的核心是三个角色：<strong>Query（查询）、Key（键）、Value（值）</strong>。</p>
+<p>用一个生活中的比喻：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">你去图书馆找书：</span><br><span class="line">  - Query（你的需求）：你想找&quot;关于猫的行为学&quot;的书</span><br><span class="line">  - Key（书的标签）：  每本书都有一个主题标签</span><br><span class="line">  - Value（书的内容）：每本书的实际内容</span><br><span class="line"></span><br><span class="line">过程：</span><br><span class="line">  1. 你拿着你的 Query，和每本书的 Key 比对</span><br><span class="line">  2. 算出每本书和你需求的&quot;匹配度&quot;（Attention 分数）</span><br><span class="line">  3. 匹配度高的书多看点，匹配度低的少看点</span><br><span class="line">  4. 把所有书的内容按匹配度加权混合，就是你的收获</span><br></pre></td></tr></table></figure>
+
+<p>对应到数学计算，假设我们有一个超级简化的例子——只有3个 token，每个向量只有 2 维：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">三个 token 的向量：</span><br><span class="line">  &quot;我&quot;  = [1, 0]</span><br><span class="line">  &quot;爱&quot;  = [0, 1]</span><br><span class="line">  &quot;猫&quot;  = [1, 1]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 1：每个 token 生成自己的 Q、K、V</strong></p>
+<p>通过三个不同的变换（乘以不同的矩阵），每个 token 产生三个角色的向量。这里用超简化版：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Query 矩阵 Wq = [[1, 0], [0, 1]]  (简化为恒等变换)</span><br><span class="line">Key   矩阵 Wk = [[1, 0], [0, 1]]</span><br><span class="line">Value 矩阵 Wv = [[1, 0], [0, 1]]</span><br><span class="line"></span><br><span class="line">每个 token 的 Q、K、V（简化后和原向量一样）：</span><br><span class="line">  &quot;我&quot;: Q=[1,0], K=[1,0], V=[1,0]</span><br><span class="line">  &quot;爱&quot;: Q=[0,1], K=[0,1], V=[0,1]</span><br><span class="line">  &quot;猫&quot;: Q=[1,1], K=[1,1], V=[1,1]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 2：计算 Attention 分数（Q 和 K 的点积）</strong></p>
+<p>点积就是对应位相乘再求和。直觉上，<strong>两个向量方向越接近，点积越大</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">以 &quot;猫&quot; 的 Query 为例，和所有 Key 计算点积：</span><br><span class="line"></span><br><span class="line">&quot;猫&quot;Q · &quot;我&quot;K = [1,1] · [1,0] = 1×1 + 1×0 = 1</span><br><span class="line">&quot;猫&quot;Q · &quot;爱&quot;K = [1,1] · [0,1] = 1×0 + 1×1 = 1</span><br><span class="line">&quot;猫&quot;Q · &quot;猫&quot;K = [1,1] · [1,1] = 1×1 + 1×1 = 2  ← 最高！自己和自己最匹配</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 3：归一化（Softmax）——让分数变成概率</strong></p>
+<p>我们需要把分数转化成概率（加起来等于1）。用 <strong>Softmax</strong> 函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Softmax 的直觉：把任意数字变成概率分布。大的数字变得更大，小的变得更小。</span><br><span class="line"></span><br><span class="line">原始分数: [1, 1, 2]</span><br><span class="line"></span><br><span class="line">Softmax计算过程：</span><br><span class="line">  e^1 ≈ 2.72</span><br><span class="line">  e^1 ≈ 2.72</span><br><span class="line">  e^2 ≈ 7.39</span><br><span class="line">  总和 = 2.72 + 2.72 + 7.39 = 12.83</span><br><span class="line"></span><br><span class="line">  概率 = [2.72/12.83, 2.72/12.83, 7.39/12.83]</span><br><span class="line">       = [0.21, 0.21, 0.58]</span><br></pre></td></tr></table></figure>
+
+<p>所以”猫”对三个 token 的 Attention 权重是 [0.21, 0.21, 0.58]——最关注自己。</p>
+<p><strong>Step 4：加权求和 Value</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;猫&quot;的新向量 = 0.21 × &quot;我&quot;V + 0.21 × &quot;爱&quot;V + 0.58 × &quot;猫&quot;V</span><br><span class="line">             = 0.21 × [1,0] + 0.21 × [0,1] + 0.58 × [1,1]</span><br><span class="line">             = [0.21, 0] + [0, 0.21] + [0.58, 0.58]</span><br><span class="line">             = [0.79, 0.79]</span><br></pre></td></tr></table></figure>
+
+<p>“猫”的新向量 [0.79, 0.79] 融合了上下文信息。</p>
+<h3 id="4-4-完整的-Attention-公式"><a href="#4-4-完整的-Attention-公式" class="headerlink" title="4.4 完整的 Attention 公式"></a>4.4 完整的 Attention 公式</h3><p>上面的过程用一个公式就能概括：</p>
+<p>$$<br>\text{Attention}(Q, K, V) &#x3D; \text{Softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V<br>$$</p>
+<p>别被这个公式吓到，它就是我们刚才做的四步：</p>
+<table>
+<thead>
+<tr>
+<th>公式部分</th>
+<th>对应步骤</th>
+<th>人话</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$QK^T$</td>
+<td>Step 2</td>
+<td>Q 和 K 的点积（算匹配度）</td>
+</tr>
+<tr>
+<td>$\div \sqrt{d_k}$</td>
+<td>缩放</td>
+<td>除以向量维度的平方根（防止数字太大导致 Softmax 极端化）</td>
+</tr>
+<tr>
+<td>$\text{Softmax}(…)$</td>
+<td>Step 3</td>
+<td>把分数变成概率</td>
+</tr>
+<tr>
+<td>$… \times V$</td>
+<td>Step 4</td>
+<td>按概率加权混合 Value</td>
+</tr>
+</tbody></table>
+<p>其中 $d_k$ 是向量的维度。如果维度是 64，那 $\sqrt{64} &#x3D; 8$。这个缩放因子是为了防止点积值太大——想象两个 4096 维的向量做点积，不缩放的话数字会非常大，Softmax 之后几乎变成 one-hot（一个接近1，其他接近0），模型就没法学到”同时关注多个位置”了。</p>
+<h3 id="4-5-Multi-Head-Attention：从多个角度看"><a href="#4-5-Multi-Head-Attention：从多个角度看" class="headerlink" title="4.5 Multi-Head Attention：从多个角度看"></a>4.5 Multi-Head Attention：从多个角度看</h3><p>一个 Attention 只能捕捉一种关系。但语言中有很多种关系：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;小明在学校把作业交给了老师&quot;</span><br><span class="line"></span><br><span class="line">语法关系：  &quot;交给&quot; 关注 → &quot;小明&quot;（主语）和 &quot;老师&quot;（间接宾语）</span><br><span class="line">位置关系：  &quot;学校&quot; 关注 → &quot;在&quot;（介词标记）</span><br><span class="line">语义关系：  &quot;作业&quot; 关注 → &quot;交给&quot;（动作）和 &quot;老师&quot;（接收者）</span><br><span class="line">指代关系：  如果后面有&quot;他&quot;，需要关注 → &quot;小明&quot;</span><br></pre></td></tr></table></figure>
+
+<p>所以 LLM 用<strong>多个 Attention Head 并行工作</strong>，每个 Head 学习不同类型的关系：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Head 1：可能学会了&quot;主谓关系&quot;</span><br><span class="line">Head 2：可能学会了&quot;修饰关系&quot;</span><br><span class="line">Head 3：可能学会了&quot;指代关系&quot;</span><br><span class="line">...</span><br><span class="line">Head 32：可能学会了某种我们人类都说不清的关系</span><br><span class="line"></span><br><span class="line">最后把所有 Head 的结果拼起来 → 综合信息</span><br></pre></td></tr></table></figure>
+
+<p>实际的 LLM 通常有 32-128 个 Head。</p>
+<h3 id="4-6-因果掩码：不能偷看未来"><a href="#4-6-因果掩码：不能偷看未来" class="headerlink" title="4.6 因果掩码：不能偷看未来"></a>4.6 因果掩码：不能偷看未来</h3><p>最后一个关键设计：<strong>在生成文本时，模型只能看到前面的 token，不能偷看后面的。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">处理 &quot;今天天气&quot; 时：</span><br><span class="line">  &quot;今&quot; 只能看到: [今]</span><br><span class="line">  &quot;天&quot; 只能看到: [今, 天]</span><br><span class="line">  &quot;天&quot; 只能看到: [今, 天, 天]</span><br><span class="line">  &quot;气&quot; 只能看到: [今, 天, 天, 气]</span><br></pre></td></tr></table></figure>
+
+<p>这通过**掩码矩阵（Mask）**实现——在计算 Attention 分数时，把”未来位置”的分数设为负无穷，Softmax 之后就变成 0。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Attention 分数矩阵（4×4）：</span><br><span class="line">        今   天   天   气</span><br><span class="line">  今  [ 1.0  -∞   -∞   -∞ ]   ← &quot;今&quot;只看自己</span><br><span class="line">  天  [ 0.3  1.0  -∞   -∞ ]   ← &quot;天&quot;看前两个</span><br><span class="line">  天  [ 0.1  0.5  1.0  -∞ ]   ← 第二个&quot;天&quot;看前三个</span><br><span class="line">  气  [ 0.1  0.2  0.5  1.0]   ← &quot;气&quot;看所有</span><br><span class="line"></span><br><span class="line">经过 Softmax 后，-∞ 变成 0，就实现了&quot;不偷看未来&quot;。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="第五章：Transformer-架构——把所有东西组装起来"><a href="#第五章：Transformer-架构——把所有东西组装起来" class="headerlink" title="第五章：Transformer 架构——把所有东西组装起来"></a>第五章：Transformer 架构——把所有东西组装起来</h2><h3 id="5-1-Transformer-是什么"><a href="#5-1-Transformer-是什么" class="headerlink" title="5.1 Transformer 是什么"></a>5.1 Transformer 是什么</h3><p>Transformer 是 2017 年 Google 在论文《Attention Is All You Need》中提出的架构。它把 Attention 和一些其他组件组装在一起，形成了一个完整的模型。</p>
+<p><strong>几乎所有现代 LLM（GPT-4、Claude、Llama、Gemini）都是基于 Transformer 架构的。</strong> 区别只在于具体参数和训练方法。</p>
+<h3 id="5-2-一个-Transformer-层（Block）长什么样"><a href="#5-2-一个-Transformer-层（Block）长什么样" class="headerlink" title="5.2 一个 Transformer 层（Block）长什么样"></a>5.2 一个 Transformer 层（Block）长什么样</h3><p>一个 Transformer 层由<strong>两个子模块</strong>组成，非常简单：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────┐</span><br><span class="line">│            Transformer Block             │</span><br><span class="line">│                                          │</span><br><span class="line">│   输入 x (token向量序列)                  │</span><br><span class="line">│       │                                  │</span><br><span class="line">│       ▼                                  │</span><br><span class="line">│   ┌─────────────────────┐                │</span><br><span class="line">│   │ 1. 多头注意力层       │  ← 让每个 token │</span><br><span class="line">│   │    (Multi-Head       │    看到其他 token│</span><br><span class="line">│   │     Attention)       │    并更新自己    │</span><br><span class="line">│   └─────────────────────┘                │</span><br><span class="line">│       │                                  │</span><br><span class="line">│       ▼ (加上残差连接 + 层归一化)          │</span><br><span class="line">│                                          │</span><br><span class="line">│   ┌─────────────────────┐                │</span><br><span class="line">│   │ 2. 前馈神经网络       │  ← 对每个 token │</span><br><span class="line">│   │    (Feed-Forward     │    独立做非线性  │</span><br><span class="line">│   │     Network, FFN)    │    变换         │</span><br><span class="line">│   └─────────────────────┘                │</span><br><span class="line">│       │                                  │</span><br><span class="line">│       ▼ (加上残差连接 + 层归一化)          │</span><br><span class="line">│                                          │</span><br><span class="line">│   输出 (更新后的 token 向量序列)           │</span><br><span class="line">└─────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p><strong>Attention 负责”交流”</strong>——让 token 之间交换信息。<br><strong>FFN 负责”思考”</strong>——对每个 token 独立做进一步处理。</p>
+<h3 id="5-3-残差连接：不要忘了自己是谁"><a href="#5-3-残差连接：不要忘了自己是谁" class="headerlink" title="5.3 残差连接：不要忘了自己是谁"></a>5.3 残差连接：不要忘了自己是谁</h3><p>残差连接（Residual Connection）是一个非常简单但极其重要的设计：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输出 = 子模块(输入) + 输入</span><br></pre></td></tr></table></figure>
+
+<p>就是把子模块的输出和原始输入<strong>相加</strong>。</p>
+<p><strong>为什么这很重要？</strong> 想象你让一个人阅读一段文字然后总结——如果他只记住总结忘了原文，那信息就丢了。残差连接相当于说”你可以在原文基础上添加新的理解，但别把原文丢了”。</p>
+<p>在训练深层网络时（几十层甚至上百层），没有残差连接的话梯度会消失（后面会解释），模型根本训不动。</p>
+<h3 id="5-4-层归一化：保持数字稳定"><a href="#5-4-层归一化：保持数字稳定" class="headerlink" title="5.4 层归一化：保持数字稳定"></a>5.4 层归一化：保持数字稳定</h3><p>LayerNorm（层归一化）确保每一层的输出数值不会太大或太小。</p>
+<p>直觉：想象你在叠积木，每叠一层积木都会有点歪。如果不修正，叠到第 96 层就完全倒了。LayerNorm 就是每叠一层就校正一下。</p>
+<p>计算方式很简单——对向量中的所有数字算平均值和标准差，然后标准化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">原始向量: [10, 20, 30]</span><br><span class="line">平均值 μ = (10+20+30)/3 = 20</span><br><span class="line">标准差 σ = √((10-20)²+(20-20)²+(30-20)²)/3) = √(200/3) ≈ 8.16</span><br><span class="line"></span><br><span class="line">标准化后: [(10-20)/8.16, (20-20)/8.16, (30-20)/8.16]</span><br><span class="line">        = [-1.22, 0, 1.22]</span><br></pre></td></tr></table></figure>
+
+<p>这样不管原始数字多大多小，标准化后都在一个可控的范围内。</p>
+<h3 id="5-5-前馈网络（FFN）：模型的”记忆存储器”"><a href="#5-5-前馈网络（FFN）：模型的”记忆存储器”" class="headerlink" title="5.5 前馈网络（FFN）：模型的”记忆存储器”"></a>5.5 前馈网络（FFN）：模型的”记忆存储器”</h3><p>FFN 是 Transformer 中参数最多的部分（通常占总参数量的 2&#x2F;3），结构却超级简单：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FFN(x) = 激活函数(x × W₁ + b₁) × W₂ + b₂</span><br></pre></td></tr></table></figure>
+
+<p>翻译成人话：</p>
+<ol>
+<li>把输入向量 x 乘以一个大矩阵 W₁（通常从 4096 维扩展到 16384 维）</li>
+<li>过一个激活函数（引入非线性，后面解释）</li>
+<li>再乘以另一个大矩阵 W₂（从 16384 维压回 4096 维）</li>
+</ol>
+<p><strong>FFN 的作用是什么？</strong> 研究表明，FFN 本质上是一个<strong>知识存储器</strong>。</p>
+<p>当你问”法国的首都是哪里”，模型知道答案是”巴黎”——这个知识就存储在某些 FFN 层的参数中。不同的神经元存储不同的知识片段。</p>
+<h3 id="5-6-激活函数：引入非线性"><a href="#5-6-激活函数：引入非线性" class="headerlink" title="5.6 激活函数：引入非线性"></a>5.6 激活函数：引入非线性</h3><p>如果所有操作都是线性的（乘以矩阵、加偏置），那无论叠多少层，效果都等价于一层。</p>
+<p><strong>激活函数</strong>打破了这个限制，引入了”非线性”——让模型能学到复杂的模式。</p>
+<p>现代 LLM 常用的激活函数是 <strong>GELU</strong>（高斯误差线性单元），但理解其前身 <strong>ReLU</strong> 就够了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ReLU(x) = max(0, x)</span><br><span class="line"></span><br><span class="line">意思是：正数不变，负数变成0。</span><br><span class="line"></span><br><span class="line">ReLU(3) = 3</span><br><span class="line">ReLU(-5) = 0</span><br><span class="line">ReLU(0.1) = 0.1</span><br><span class="line">ReLU(-100) = 0</span><br></pre></td></tr></table></figure>
+
+<p>就这么简单——但它赋予了模型表达任意复杂函数的能力。</p>
+<h3 id="5-7-把所有层堆叠起来"><a href="#5-7-把所有层堆叠起来" class="headerlink" title="5.7 把所有层堆叠起来"></a>5.7 把所有层堆叠起来</h3><p>一个完整的 LLM 就是<strong>把很多个 Transformer Block 堆叠起来</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">输入 tokens: &quot;今天天气&quot;</span><br><span class="line">    ↓</span><br><span class="line">┌── Embedding Layer ──┐  把 token 变成向量</span><br><span class="line">│  &quot;今天&quot; → [0.2, ...]│</span><br><span class="line">│  &quot;天气&quot; → [0.1, ...]│</span><br><span class="line">└─────────────────────┘</span><br><span class="line">    ↓</span><br><span class="line">┌── Transformer Block 1 ──┐  浅层：学习基础语法</span><br><span class="line">└──────────────────────────┘</span><br><span class="line">    ↓</span><br><span class="line">┌── Transformer Block 2 ──┐</span><br><span class="line">└──────────────────────────┘</span><br><span class="line">    ↓</span><br><span class="line">    ...（重复 N 次）...</span><br><span class="line">    ↓</span><br><span class="line">┌── Transformer Block N ──┐  深层：学习复杂推理</span><br><span class="line">└──────────────────────────┘</span><br><span class="line">    ↓</span><br><span class="line">┌── 输出层 (Linear + Softmax) ──┐</span><br><span class="line">│  把最后一个 token 的向量        │</span><br><span class="line">│  映射到词库大小的概率分布        │</span><br><span class="line">│  P(&quot;好&quot;)=0.5, P(&quot;热&quot;)=0.2, ... │</span><br><span class="line">└─────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p><strong>层数的意义</strong>：</p>
+<ul>
+<li>浅层（第 1-10 层）：学习基础的语法模式、词性、短语结构</li>
+<li>中层（第 10-60 层）：学习语义关系、知识检索、简单推理</li>
+<li>深层（第 60-96 层）：学习复杂推理、抽象概念、长距离依赖</li>
+</ul>
+<p>GPT-3 有 96 层，GPT-4 的具体架构未公开但估计超过 100 层。Claude 3.5 Sonnet 的具体层数也未公开。</p>
+<h3 id="5-8-模型大小-参数量"><a href="#5-8-模型大小-参数量" class="headerlink" title="5.8 模型大小 &#x3D; 参数量"></a>5.8 模型大小 &#x3D; 参数量</h3><p>你经常听到”7B 模型”、”70B 模型”、”175B 模型”——这里的 B 是 Billion（十亿），指的是模型的<strong>参数总量</strong>。</p>
+<p>参数来自哪里？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">一个 Transformer Block 的参数：</span><br><span class="line">  - Attention 的 Q/K/V 矩阵：4096 × 4096 × 3 = 50M 参数</span><br><span class="line">  - Attention 输出矩阵：       4096 × 4096     = 17M 参数</span><br><span class="line">  - FFN 的两个矩阵：           4096 × 16384 × 2 = 134M 参数</span><br><span class="line">  - 各种偏置和归一化：          约 1M 参数</span><br><span class="line">  ────────────────────────</span><br><span class="line">  一个 Block ≈ 200M 参数</span><br><span class="line"></span><br><span class="line">96 个 Block = 96 × 200M = 19.2B 参数</span><br><span class="line">加上 Embedding 层等 ≈ 总计约 175B 参数  (这就是 GPT-3！)</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数越多，模型的”容量”越大</strong>——能记住更多知识、能处理更复杂的推理。但也需要更多数据来训练，更多计算资源来运行。</p>
+<hr>
+<h2 id="第六章：训练——如何让模型从”白痴”变”天才”"><a href="#第六章：训练——如何让模型从”白痴”变”天才”" class="headerlink" title="第六章：训练——如何让模型从”白痴”变”天才”"></a>第六章：训练——如何让模型从”白痴”变”天才”</h2><h3 id="6-1-训练前的模型是什么样的"><a href="#6-1-训练前的模型是什么样的" class="headerlink" title="6.1 训练前的模型是什么样的"></a>6.1 训练前的模型是什么样的</h3><p>一个未训练的模型，所有参数都是<strong>随机数</strong>。它的输出完全是胡言乱语——给它”今天天气”，它预测下一个字的概率就像掷骰子一样随机。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">未训练的模型：</span><br><span class="line">P(&quot;好&quot; | &quot;今天天气真&quot;) = 0.003   ← 随机的，不比其他字概率高</span><br><span class="line">P(&quot;桌&quot; | &quot;今天天气真&quot;) = 0.004   ← 甚至比&quot;好&quot;还高</span><br><span class="line">P(&quot;?&quot; | &quot;今天天气真&quot;) = 0.002</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>训练的目标是：<strong>调整参数，让模型对正确答案的预测概率越来越高</strong>。</p>
+<h3 id="6-2-损失函数：衡量模型有多”差”"><a href="#6-2-损失函数：衡量模型有多”差”" class="headerlink" title="6.2 损失函数：衡量模型有多”差”"></a>6.2 损失函数：衡量模型有多”差”</h3><p>**损失函数（Loss Function）**是一个数字，告诉模型”你的预测离正确答案有多远”。</p>
+<p>LLM 使用的损失函数叫 <strong>交叉熵损失（Cross-Entropy Loss）</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Loss = -log(P(正确的字))</span><br></pre></td></tr></table></figure>
+
+<p>这个公式说的是：<strong>正确答案的概率越高，Loss 越低。</strong></p>
+<p>用例子感受一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">假设正确的下一个字是 &quot;好&quot;</span><br><span class="line"></span><br><span class="line">情况1：模型预测 P(&quot;好&quot;) = 0.9（很自信，而且对了）</span><br><span class="line">  Loss = -log(0.9) = 0.046    ← 很小，模型做得好！</span><br><span class="line"></span><br><span class="line">情况2：模型预测 P(&quot;好&quot;) = 0.1（不太确定）</span><br><span class="line">  Loss = -log(0.1) = 1.0      ← 比较大，模型需要改进</span><br><span class="line"></span><br><span class="line">情况3：模型预测 P(&quot;好&quot;) = 0.001（几乎不考虑正确答案）</span><br><span class="line">  Loss = -log(0.001) = 3.0    ← 很大！模型太差了</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>为什么用 -log 而不是直接用 1 - P？</strong><br>因为 -log 有一个好的性质：当概率接近 0 时，Loss 趋向无穷大——这会给模型一个<strong>强烈的信号</strong>说”你大错特错了”。而 1 - P 在这种情况下最多也就是 1，信号不够强。</p>
+</blockquote>
+<h3 id="6-3-梯度下降：如何调整参数"><a href="#6-3-梯度下降：如何调整参数" class="headerlink" title="6.3 梯度下降：如何调整参数"></a>6.3 梯度下降：如何调整参数</h3><p>知道了”有多差”（Loss），下一步是”怎么变好”。</p>
+<p>**梯度下降（Gradient Descent）**是核心方法。用爬山的比喻：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">你蒙着眼睛站在山上，想走到山谷（Loss 最低的地方）。</span><br><span class="line">你看不见路，但你能感觉脚下的坡度（梯度）。</span><br><span class="line"></span><br><span class="line">策略：</span><br><span class="line">  1. 感受当前脚下的坡度方向（计算梯度）</span><br><span class="line">  2. 朝着下坡的方向走一小步（更新参数）</span><br><span class="line">  3. 重复 1-2，直到到达山谷</span><br><span class="line"></span><br><span class="line">数学表达：</span><br><span class="line">  新参数 = 旧参数 - 学习率 × 梯度</span><br><span class="line"></span><br><span class="line">其中：</span><br><span class="line">  - 梯度 = Loss 对参数的导数（坡度的方向和陡度）</span><br><span class="line">  - 学习率 = 每一步走多远（通常很小，如 0.0001）</span><br></pre></td></tr></table></figure>
+
+<p><strong>梯度</strong>就是”导数”在多维情况下的推广。对于一个参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">导数的直觉：</span><br><span class="line">  如果我把这个参数稍微增大一点点，Loss 会增大还是减小？</span><br><span class="line"></span><br><span class="line">  如果 Loss 增大 → 导数为正 → 这个参数应该减小</span><br><span class="line">  如果 Loss 减小 → 导数为负 → 这个参数应该增大</span><br><span class="line"></span><br><span class="line">  按照 &quot;新 = 旧 - 学习率 × 梯度&quot; 更新，就能让 Loss 变小</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-4-反向传播：如何计算梯度"><a href="#6-4-反向传播：如何计算梯度" class="headerlink" title="6.4 反向传播：如何计算梯度"></a>6.4 反向传播：如何计算梯度</h3><p>模型有 1750 亿个参数，怎么算每个参数的梯度？</p>
+<p><strong>反向传播（Backpropagation）<strong>利用的是数学中的</strong>链式法则</strong>。</p>
+<p>链式法则的直觉：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">如果你知道：</span><br><span class="line">  - 改变 A 会怎样影响 B（A对B的导数）</span><br><span class="line">  - 改变 B 会怎样影响 C（B对C的导数）</span><br><span class="line"></span><br><span class="line">那么你就知道：</span><br><span class="line">  - 改变 A 会怎样影响 C = (A对B的导数) × (B对C的导数)</span><br></pre></td></tr></table></figure>
+
+<p>一个简单的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">假设 y = 2x + 1，z = y²</span><br><span class="line"></span><br><span class="line">问：x 变化会怎样影响 z？</span><br><span class="line"></span><br><span class="line">dy/dx = 2        （x 增加1，y 增加2）</span><br><span class="line">dz/dy = 2y       （y 增加1，z 增加 2y）</span><br><span class="line"></span><br><span class="line">所以 dz/dx = dy/dx × dz/dy = 2 × 2y = 4y</span><br><span class="line"></span><br><span class="line">如果 x=1，则 y=3，dz/dx = 4×3 = 12</span><br><span class="line">验证：x从1变到1.001，y从3变到3.002，z从9变到9.012 ✓</span><br></pre></td></tr></table></figure>
+
+<p><strong>在神经网络中</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Loss 受到最后一层参数的影响，</span><br><span class="line">最后一层受到倒数第二层的影响，</span><br><span class="line">......</span><br><span class="line">第 2 层受到第 1 层的影响，</span><br><span class="line">第 1 层受到输入和第 1 层参数的影响。</span><br><span class="line"></span><br><span class="line">反向传播从 Loss 开始，一层一层往回算，</span><br><span class="line">用链式法则把每一层的影响串起来，</span><br><span class="line">最终得到 Loss 对每个参数的梯度。</span><br></pre></td></tr></table></figure>
+
+<p>这就是为什么叫”反向”传播——计算方向是从输出到输入。</p>
+<h3 id="6-5-训练数据：互联网就是教科书"><a href="#6-5-训练数据：互联网就是教科书" class="headerlink" title="6.5 训练数据：互联网就是教科书"></a>6.5 训练数据：互联网就是教科书</h3><p>LLM 是怎么训练的？简单说就是：<strong>喂给它海量的文本，让它不停地预测下一个 token，不停地调整参数。</strong></p>
+<p>训练数据来源（以 GPT-3 为例）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- 互联网网页（Common Crawl）：60%</span><br><span class="line">- 高质量书籍（Books1, Books2）：16%</span><br><span class="line">- Wikipedia：3%</span><br><span class="line">- 其他（代码、论文等）：21%</span><br><span class="line"></span><br><span class="line">总计约 3000 亿 token</span><br></pre></td></tr></table></figure>
+
+<p>训练过程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">for 每一批训练数据 (batch):</span><br><span class="line">    1. 取一段文本，比如 &quot;我爱吃苹果和香蕉&quot;</span><br><span class="line"></span><br><span class="line">    2. 模型尝试预测每个位置的下一个 token：</span><br><span class="line">       P(&quot;爱&quot; | &quot;我&quot;)         → 和正确答案&quot;爱&quot;比较 → 算 Loss</span><br><span class="line">       P(&quot;吃&quot; | &quot;我爱&quot;)       → 和正确答案&quot;吃&quot;比较 → 算 Loss</span><br><span class="line">       P(&quot;苹果&quot; | &quot;我爱吃&quot;)    → 和正确答案&quot;苹果&quot;比较 → 算 Loss</span><br><span class="line">       P(&quot;和&quot; | &quot;我爱吃苹果&quot;)  → 和正确答案&quot;和&quot;比较 → 算 Loss</span><br><span class="line">       ...</span><br><span class="line"></span><br><span class="line">    3. 把所有位置的 Loss 加起来</span><br><span class="line"></span><br><span class="line">    4. 反向传播，算出所有参数的梯度</span><br><span class="line"></span><br><span class="line">    5. 用梯度下降更新参数</span><br><span class="line"></span><br><span class="line">    6. 回到 1，处理下一批数据</span><br><span class="line"></span><br><span class="line">重复几十万次甚至几百万次迭代...</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-6-预训练-→-微调-→-RLHF：三段式训练"><a href="#6-6-预训练-→-微调-→-RLHF：三段式训练" class="headerlink" title="6.6 预训练 → 微调 → RLHF：三段式训练"></a>6.6 预训练 → 微调 → RLHF：三段式训练</h3><p>现代 LLM 的训练分三个阶段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────────────────────────────────────────┐</span><br><span class="line">│  阶段 1: 预训练 (Pre-training)                            │</span><br><span class="line">│  目标: 学习语言的基本规律和世界知识                         │</span><br><span class="line">│  数据: 海量互联网文本（万亿 token）                        │</span><br><span class="line">│  方法: 预测下一个 token（自监督学习）                       │</span><br><span class="line">│  结果: 模型会&quot;补全&quot;文本，但不会&quot;对话&quot;                      │</span><br><span class="line">│  算力: 数千张 GPU 跑数月，成本数百万美元                    │</span><br><span class="line">│                                                          │</span><br><span class="line">│  类比: 让一个小孩读遍了图书馆的所有书                       │</span><br><span class="line">│        → 他知识渊博，但你问他问题他可能不会好好回答          │</span><br><span class="line">├──────────────────────────────────────────────────────────┤</span><br><span class="line">│  阶段 2: 监督微调 (SFT - Supervised Fine-Tuning)          │</span><br><span class="line">│  目标: 教模型以&quot;助手&quot;的方式回答问题                        │</span><br><span class="line">│  数据: 人工标注的&quot;问题-高质量回答&quot;对（几万到几十万条）       │</span><br><span class="line">│  方法: 继续用同样的 Loss 训练，但数据是对话格式              │</span><br><span class="line">│  结果: 模型学会了&quot;对话&quot;的格式和礼节                        │</span><br><span class="line">│                                                          │</span><br><span class="line">│  类比: 给小孩请了一个家教，教他&quot;别人问什么，应该怎么回答&quot;    │</span><br><span class="line">├──────────────────────────────────────────────────────────┤</span><br><span class="line">│  阶段 3: RLHF (基于人类反馈的强化学习)                     │</span><br><span class="line">│  目标: 让模型的回答更符合人类偏好（有帮助、无害、诚实）      │</span><br><span class="line">│  数据: 人类标注的&quot;回答A好还是回答B好&quot;的偏好数据              │</span><br><span class="line">│  方法: 先训练一个&quot;奖励模型&quot;学习人类偏好，                   │</span><br><span class="line">│        再用强化学习让 LLM 最大化奖励                       │</span><br><span class="line">│  结果: 模型回答更像&quot;人话&quot;，更有帮助，更安全                 │</span><br><span class="line">│                                                          │</span><br><span class="line">│  类比: 给小孩一个辅导员，告诉他&quot;这样回答好，那样不好&quot;       │</span><br><span class="line">│        小孩慢慢学会了什么样的回答最讨人喜欢                  │</span><br><span class="line">└──────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-7-RLHF-的数学原理（简化版）"><a href="#6-7-RLHF-的数学原理（简化版）" class="headerlink" title="6.7 RLHF 的数学原理（简化版）"></a>6.7 RLHF 的数学原理（简化版）</h3><p>RLHF 的核心思路：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">第1步：训练奖励模型（Reward Model）</span><br><span class="line">  - 给同一个问题生成两个回答 A 和 B</span><br><span class="line">  - 让人类标注员选&quot;哪个更好&quot;</span><br><span class="line">  - 训练一个模型来预测&quot;人类更喜欢哪个&quot;</span><br><span class="line">  - 这个模型就是&quot;奖励模型&quot;——给任何回答打个分</span><br><span class="line"></span><br><span class="line">第2步：用奖励模型来训练 LLM</span><br><span class="line">  - LLM 生成一个回答</span><br><span class="line">  - 奖励模型给这个回答打分</span><br><span class="line">  - 如果分数高 → 调整参数让模型以后更容易生成类似的回答</span><br><span class="line">  - 如果分数低 → 调整参数让模型以后避免类似的回答</span><br></pre></td></tr></table></figure>
+
+<p>这里用到的强化学习算法叫 <strong>PPO（Proximal Policy Optimization）</strong>，核心公式是：</p>
+<p>$$<br>L^{CLIP} &#x3D; \min(r_t \cdot A_t, \text{clip}(r_t, 1-\epsilon, 1+\epsilon) \cdot A_t)<br>$$</p>
+<p>看不懂没关系！翻译成人话就是：</p>
+<blockquote>
+<p>“根据奖励调整模型，但每次调整幅度不要太大（clip），防止模型走偏。”</p>
+</blockquote>
+<p>这个 clip 很重要——没有它，模型可能会找到一种”讨好奖励模型但实际上回答很烂”的捷径（叫 reward hacking）。</p>
+<hr>
+<h2 id="第七章：从-GPT-到-Claude——现代-LLM-的演进"><a href="#第七章：从-GPT-到-Claude——现代-LLM-的演进" class="headerlink" title="第七章：从 GPT 到 Claude——现代 LLM 的演进"></a>第七章：从 GPT 到 Claude——现代 LLM 的演进</h2><h3 id="7-1-规模定律（Scaling-Law）"><a href="#7-1-规模定律（Scaling-Law）" class="headerlink" title="7.1 规模定律（Scaling Law）"></a>7.1 规模定律（Scaling Law）</h3><p>2020 年，OpenAI 发现了一个惊人的规律：</p>
+<p><strong>模型的能力和三个因素成幂律关系：</strong></p>
+<p>$$<br>L \propto \frac{1}{N^{0.076}} + \frac{1}{D^{0.095}} + \frac{1}{C^{0.050}}<br>$$</p>
+<p>其中 L 是 Loss（越低越好），N 是参数量，D 是数据量，C 是计算量。</p>
+<p>人话翻译：<strong>更大的模型 + 更多的数据 + 更多的算力 &#x3D; 更好的模型</strong>。</p>
+<p>而且这个关系是<strong>平滑的、可预测的</strong>——你可以在小模型上做实验，然后预测大模型的性能。</p>
+<p>这就是为什么 AI 公司都在疯狂扩大模型规模。</p>
+<h3 id="7-2-涌现能力（Emergent-Abilities）"><a href="#7-2-涌现能力（Emergent-Abilities）" class="headerlink" title="7.2 涌现能力（Emergent Abilities）"></a>7.2 涌现能力（Emergent Abilities）</h3><p>更有意思的是，当模型规模超过某个阈值后，会突然”涌现”出小模型完全不具备的能力：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">模型大小 vs 能力（示意）：</span><br><span class="line"></span><br><span class="line">能力                                     ╱</span><br><span class="line"> │                                    ╱</span><br><span class="line"> │                              ╱╱╱╱</span><br><span class="line"> │                         ╱╱╱</span><br><span class="line"> │               ────────╱   ← 突然跳跃！（涌现）</span><br><span class="line"> │         ──────</span><br><span class="line"> │   ──────</span><br><span class="line"> │ ──</span><br><span class="line"> └──────────────────────────────→ 参数量</span><br><span class="line">   1B   10B   50B   175B   540B</span><br><span class="line"></span><br><span class="line">小模型（&lt;10B）：能补全文字，但不会做算术</span><br><span class="line">中模型（~50B）：突然会做简单算术了</span><br><span class="line">大模型（&gt;100B）：突然会做思维链推理了</span><br><span class="line">超大模型（&gt;500B）：突然能理解笑话和隐喻了</span><br></pre></td></tr></table></figure>
+
+<p>这就像水温从 99°C 到 100°C 的那一度——量变引起了质变。</p>
+<h3 id="7-3-思维链推理（Chain-of-Thought）"><a href="#7-3-思维链推理（Chain-of-Thought）" class="headerlink" title="7.3 思维链推理（Chain of Thought）"></a>7.3 思维链推理（Chain of Thought）</h3><p>传统做法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">问：一个商店有 23 个苹果，卖掉了 17 个，又进了 6 个，还剩多少？</span><br><span class="line">模型直接回答：12 ✓ （有时对有时错）</span><br></pre></td></tr></table></figure>
+
+<p>思维链做法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">问：一个商店有 23 个苹果，卖掉了 17 个，又进了 6 个，还剩多少？</span><br><span class="line">模型回答：</span><br><span class="line">  让我一步步想：</span><br><span class="line">  1. 开始有 23 个苹果</span><br><span class="line">  2. 卖掉 17 个：23 - 17 = 6</span><br><span class="line">  3. 又进了 6 个：6 + 6 = 12</span><br><span class="line">  所以还剩 12 个苹果。✓ （几乎总是对的）</span><br></pre></td></tr></table></figure>
+
+<p><strong>为什么分步骤就更准确？</strong> 因为每一步只需要做简单计算，错误率低。而直接一步到位需要”跳跃式推理”，错误率高。</p>
+<p>Claude 的”Extended Thinking”功能就是让模型在回答前先进行长时间的内部推理。</p>
+<h3 id="7-4-上下文窗口：能记住多少"><a href="#7-4-上下文窗口：能记住多少" class="headerlink" title="7.4 上下文窗口：能记住多少"></a>7.4 上下文窗口：能记住多少</h3><p>LLM 能处理的最大文本长度叫<strong>上下文窗口（Context Window）</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GPT-3 (2020)：    4K tokens ≈ 3000 字</span><br><span class="line">GPT-3.5 (2023)：  16K tokens ≈ 12000 字</span><br><span class="line">GPT-4 (2023)：    128K tokens ≈ 96000 字</span><br><span class="line">Claude 3.5 (2025)：200K tokens ≈ 150000 字（一本中篇小说）</span><br></pre></td></tr></table></figure>
+
+<p><strong>为什么有上限？</strong> 因为 Attention 的计算量和内存随序列长度<strong>平方增长</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">序列长度 n = 1000 → Attention 矩阵大小 = 1000 × 1000 = 1,000,000</span><br><span class="line">序列长度 n = 10000 → Attention 矩阵大小 = 10000 × 10000 = 100,000,000</span><br><span class="line">序列长度 n = 200000 → Attention 矩阵大小 = 200000 × 200000 = 40,000,000,000</span><br></pre></td></tr></table></figure>
+
+<p>长度增加 10 倍，计算量增加 100 倍。这就是为什么超长上下文很昂贵。</p>
+<p>各种优化技术（如 Flash Attention、稀疏 Attention、KV Cache）都在试图降低这个 O(n²) 的成本。</p>
+<hr>
+<h2 id="第八章：为什么它会”幻觉”？局限性的数学解释"><a href="#第八章：为什么它会”幻觉”？局限性的数学解释" class="headerlink" title="第八章：为什么它会”幻觉”？局限性的数学解释"></a>第八章：为什么它会”幻觉”？局限性的数学解释</h2><h3 id="8-1-幻觉的本质"><a href="#8-1-幻觉的本质" class="headerlink" title="8.1 幻觉的本质"></a>8.1 幻觉的本质</h3><p><strong>幻觉（Hallucination）&#x3D; 模型一本正经地输出了错误的信息。</strong></p>
+<p>比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">问：爱因斯坦是哪年获得诺贝尔化学奖的？</span><br><span class="line">模型：爱因斯坦于 1921 年获得诺贝尔化学奖。 ← 错！是物理学奖！</span><br></pre></td></tr></table></figure>
+
+<p>模型为什么会这样？因为从概率角度看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">P(&quot;化学&quot; | &quot;爱因斯坦...诺贝尔...奖&quot;) 和 P(&quot;物理&quot; | &quot;爱因斯坦...诺贝尔...奖&quot;)</span><br><span class="line"></span><br><span class="line">这两个概率可能差距不大（比如 0.4 vs 0.5），</span><br><span class="line">模型有时候就会选到错误的那个。</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-为什么幻觉不可避免"><a href="#8-2-为什么幻觉不可避免" class="headerlink" title="8.2 为什么幻觉不可避免"></a>8.2 为什么幻觉不可避免</h3><p>从数学角度看，幻觉至少有三个来源：</p>
+<p><strong>来源1：训练数据中存在矛盾信息</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">互联网上关于某个事实可能有正确和错误两个版本：</span><br><span class="line">  文档A：&quot;维生素C可以治感冒&quot;     （错误但广泛流传）</span><br><span class="line">  文档B：&quot;维生素C不能治愈感冒&quot;   （正确但数量少）</span><br><span class="line"></span><br><span class="line">模型学到的是加权平均：</span><br><span class="line">  P(&quot;可以治感冒&quot; | &quot;维生素C&quot;) 偏高，因为训练数据中这种说法更多。</span><br></pre></td></tr></table></figure>
+
+<p><strong>来源2：模型本质上是在做”模式插值”</strong></p>
+<p>模型见过”爱因斯坦+诺贝尔+奖”，也见过”化学+奖”和”物理+奖”。当它需要填空时，它在做这些模式的<strong>插值</strong>。如果训练数据中”诺贝尔化学奖”这个词组出现的频率很高，模型可能就会倾向于输出它。</p>
+<p><strong>来源3：自回归生成的错误累积</strong></p>
+<p>模型一次只生成一个 token。如果第 N 个 token 选错了，后面所有 token 都是在错误基础上继续的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;法国的首都是里&quot; → 模型已经选了&quot;里&quot;</span><br><span class="line">  → 现在 P(&quot;昂&quot; | &quot;法国的首都是里&quot;) 很高</span><br><span class="line">  → 于是输出 &quot;里昂&quot; ← 错！应该是巴黎</span><br><span class="line">  → 但回不去了...</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-3-温度和采样策略如何影响幻觉"><a href="#8-3-温度和采样策略如何影响幻觉" class="headerlink" title="8.3 温度和采样策略如何影响幻觉"></a>8.3 温度和采样策略如何影响幻觉</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">温度低（如 0.1）：</span><br><span class="line">  → 几乎总是选概率最高的 token</span><br><span class="line">  → 更&quot;安全&quot;，但更&quot;无聊&quot;</span><br><span class="line">  → 如果最高概率的就是错的，则幻觉是确定性的</span><br><span class="line"></span><br><span class="line">温度高（如 1.5）：</span><br><span class="line">  → 随机性更大</span><br><span class="line">  → 可能选到概率不那么高但实际上正确的 token</span><br><span class="line">  → 也可能选到更离谱的错误 token</span><br><span class="line">  → 幻觉是随机性的</span><br><span class="line"></span><br><span class="line">实际上取一个适中的温度（0.7-1.0）通常效果最好。</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-4-模型并不”知道”自己知不知道"><a href="#8-4-模型并不”知道”自己知不知道" class="headerlink" title="8.4 模型并不”知道”自己知不知道"></a>8.4 模型并不”知道”自己知不知道</h3><p>这是最根本的问题：<strong>模型对自己的不确定性没有可靠的自我感知。</strong></p>
+<p>一个理想的系统应该是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">知道的事情 → 自信地回答</span><br><span class="line">不知道的事情 → 说&quot;我不确定&quot;</span><br></pre></td></tr></table></figure>
+
+<p>但 LLM 的训练目标是”总是预测下一个 token”——它的训练中没有”拒绝回答”这个选项。即使模型对某个事实的内部概率分布非常扁平（每个选项概率差不多），它也必须输出一个 token，而且输出的方式看起来和它很自信时<strong>没什么区别</strong>。</p>
+<p>RLHF 可以一定程度上缓解这个问题（教模型说”我不确定”），但不能从根本上解决。</p>
+<hr>
+<h2 id="第九章：总结——一张图看懂全貌"><a href="#第九章：总结——一张图看懂全貌" class="headerlink" title="第九章：总结——一张图看懂全貌"></a>第九章：总结——一张图看懂全貌</h2><h3 id="9-1-完整的-LLM-工作流程"><a href="#9-1-完整的-LLM-工作流程" class="headerlink" title="9.1 完整的 LLM 工作流程"></a>9.1 完整的 LLM 工作流程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">┌─────────── 训练阶段 ──────────────┐</span><br><span class="line">│                                    │</span><br><span class="line">│  1. 海量文本数据（万亿 token）       │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  2. 分词（Tokenization）            │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  3. 预测下一个 token                │</span><br><span class="line">│     → 计算 Loss（交叉熵）          │</span><br><span class="line">│     → 反向传播算梯度                │</span><br><span class="line">│     → 梯度下降更新参数              │</span><br><span class="line">│     → 重复几百万次                  │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  4. 监督微调（对话格式）             │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  5. RLHF（学习人类偏好）            │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  训练完成！参数固化                  │</span><br><span class="line">└────────────────────────────────────┘</span><br><span class="line">               ↓</span><br><span class="line">┌─────────── 推理阶段 ──────────────┐</span><br><span class="line">│                                    │</span><br><span class="line">│  用户输入: &quot;解释一下量子力学&quot;         │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  1. Token化: [&quot;解释&quot;, &quot;一下&quot;, ...]   │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  2. 嵌入: 每个 token → 向量          │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  3. 经过 N 层 Transformer:           │</span><br><span class="line">│     每层 = Attention + FFN           │</span><br><span class="line">│     Attention: token 之间交换信息    │</span><br><span class="line">│     FFN: 从知识库中检索/推理          │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  4. 最后一层输出 → 概率分布           │</span><br><span class="line">│     P(&quot;量&quot;)=0.3, P(&quot;这&quot;)=0.2, ...   │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  5. 采样：选一个 token               │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  6. 回到步骤 2，继续生成下一个 token  │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  7. 直到生成&quot;结束&quot;标记               │</span><br><span class="line">│       ↓                            │</span><br><span class="line">│  输出: &quot;量子力学是物理学的一个分支...&quot; │</span><br><span class="line">└────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-核心数学概念速查表"><a href="#9-2-核心数学概念速查表" class="headerlink" title="9.2 核心数学概念速查表"></a>9.2 核心数学概念速查表</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>人话解释</th>
+<th>在 LLM 中的作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>概率</strong></td>
+<td>一件事发生的可能性 (0~1)</td>
+<td>预测每个 token 出现的可能性</td>
+</tr>
+<tr>
+<td><strong>条件概率</strong></td>
+<td>知道一些信息后的概率</td>
+<td>P(下一个字 | 前面的字)</td>
+</tr>
+<tr>
+<td><strong>向量</strong></td>
+<td>一串有序的数字</td>
+<td>表示 token 的含义</td>
+</tr>
+<tr>
+<td><strong>矩阵乘法</strong></td>
+<td>一种线性变换</td>
+<td>变换向量（Q&#x2F;K&#x2F;V 生成、FFN 等）</td>
+</tr>
+<tr>
+<td><strong>点积</strong></td>
+<td>对应位相乘再求和</td>
+<td>衡量两个向量的相似度</td>
+</tr>
+<tr>
+<td><strong>Softmax</strong></td>
+<td>把数字变成概率分布</td>
+<td>Attention 权重归一化、最终概率输出</td>
+</tr>
+<tr>
+<td><strong>交叉熵</strong></td>
+<td>衡量预测分布和真实分布的差距</td>
+<td>训练的损失函数</td>
+</tr>
+<tr>
+<td><strong>梯度</strong></td>
+<td>函数在某点的变化方向和速度</td>
+<td>告诉模型参数该怎么调</td>
+</tr>
+<tr>
+<td><strong>链式法则</strong></td>
+<td>复合函数求导的规则</td>
+<td>反向传播的数学基础</td>
+</tr>
+<tr>
+<td><strong>梯度下降</strong></td>
+<td>沿着下坡方向走</td>
+<td>优化参数的方法</td>
+</tr>
+</tbody></table>
+<h3 id="9-3-为什么-LLM-这么强？"><a href="#9-3-为什么-LLM-这么强？" class="headerlink" title="9.3 为什么 LLM 这么强？"></a>9.3 为什么 LLM 这么强？</h3><p>回到最初的问题：为什么”预测下一个字”就能产生这么强大的能力？</p>
+<p>答案是<strong>三个因素的结合</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1. Transformer 架构的表达能力</span><br><span class="line">   → Attention 让模型能关注任意距离的上下文</span><br><span class="line">   → FFN 提供了巨大的参数空间来存储知识</span><br><span class="line">   → 多层堆叠允许逐步抽象和推理</span><br><span class="line"></span><br><span class="line">2. 海量训练数据</span><br><span class="line">   → 互联网上的文本蕴含了人类大量的知识和推理模式</span><br><span class="line">   → 要准确预测下一个字，模型被迫学会了这些知识和模式</span><br><span class="line"></span><br><span class="line">3. 规模效应</span><br><span class="line">   → 更大的模型 + 更多的数据 → 更好的预测</span><br><span class="line">   → 超过某个规模后，涌现出推理、知识检索、创造性等能力</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-4-最后的思考"><a href="#9-4-最后的思考" class="headerlink" title="9.4 最后的思考"></a>9.4 最后的思考</h3><p>LLM 本质上是一个<strong>极其庞大的条件概率模型</strong>。它不”理解”语言（至少不像人类那样理解），但它通过学习海量文本中的统计规律，达到了<strong>在行为层面看起来像理解了</strong>的效果。</p>
+<p>这是否等于”真正的理解”？这是一个哲学问题，目前没有共识。</p>
+<p>但从工程角度看，它已经足够有用了——写代码、回答问题、翻译、创作、推理——这些能力都是从那个简单的目标”预测下一个 token”中涌现出来的。</p>
+<p>这大概是人工智能历史上最美丽的意外之一。</p>
+<hr>
+<h2 id="附录-A：关键术语对照表"><a href="#附录-A：关键术语对照表" class="headerlink" title="附录 A：关键术语对照表"></a>附录 A：关键术语对照表</h2><table>
+<thead>
+<tr>
+<th>英文</th>
+<th>中文</th>
+<th>简单解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LLM</td>
+<td>大语言模型</td>
+<td>能理解和生成文本的大型AI模型</td>
+</tr>
+<tr>
+<td>Token</td>
+<td>词元</td>
+<td>文本的最小处理单位（介于字和词之间）</td>
+</tr>
+<tr>
+<td>Embedding</td>
+<td>嵌入</td>
+<td>把 token 变成向量的过程</td>
+</tr>
+<tr>
+<td>Attention</td>
+<td>注意力</td>
+<td>让模型关注重要的上下文</td>
+</tr>
+<tr>
+<td>Transformer</td>
+<td>—</td>
+<td>当前所有 LLM 的底层架构</td>
+</tr>
+<tr>
+<td>Parameters</td>
+<td>参数</td>
+<td>模型中可学习的数字，决定模型行为</td>
+</tr>
+<tr>
+<td>Loss</td>
+<td>损失</td>
+<td>衡量模型预测有多差的数字</td>
+</tr>
+<tr>
+<td>Gradient</td>
+<td>梯度</td>
+<td>告诉参数该怎么调的方向指标</td>
+</tr>
+<tr>
+<td>Backpropagation</td>
+<td>反向传播</td>
+<td>从输出到输入计算梯度的方法</td>
+</tr>
+<tr>
+<td>Fine-tuning</td>
+<td>微调</td>
+<td>在特定数据上继续训练</td>
+</tr>
+<tr>
+<td>RLHF</td>
+<td>基于人类反馈的强化学习</td>
+<td>用人类偏好来优化模型</td>
+</tr>
+<tr>
+<td>Inference</td>
+<td>推理</td>
+<td>模型生成回答的过程</td>
+</tr>
+<tr>
+<td>Hallucination</td>
+<td>幻觉</td>
+<td>模型自信地说出错误信息</td>
+</tr>
+<tr>
+<td>Context Window</td>
+<td>上下文窗口</td>
+<td>模型能处理的最大文本长度</td>
+</tr>
+<tr>
+<td>Scaling Law</td>
+<td>规模定律</td>
+<td>更大&#x3D;更强 的数学关系</td>
+</tr>
+<tr>
+<td>Temperature</td>
+<td>温度</td>
+<td>控制生成随机性的参数</td>
+</tr>
+</tbody></table>
+<h2 id="附录-B：推荐继续学习的资源"><a href="#附录-B：推荐继续学习的资源" class="headerlink" title="附录 B：推荐继续学习的资源"></a>附录 B：推荐继续学习的资源</h2><p>如果你看完这篇文章觉得意犹未尽，推荐以下资源（按难度递增）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">入门级：</span><br><span class="line">  📺 3Blue1Brown &quot;Neural Networks&quot; 系列（B站有搬运）</span><br><span class="line">  📺 Andrej Karpathy &quot;Let&#x27;s build GPT from scratch&quot;</span><br><span class="line">  📖 《这就是ChatGPT》 Stephen Wolfram 著（薄而精彩）</span><br><span class="line"></span><br><span class="line">进阶级：</span><br><span class="line">  📄 &quot;Attention Is All You Need&quot;（Transformer 原始论文，必读）</span><br><span class="line">  📄 &quot;Language Models are Few-Shot Learners&quot;（GPT-3 论文）</span><br><span class="line">  📺 Stanford CS224N（NLP 经典课程）</span><br><span class="line"></span><br><span class="line">实践级：</span><br><span class="line">  💻 Andrej Karpathy 的 nanoGPT（从零实现一个小 GPT）</span><br><span class="line">  💻 Hugging Face Transformers 库（动手跑模型）</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><em>写完这篇文章，我最大的感受是：LLM 的数学原理其实并不复杂——概率、线性代数、微积分的基础知识就够了。真正令人惊叹的是，这些简单的数学组件组合在一起，加上足够大的规模，就涌现出了接近人类水平的语言能力。这或许是近代数学最优美的应用之一。</em></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">RickDamon</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://rickdamon.github.io/2025/05/30/%E4%BB%8E%E9%9B%B6%E5%88%B0%E4%B8%80%E7%90%86%E8%A7%A3%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%9E%84%E5%BB%BA/">https://rickdamon.github.io/2025/05/30/%E4%BB%8E%E9%9B%B6%E5%88%B0%E4%B8%80%E7%90%86%E8%A7%A3%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%9E%84%E5%BB%BA/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">RickDamon</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/LLM/">
+                                    <span class="chip bg-color">LLM</span>
+                                </a>
+                            
+                                <a href="/tags/Transformer/">
+                                    <span class="chip bg-color">Transformer</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">深度学习</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                                    <span class="chip bg-color">神经网络</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/">
+                                    <span class="chip bg-color">机器学习入门</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2026/01/03/%E5%9F%BA%E4%BA%8Egoogle%E6%9C%80%E6%96%B0agents%E8%AE%BA%E6%96%87%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%96%87%E6%A1%A3/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="基于Google最新Agents论文的学习文档">
+                        
+                        <span class="card-title">基于Google最新Agents论文的学习文档</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            导语原链接：Google AI Agents Technical Guide
+这份白皮书是 Google 对AI Agent 从概念到生产部署的完整技术路线图，涵盖了：
+
+✅ AI Agent 的定义和分类
+✅ Agent 开发框架（ADK
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2026-01-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/AI/" class="post-category">
+                                    AI
+                                </a>
+                            
+                            <a href="/categories/AI/Agent/" class="post-category">
+                                    Agent
+                                </a>
+                            
+                            <a href="/categories/AI/Agent/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                    架构设计
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/LLM/">
+                        <span class="chip bg-color">LLM</span>
+                    </a>
+                    
+                    <a href="/tags/AI-Agents/">
+                        <span class="chip bg-color">AI Agents</span>
+                    </a>
+                    
+                    <a href="/tags/ADK%E6%A1%86%E6%9E%B6/">
+                        <span class="chip bg-color">ADK框架</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
+                        <span class="chip bg-color">系统设计</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%94%9F%E4%BA%A7%E9%83%A8%E7%BD%B2/">
+                        <span class="chip bg-color">生产部署</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2024/10/18/Golang1.22%E9%9D%9E%E5%85%BC%E5%AE%B9%E6%80%A7%E6%9B%B4%E6%96%B0%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Golang1.22非兼容性更新踩坑记录">
+                        
+                        <span class="card-title">Golang1.22非兼容性更新踩坑记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            导语坑的内容主要是golang在1.22版本中更新了循环中的临时变量，每次循环为单独的地址，而在旧版本中，所有循环中的临时变量，指向的是同一块内存。说的更详细点：在 Go 1.22 之前的版本中，for _, p := range arr 
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-10-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Go/" class="post-category">
+                                    Go
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Go/">
+                        <span class="chip bg-color">Go</span>
+                    </a>
+                    
+                    <a href="/tags/Go1-22/">
+                        <span class="chip bg-color">Go1.22</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%BE%AA%E7%8E%AF%E5%8F%98%E9%87%8F/">
+                        <span class="chip bg-color">循环变量</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%8C%87%E9%92%88/">
+                        <span class="chip bg-color">指针</span>
+                    </a>
+                    
+                    <a href="/tags/%E9%9D%9E%E5%85%BC%E5%AE%B9%E6%80%A7%E6%9B%B4%E6%96%B0/">
+                        <span class="chip bg-color">非兼容性更新</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="6891570000"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2026</span>
+            
+            <a href="/about" target="_blank">RickDamon</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/rickdamon" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:719196134@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=719196134" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 719196134" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="https://music.163.com/#/artist?id=12662548" class="tooltipped" target="_blank" data-tooltip="听听我的音乐" data-position="top" data-delay="50">
+        <i class="fas fa-music"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

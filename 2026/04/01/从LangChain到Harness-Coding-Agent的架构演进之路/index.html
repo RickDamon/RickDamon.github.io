@@ -770,19 +770,108 @@
 </ol>
 <p>这种”笨功夫”是没有捷径的——你必须真的遇到了每一个问题，理解了它的根因，然后逐个修复。这也解释了为什么新的 Coding Agent 产品层出不穷，但体验上能接近 Claude Code 的寥寥无几：<strong>核心架构可以被借鉴，但数百个 edge case 的积累不能被速成</strong>。</p>
 <hr>
-<h2 id="七、MCP-协议：开放的扩展体系"><a href="#七、MCP-协议：开放的扩展体系" class="headerlink" title="七、MCP 协议：开放的扩展体系"></a>七、MCP 协议：开放的扩展体系</h2><p>值得单独提一下的是 <strong>MCP（Model Context Protocol）</strong> 的角色。它是 Claude Code 扩展能力的核心通道。</p>
-<p>Claude Code 同时扮演两个角色：</p>
-<ul>
-<li><strong>作为 MCP Client</strong>：连接外部的 MCP Server，获取新的工具能力</li>
-<li><strong>作为 MCP Server</strong>：将自己的所有工具暴露出去，供其他程序调用</li>
-</ul>
+<h2 id="七、开放的扩展体系：MCP、Skill-与-Plugin"><a href="#七、开放的扩展体系：MCP、Skill-与-Plugin" class="headerlink" title="七、开放的扩展体系：MCP、Skill 与 Plugin"></a>七、开放的扩展体系：MCP、Skill 与 Plugin</h2><p>一个 Coding Agent 如果只能用内置工具，它的能力天花板就是开发者当初预设的那些场景。要突破这个天花板，需要<strong>开放的扩展体系</strong>。</p>
+<p>Claude Code 的源码中，扩展层 Harness 由五个机制组成：</p>
+<table>
+<thead>
+<tr>
+<th>扩展机制</th>
+<th>代码位置</th>
+<th>定位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MCP 协议</strong></td>
+<td><code>services/mcp/</code></td>
+<td>通过标准协议接入外部工具</td>
+</tr>
+<tr>
+<td><strong>Skill 系统</strong></td>
+<td><code>skills/</code>, <code>SkillTool</code></td>
+<td>领域特定知识和工作流注入</td>
+</tr>
+<tr>
+<td><strong>Plugin 系统</strong></td>
+<td><code>plugins/</code>, <code>services/plugins/</code></td>
+<td>自定义插件加载</td>
+</tr>
+<tr>
+<td><strong>自定义代理</strong></td>
+<td><code>AgentTool/loadAgentsDir.ts</code></td>
+<td>用户定义的代理类型</td>
+</tr>
+<tr>
+<td><strong>Feature Flag</strong></td>
+<td>GrowthBook + <code>feature()</code></td>
+<td>编译时功能门控</td>
+</tr>
+</tbody></table>
+<p>下面逐个拆解前三个最核心的机制。</p>
+<h3 id="7-1-MCP-协议：标准化的工具扩展"><a href="#7-1-MCP-协议：标准化的工具扩展" class="headerlink" title="7.1 MCP 协议：标准化的工具扩展"></a>7.1 MCP 协议：标准化的工具扩展</h3><p><strong>MCP（Model Context Protocol）</strong> 是 Claude Code 扩展能力的核心通道。它的独特之处在于——Claude Code 同时扮演两个角色：</p>
+<p><strong>作为 MCP Client（<code>services/mcp/</code>）</strong>：连接外部的 MCP Server，获取新的工具能力。每个连接的 MCP Server 会被动态生成对应的 <code>MCPTool</code> 实例，注册到工具系统中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MCPTool  // 按连接的 MCP 服务器动态生成</span><br></pre></td></tr></table></figure>
+
 <p>这意味着：</p>
 <ul>
 <li>想让 Agent 操作数据库？接入一个数据库 MCP Server</li>
 <li>想让 Agent 管理 Kubernetes？接入一个 K8s MCP Server</li>
+<li>想让 Agent 操控浏览器？接入 Playwright MCP Server</li>
 <li>想让 Agent 调用内部 API？写一个自定义 MCP Server</li>
 </ul>
-<p>无需修改 Claude Code 的任何代码，<strong>通过协议扩展能力</strong>。这是真正的”开放架构”。</p>
+<p>无需修改 Claude Code 的任何代码，<strong>通过协议扩展能力</strong>。</p>
+<p><strong>作为 MCP Server（<code>entrypoints/mcp.ts</code>）</strong>：将自己的所有工具暴露出去，供其他程序调用。这使得 Claude Code 可以被嵌入到更大的编排系统中，成为其他 Agent 的一个”子能力”。</p>
+<p>这种双向设计意味着 Claude Code 既是能力的消费者，也是能力的提供者——一个真正的”开放节点”。</p>
+<h3 id="7-2-Skill-系统：领域知识的热插拔"><a href="#7-2-Skill-系统：领域知识的热插拔" class="headerlink" title="7.2 Skill 系统：领域知识的热插拔"></a>7.2 Skill 系统：领域知识的热插拔</h3><p>如果说 MCP 解决的是”<strong>能做什么</strong>“（新增工具），那 Skill 系统解决的是”<strong>怎么做</strong>“（注入领域知识和工作流）。</p>
+<p>从源码来看，Skill 系统有独立的 <code>skills/</code> 目录和 <code>SkillTool</code>，还有专门的 <code>/skills</code> 斜杠命令。它的设计非常精巧：</p>
+<p><strong>核心机制</strong>：</p>
+<ul>
+<li><strong>热加载</strong>：通过 <code>skillChangeDetector.ts</code> 监控技能文件变化，动态加载新技能（在 Bun 运行时下还做了 FSWatcher 死锁的 workaround，改用 <code>stat()</code> 轮询）</li>
+<li><strong>状态持久化</strong>：<code>STATE.invokedSkills</code> 跟踪已激活的技能，<code>restoreSkillStateFromMessages()</code> 在会话恢复时从消息附件中重建技能状态</li>
+<li><strong>跨 compaction 保留</strong>：当上下文压缩（compaction）发生后再 resume 会话，如果不恢复技能状态，下一次 compaction 会因为 <code>invokedSkills</code> 为空而丢失技能信息。源码中做了专门的处理，并且抑制重复的技能列表公告（节省约 600 tokens）</li>
+</ul>
+<p><strong>使用场景</strong>：Skill 适合注入”做某类事情的标准流程”——比如代码审查的 checklist、特定框架的最佳实践、文档生成的模板等。它不是增加新的工具调用能力，而是增加”领域智慧”。</p>
+<h3 id="7-3-Plugin-系统：深度定制的扩展"><a href="#7-3-Plugin-系统：深度定制的扩展" class="headerlink" title="7.3 Plugin 系统：深度定制的扩展"></a>7.3 Plugin 系统：深度定制的扩展</h3><p>Plugin 系统（<code>plugins/</code>, <code>services/plugins/</code>）是比 MCP 和 Skill 更重量级的扩展机制。它允许加载自定义插件，有专门的 <code>/plugin</code> 斜杠命令管理。</p>
+<p>从架构图中可以看到，Plugin 系统位于 Services 服务层，与 MCP、compact、lsp 并列：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Services 服务层</span><br><span class="line">┌────────────┬────────────┬──────────────┬─────────────────────┐</span><br><span class="line">│ compact/   │ mcp/       │ analytics/   │ lsp/                │</span><br><span class="line">│ 上下文压缩  │ MCP 协议   │ 遥测分析     │ 语言服务器          │</span><br><span class="line">├────────────┼────────────┼──────────────┼─────────────────────┤</span><br><span class="line">│ oauth/     │ voice/     │ plugins/     │ SessionMemory/      │</span><br><span class="line">│ 认证       │ 语音输入    │ 插件系统     │ 会话记忆            │</span><br><span class="line">└────────────┴────────────┴──────────────┴─────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>与 MCP 的”标准协议接入”不同，Plugin 更像是直接嵌入 Claude Code 内部的扩展点，可以做更深度的定制。</p>
+<h3 id="7-4-ToolSearchTool：当工具太多时怎么办"><a href="#7-4-ToolSearchTool：当工具太多时怎么办" class="headerlink" title="7.4 ToolSearchTool：当工具太多时怎么办"></a>7.4 ToolSearchTool：当工具太多时怎么办</h3><p>三层扩展机制带来了一个现实问题：<strong>工具数量爆炸</strong>。</p>
+<p>内置 30+ 工具，加上通过 MCP 接入的外部工具，工具总数可能达到数十甚至上百个。如果把所有工具的 Schema 都发送给模型，不仅消耗大量 token，还会降低模型的工具选择准确率。</p>
+<p>Claude Code 的解决方案是 <code>ToolSearchTool</code>——一个 472 行的<strong>元工具</strong>（工具的工具）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">工具数量 &gt; 阈值?</span><br><span class="line">    ├─ 否 → 正常发送所有工具 Schema</span><br><span class="line">    └─ 是 → 激活 ToolSearchTool</span><br><span class="line">              ↓</span><br><span class="line">         模型先调用 ToolSearchTool 描述需求</span><br><span class="line">              ↓</span><br><span class="line">         系统根据语义匹配返回相关工具</span><br><span class="line">              ↓</span><br><span class="line">         模型再调用匹配到的具体工具</span><br></pre></td></tr></table></figure>
+
+<p>这是”延迟加载”思想在工具系统中的体现——不预加载所有工具，而是按需发现、按需使用。它保证了：即使扩展了大量外部工具，Agent 的核心性能也不会退化。</p>
+<h3 id="7-5-扩展体系的设计哲学"><a href="#7-5-扩展体系的设计哲学" class="headerlink" title="7.5 扩展体系的设计哲学"></a>7.5 扩展体系的设计哲学</h3><p>三层扩展机制形成了一个清晰的分工：</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>机制</th>
+<th>解决的问题</th>
+<th>类比</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>工具层</strong></td>
+<td>MCP</td>
+<td>能做什么（新增能力）</td>
+<td>安装新的 App</td>
+</tr>
+<tr>
+<td><strong>知识层</strong></td>
+<td>Skill</td>
+<td>怎么做（注入经验）</td>
+<td>雇一个领域专家</td>
+</tr>
+<tr>
+<td><strong>系统层</strong></td>
+<td>Plugin</td>
+<td>如何运行（深度定制）</td>
+<td>修改操作系统设置</td>
+</tr>
+</tbody></table>
+<p>再加上 <code>ToolSearchTool</code> 解决工具发现问题，<code>loadAgentsDir.ts</code> 允许用户定义全新的代理类型——整个扩展体系形成了完整的闭环。</p>
+<p>这种分层设计的好处是：<strong>大多数扩展需求都可以在最轻量的 MCP 层解决</strong>，只有真正需要领域知识注入时才动用 Skill，只有需要深度定制时才编写 Plugin。用户不需要理解整个扩展体系就能获得价值。</p>
 <hr>
 <h2 id="八、总结：好的-Agent-框架就是没有框架"><a href="#八、总结：好的-Agent-框架就是没有框架" class="headerlink" title="八、总结：好的 Agent 框架就是没有框架"></a>八、总结：好的 Agent 框架就是没有框架</h2><p>写到这里，我想回到文章开头的问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
 <p>答案是：<strong>差距不在 LLM 本身，而在 Harness 的深度</strong>。</p>
@@ -941,30 +1030,30 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2026/04/01/%E4%BB%8ELangChain%E5%88%B0Harness-Coding-Agent%E7%9A%84%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF/">
+                <a href="/2026/04/10/%E7%94%A8Agent%E5%88%86%E6%9E%90%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95%E8%AE%BA/">
                     <div class="card-image">
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="从 Claude Code 源码泄漏看 Coding Agent 的架构演进之路">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="用 Agent 分析源码的方法论：如何快速理解LLM生成的海量代码">
                         
-                        <span class="card-title">从 Claude Code 源码泄漏看 Coding Agent 的架构演进之路</span>
+                        <span class="card-title">用 Agent 分析源码的方法论：如何快速理解LLM生成的海量代码</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            导语2024 年底到 2025 年初，Coding Agent 赛道迎来了一次范式跳跃。
-从最早的 LangChain 式”显式编排”，到 AutoGPT 式”自主循环”，再到如今以 Claude Code 为代表的 Harness 范式—
+                            
+在 AI Coding 爆发的时代，我们逐行读源码的方法论可能有些落后或者说成本过重了。本文记录一套经过实战验证的方法论——如何借助 AI Agent 快速理解大型项目的架构设计，并深度分析你想了解的项目内容。
+
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-04-01
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2026-04-10
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -977,15 +1066,14 @@
                                     Agent
                                 </a>
                             
-                            <a href="/categories/AI/Agent/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="post-category">
-                                    架构设计
+                            <a href="/categories/AI/Agent/%E6%96%B9%E6%B3%95%E8%AE%BA/" class="post-category">
+                                    方法论
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -993,24 +1081,20 @@
                         <span class="chip bg-color">Coding Agent</span>
                     </a>
                     
-                    <a href="/tags/LLM/">
-                        <span class="chip bg-color">LLM</span>
+                    <a href="/tags/AI-Agent/">
+                        <span class="chip bg-color">AI Agent</span>
                     </a>
                     
-                    <a href="/tags/Claude-Code/">
-                        <span class="chip bg-color">Claude Code</span>
+                    <a href="/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+                        <span class="chip bg-color">源码分析</span>
                     </a>
                     
-                    <a href="/tags/Harness/">
-                        <span class="chip bg-color">Harness</span>
+                    <a href="/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/">
+                        <span class="chip bg-color">方法论</span>
                     </a>
                     
-                    <a href="/tags/Agent-Loop/">
-                        <span class="chip bg-color">Agent Loop</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1/">
-                        <span class="chip bg-color">工程设计</span>
+                    <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">
+                        <span class="chip bg-color">工程实践</span>
                     </a>
                     
                 </div>

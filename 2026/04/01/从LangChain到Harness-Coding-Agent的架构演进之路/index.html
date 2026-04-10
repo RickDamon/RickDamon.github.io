@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="从 Claude Code 源码泄漏看 Coding Agent 的架构演进之路, programming,learning,blog">
+    <meta name="keywords" content="从 Claude Code 源码看 Coding Agent 的架构演进之路, programming,learning,blog">
     <meta name="description" content="导语2024 年底到 2025 年初，Coding Agent 赛道迎来了一次范式跳跃。
 从最早的 LangChain 式”显式编排”，到 AutoGPT 式”自主循环”，再到如今以 Claude Code 为代表的 Harness 范式—">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>从 Claude Code 源码泄漏看 Coding Agent 的架构演进之路 | RickDamon&#39;s Blog</title>
+    <title>从 Claude Code 源码看 Coding Agent 的架构演进之路 | RickDamon&#39;s Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -338,7 +338,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">从 Claude Code 源码泄漏看 Coding Agent 的架构演进之路</h1>
+                    <h1 class="description center-align post-title">从 Claude Code 源码看 Coding Agent 的架构演进之路</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
             <div id="articleContent">
                 <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>2024 年底到 2025 年初，Coding Agent 赛道迎来了一次范式跳跃。</p>
 <p>从最早的 LangChain 式”显式编排”，到 AutoGPT 式”自主循环”，再到如今以 Claude Code 为代表的 <strong>Harness 范式</strong>——AI 编程助手的架构设计在短短两年内经历了三次根本性的转变。</p>
-<p>昨晚 Claude Code 的源码意外泄露，fork了一份看看源码，试图回答一个核心问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
+<p>Claude Code 的源码曾短暂泄露，社区 fork 了一份后很快被删除。基于对这份源码的研究，本文试图回答一个核心问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
 <p>这篇文章不是一篇源码导读，而是对 Coding Agent 架构演进的思考总结。会从以下几个维度展开：</p>
 <ol>
 <li>Agent 架构的三次范式转变</li>
@@ -467,7 +467,7 @@
 <li><strong>工具原始</strong>：只有最基本的文件读写和 shell 执行</li>
 </ul>
 <p>AutoGPT 的方向正确但时机不对——当时的模型能力和上下文限制不足以支撑自主决策，而工程基础设施也远远不够，比方说没有稳定的长期记忆结构，没有稳定的状态压缩机制以及planning abstraction等等。</p>
-<h3 id="1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）"><a href="#1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）" class="headerlink" title="1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）"></a>1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）</h3><p>到了 2025 年，一种anthropic极力推崇的新范式逐渐成型，官方称之为 <strong>Harness 范式</strong>。它的核心理念用一句话概括就是：</p>
+<h3 id="1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）"><a href="#1-3-第三代：Harness-范式（Claude-Code-Cursor-Codex-CLI）" class="headerlink" title="1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）"></a>1.3 第三代：Harness 范式（Claude Code &#x2F; Cursor &#x2F; Codex CLI）</h3><p>到了 2025 年，一种新范式逐渐成型。社区将这种模式概括为 <strong>Harness 范式</strong>（Anthropic 官方文档中更多使用”agentic systems”的表述，但 Harness 这个词精准地捕捉了其核心特征）。它的核心理念用一句话概括就是：</p>
 <blockquote>
 <p><strong>不要编排 LLM，要为 LLM 构建一个丰富的运行时环境，然后让它自己决定怎么做。</strong></p>
 </blockquote>
@@ -545,6 +545,13 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">用户输入</span><br><span class="line">   ↓</span><br><span class="line">┌──────────────────────────────────────────────────┐</span><br><span class="line">│                  Agent Loop                       │</span><br><span class="line">│                                                   │</span><br><span class="line">│  1. 构建请求 (系统提示 + 历史消息 + 上下文)      │</span><br><span class="line">│  2. 调用 API (流式)                               │</span><br><span class="line">│  3. 处理流式响应:                                 │</span><br><span class="line">│     ├── 文本块 → 实时渲染给用户                   │</span><br><span class="line">│     ├── tool_use 块 → 立即执行工具                │</span><br><span class="line">│     └── thinking 块 → 内部推理（不展示）          │</span><br><span class="line">│  4. 收集工具结果                                  │</span><br><span class="line">│  5. 判断是否继续:                                 │</span><br><span class="line">│     ├── 有 tool_use → 工具结果追加，回到步骤 2    │</span><br><span class="line">│     ├── end_turn → 结束                           │</span><br><span class="line">│     ├── max_output_tokens → 自动恢复 (最多3次)    │</span><br><span class="line">│     └── prompt_too_long → 自动压缩，回到步骤 2    │</span><br><span class="line">│  6. Token 预算检查                                │</span><br><span class="line">│  7. Turn 计数检查                                 │</span><br><span class="line">│                                                   │</span><br><span class="line">│  [循环直到模型决定停止或触发终止条件]             │</span><br><span class="line">└──────────────────────────────────────────────────┘</span><br><span class="line">   ↓</span><br><span class="line">输出结果</span><br></pre></td></tr></table></figure>
 
 <p>注意这里没有任何”if 用户要求重构 then 走重构流程”这样的分支逻辑。<strong>所有的任务路由、工具选择、执行策略都由模型在运行时动态决定</strong>。</p>
+<p>值得一提的是这个 Agent Loop 在代码层面的实现——<code>query.ts</code> 中的核心函数是一个 <code>async function* query()</code>，即 <strong>async generator</strong>。这个选择并非偶然：</p>
+<ul>
+<li><strong>流式事件分发</strong>：UI 层可以通过 <code>for await (const event of query(...))</code> 实时接收每一个流式事件（文本块、工具调用、思考过程），无需缓存完整响应</li>
+<li><strong>随时可中断</strong>：配合 <code>AbortController</code>，调用方可以在任意时刻中断 generator，实现用户 Ctrl+C 的即时响应</li>
+<li><strong>内存友好</strong>：不需要将整个对话的所有中间状态堆积在内存中，yield 出去的事件可以被即时消费</li>
+</ul>
+<p>“极简之美”不只是概念上的简洁——Agent Loop 的核心逻辑约 1730 行（<code>query.ts</code>），用一个 async generator 就承载了流式处理、工具执行、自动压缩、错误恢复等所有能力。</p>
 <h3 id="2-3-流式执行：与时间赛跑"><a href="#2-3-流式执行：与时间赛跑" class="headerlink" title="2.3 流式执行：与时间赛跑"></a>2.3 流式执行：与时间赛跑</h3><p>传统的工具执行是”请求-响应”模式——等 API 返回完整响应，解析出工具调用，再逐个执行。Claude Code 的做法更激进：</p>
 <p><strong>在 API 流式返回的过程中就开始执行工具</strong>。</p>
 <p>第一个 <code>tool_use</code> block 的 JSON 一完成解析，就立刻开始执行。后续的 block 继续接收，继续排队。这意味着网络传输和工具执行是<strong>重叠进行</strong>的，整体延迟大幅降低。</p>
@@ -624,17 +631,14 @@
 <h3 id="4-4-LSP-集成：编译器级别的事实核查"><a href="#4-4-LSP-集成：编译器级别的事实核查" class="headerlink" title="4.4 LSP 集成：编译器级别的事实核查"></a>4.4 LSP 集成：编译器级别的事实核查</h3><p>当模型完成代码编辑后，LSP（Language Server Protocol）会立刻提供诊断信息——类型错误、语法错误、未解析的引用等。</p>
 <p>这相当于给模型配了一个”编译器级别的事实核查员”。如果模型幻觉出了一个不存在的函数调用，LSP 会立刻报告 <code>Cannot find name &#39;xxx&#39;</code>，模型可以据此自我修正。</p>
 <hr>
-<h2 id="五、工具系统的精妙设计"><a href="#五、工具系统的精妙设计" class="headerlink" title="五、工具系统的精妙设计"></a>五、工具系统的精妙设计</h2><p>工具系统是 Harness 的核心。决定了 LLM 能做什么、做得多好。Claude Code 的工具系统有几个比较典型的设计。</p>
+<h2 id="五、工具系统的精妙设计"><a href="#五、工具系统的精妙设计" class="headerlink" title="五、工具系统的精妙设计"></a>五、工具系统的精妙设计</h2><p>工具系统是 Harness 的核心。决定了 LLM 能做什么、做得多好。Claude Code 的 <code>tools/</code> 目录下有 42 个子目录，每个对应一个工具，整个工具系统有几个比较典型的设计。</p>
 <h3 id="5-1-智能并发编排"><a href="#5-1-智能并发编排" class="headerlink" title="5.1 智能并发编排"></a>5.1 智能并发编排</h3><p>当模型在一次回复中调用了多个工具时，系统不是简单地顺序执行，而是<strong>根据工具的特性自动决定并行还是串行</strong>：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">模型一次性发出工具调用:</span><br><span class="line">  [ReadFile(&quot;a.ts&quot;), GrepTool(&quot;TODO&quot;), ReadFile(&quot;b.ts&quot;), FileEdit(&quot;c.ts&quot;), ReadFile(&quot;d.ts&quot;)]</span><br><span class="line"></span><br><span class="line">系统自动分区执行:</span><br><span class="line">  ┌─ ReadFile(&quot;a.ts&quot;)  ─┐</span><br><span class="line">  ├─ GrepTool(&quot;TODO&quot;)   ├── 并行执行 (都是只读操作)</span><br><span class="line">  ├─ ReadFile(&quot;b.ts&quot;)   ┘</span><br><span class="line">  │</span><br><span class="line">  ├─ FileEdit(&quot;c.ts&quot;)   ←── 串行执行 (写操作，必须独占)</span><br><span class="line">  │</span><br><span class="line">  └─ ReadFile(&quot;d.ts&quot;)   ←── 继续执行 (只读操作)</span><br></pre></td></tr></table></figure>
 
 <p>每个工具自己声明”我是否可以安全并发”，系统据此自动编排。读操作之间自由并行（最高 10 并发），遇到写操作立刻切换为串行，写操作完成后再恢复并行。</p>
 <p>这种设计在大型项目中效果显著——当模型需要同时读取 5 个文件来理解一个功能的实现时，5 次 IO 操作是并行的，而不是串行等待。</p>
-<h3 id="5-2-元工具：ToolSearchTool"><a href="#5-2-元工具：ToolSearchTool" class="headerlink" title="5.2 元工具：ToolSearchTool"></a>5.2 元工具：ToolSearchTool</h3><p>当 Agent 接入了大量 MCP 服务器后，可用工具数量可能达到上百个。把所有工具的 Schema 都塞进每次 API 调用会浪费大量 token。</p>
-<p>Claude Code 的解决方案是引入一个**”元工具”**——ToolSearchTool：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">工具数量 &gt; 阈值时:</span><br><span class="line">  1. 只加载核心工具 + ToolSearchTool</span><br><span class="line">  2. 模型需要特定能力时，先调用 ToolSearchTool 描述需求</span><br><span class="line">  3. 系统根据语义匹配返回相关工具</span><br><span class="line">  4. 模型再调用匹配到的具体工具</span><br></pre></td></tr></table></figure>
-
-<p>这是”延迟加载”思想在工具系统中的体现——不预加载所有能力，而是按需发现和加载。</p>
+<h3 id="5-2-元工具：按需发现能力"><a href="#5-2-元工具：按需发现能力" class="headerlink" title="5.2 元工具：按需发现能力"></a>5.2 元工具：按需发现能力</h3><p>当 Agent 接入大量 MCP 服务器后，可用工具数量可能达到上百个。把所有工具的 Schema 都塞进每次 API 调用会浪费大量 token，还会降低模型的工具选择准确率。</p>
+<p>Claude Code 的解决方案是引入 <code>ToolSearchTool</code>——一个**”元工具”**（工具的工具）。工具数量超过阈值时，系统只加载核心工具 + ToolSearchTool，模型需要特定能力时先通过它按语义搜索，再调用匹配到的具体工具。这是”延迟加载”思想在工具系统中的体现（详见第七章 7.4 节）。</p>
 <h3 id="5-3-子代理系统：分而治之"><a href="#5-3-子代理系统：分而治之" class="headerlink" title="5.3 子代理系统：分而治之"></a>5.3 子代理系统：分而治之</h3><p>AgentTool 是整个工具系统中最复杂也最强大的工具。它允许主代理启动子代理来处理子任务，支持多种模式：</p>
 <ul>
 <li><strong>同步子代理</strong>：阻塞主对话，等待子任务完成</li>
@@ -643,10 +647,13 @@
 <li><strong>Worktree 隔离</strong>：在独立的 Git worktree 中执行，避免冲突</li>
 </ul>
 <p>其中 <strong>Fork 子代理</strong>的设计尤其精妙——子代理不从零开始，而是”站在父代理的肩膀上”。它继承了父代理积累的所有上下文（项目结构、已做的决策、当前任务状态），同时共享 Prompt Cache，几乎不产生额外的缓存成本。</p>
-<h3 id="5-4-Coordinator-模式：生产级多代理协作"><a href="#5-4-Coordinator-模式：生产级多代理协作" class="headerlink" title="5.4 Coordinator 模式：生产级多代理协作"></a>5.4 Coordinator 模式：生产级多代理协作</h3><p>在更复杂的场景下，Claude Code 可以进入 <strong>Coordinator 模式</strong>——一个主代理编排多个 Worker 的完整工作流：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Coordinator (主代理)</span><br><span class="line">│</span><br><span class="line">├── Research 阶段 (并行)</span><br><span class="line">│   ├── Worker A: 分析代码结构</span><br><span class="line">│   ├── Worker B: 分析测试覆盖</span><br><span class="line">│   └── Worker C: 检查依赖关系</span><br><span class="line">│</span><br><span class="line">├── Synthesis 阶段 (Coordinator 自己做)</span><br><span class="line">│   └── 综合所有 Worker 的研究结果</span><br><span class="line">│</span><br><span class="line">├── Implementation 阶段 (串行)</span><br><span class="line">│   └── Worker D: 基于综合分析实现修复</span><br><span class="line">│</span><br><span class="line">└── Verification 阶段 (独立)</span><br><span class="line">    └── Worker E: 用全新视角验证修复</span><br></pre></td></tr></table></figure>
+<h3 id="5-4-Coordinator-模式：生产级多代理协作"><a href="#5-4-Coordinator-模式：生产级多代理协作" class="headerlink" title="5.4 Coordinator 模式：生产级多代理协作"></a>5.4 Coordinator 模式：生产级多代理协作</h3><p>在更复杂的场景下，Claude Code 可以进入 <strong>Coordinator 模式</strong>——一个主代理编排多个 Worker 的协作流程。</p>
+<p>值得注意的是，Coordinator 模式的实现<strong>完全忠于 Harness 范式的核心理念</strong>——它并没有硬编码”Research → Synthesis → Implementation → Verification”这样的固定阶段。实际上，<code>coordinatorMode.ts</code> 的做法是：通过修改系统提示来引导模型行为，将工具集限制为 Agent、SendMessage、TaskStop 等协作工具，然后让模型自己决定如何编排 Worker。</p>
+<p>一个典型的协作流程<strong>可能</strong>长这样（但不是强制的）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Coordinator (主代理，通过 prompt engineering 引导)</span><br><span class="line">│</span><br><span class="line">├── Research 阶段 (模型自行决定是否并行)</span><br><span class="line">│   ├── Worker A: 分析代码结构</span><br><span class="line">│   ├── Worker B: 分析测试覆盖</span><br><span class="line">│   └── Worker C: 检查依赖关系</span><br><span class="line">│</span><br><span class="line">├── Synthesis 阶段 (Coordinator 自己做)</span><br><span class="line">│   └── 综合所有 Worker 的研究结果</span><br><span class="line">│</span><br><span class="line">├── Implementation 阶段</span><br><span class="line">│   └── Worker D: 基于综合分析实现修复</span><br><span class="line">│</span><br><span class="line">└── Verification 阶段</span><br><span class="line">    └── Worker E: 用全新视角验证修复</span><br></pre></td></tr></table></figure>
 
-<p>注意一个关键设计：<strong>Synthesis 阶段由 Coordinator 自己完成，而不是委托给 Worker</strong>。这确保了主代理始终掌握全局视图，不会在信息传递中丢失关键细节。</p>
+<p>这恰好印证了文章的核心论点：即使在多代理协作这种复杂场景下，Claude Code 依然选择<strong>用 prompt 引导而非用代码编排</strong>。Coordinator 拿到的是一组协作工具和一份精心设计的系统提示，具体怎么安排 Worker、分几个阶段、是否并行——全部由模型在运行时决定。</p>
+<p>一个关键的设计选择是：<strong>综合分析（Synthesis）由 Coordinator 自己完成，而不是委托给 Worker</strong>。这确保了主代理始终掌握全局视图，不会在信息传递中丢失关键细节。</p>
 <p>Worker 之间通过消息路由系统通信，支持直接消息、广播、关闭请求等多种消息类型，并有完整的计划审批流程。</p>
 <hr>
 <h2 id="六、Edge-Case-的工程化处理"><a href="#六、Edge-Case-的工程化处理" class="headerlink" title="六、Edge Case 的工程化处理"></a>六、Edge Case 的工程化处理</h2><p>一个 Coding Agent 从”能用”到”好用”，差距往往不在核心架构，而在 <strong>Edge Case 的处理深度</strong>。</p>
@@ -830,11 +837,11 @@
 <li><strong>跨 compaction 保留</strong>：当上下文压缩（compaction）发生后再 resume 会话，如果不恢复技能状态，下一次 compaction 会因为 <code>invokedSkills</code> 为空而丢失技能信息。源码中做了专门的处理，并且抑制重复的技能列表公告（节省约 600 tokens）</li>
 </ul>
 <p><strong>使用场景</strong>：Skill 适合注入”做某类事情的标准流程”——比如代码审查的 checklist、特定框架的最佳实践、文档生成的模板等。它不是增加新的工具调用能力，而是增加”领域智慧”。</p>
-<h3 id="7-3-Plugin-系统：深度定制的扩展"><a href="#7-3-Plugin-系统：深度定制的扩展" class="headerlink" title="7.3 Plugin 系统：深度定制的扩展"></a>7.3 Plugin 系统：深度定制的扩展</h3><p>Plugin 系统（<code>plugins/</code>, <code>services/plugins/</code>）是比 MCP 和 Skill 更重量级的扩展机制。它允许加载自定义插件，有专门的 <code>/plugin</code> 斜杠命令管理。</p>
+<h3 id="7-3-Plugin-系统：更深度的扩展点"><a href="#7-3-Plugin-系统：更深度的扩展点" class="headerlink" title="7.3 Plugin 系统：更深度的扩展点"></a>7.3 Plugin 系统：更深度的扩展点</h3><p>Plugin 系统（<code>plugins/</code>, <code>services/plugins/</code>）是比 MCP 和 Skill 更重量级的扩展机制。它允许加载自定义插件，有专门的 <code>/plugin</code> 斜杠命令管理。</p>
 <p>从架构图中可以看到，Plugin 系统位于 Services 服务层，与 MCP、compact、lsp 并列：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Services 服务层</span><br><span class="line">┌────────────┬────────────┬──────────────┬─────────────────────┐</span><br><span class="line">│ compact/   │ mcp/       │ analytics/   │ lsp/                │</span><br><span class="line">│ 上下文压缩  │ MCP 协议   │ 遥测分析     │ 语言服务器          │</span><br><span class="line">├────────────┼────────────┼──────────────┼─────────────────────┤</span><br><span class="line">│ oauth/     │ voice/     │ plugins/     │ SessionMemory/      │</span><br><span class="line">│ 认证       │ 语音输入    │ 插件系统     │ 会话记忆            │</span><br><span class="line">└────────────┴────────────┴──────────────┴─────────────────────┘</span><br></pre></td></tr></table></figure>
 
-<p>与 MCP 的”标准协议接入”不同，Plugin 更像是直接嵌入 Claude Code 内部的扩展点，可以做更深度的定制。</p>
+<p>需要诚实说明的是：Plugin 系统的公开文档较少，它与 Skill 系统的边界在源码中也没有非常清晰的划分。从目前可观察到的代码来看，Plugin 更偏向内部使用的深度扩展机制，而 MCP 和 Skill 是面向用户的主要扩展方式。</p>
 <h3 id="7-4-ToolSearchTool：当工具太多时怎么办"><a href="#7-4-ToolSearchTool：当工具太多时怎么办" class="headerlink" title="7.4 ToolSearchTool：当工具太多时怎么办"></a>7.4 ToolSearchTool：当工具太多时怎么办</h3><p>三层扩展机制带来了一个现实问题：<strong>工具数量爆炸</strong>。</p>
 <p>内置 30+ 工具，加上通过 MCP 接入的外部工具，工具总数可能达到数十甚至上百个。如果把所有工具的 Schema 都发送给模型，不仅消耗大量 token，还会降低模型的工具选择准确率。</p>
 <p>Claude Code 的解决方案是 <code>ToolSearchTool</code>——一个 472 行的<strong>元工具</strong>（工具的工具）：</p>
@@ -873,9 +880,25 @@
 <p>再加上 <code>ToolSearchTool</code> 解决工具发现问题，<code>loadAgentsDir.ts</code> 允许用户定义全新的代理类型——整个扩展体系形成了完整的闭环。</p>
 <p>这种分层设计的好处是：<strong>大多数扩展需求都可以在最轻量的 MCP 层解决</strong>，只有真正需要领域知识注入时才动用 Skill，只有需要深度定制时才编写 Plugin。用户不需要理解整个扩展体系就能获得价值。</p>
 <hr>
-<h2 id="八、总结：好的-Agent-框架就是没有框架"><a href="#八、总结：好的-Agent-框架就是没有框架" class="headerlink" title="八、总结：好的 Agent 框架就是没有框架"></a>八、总结：好的 Agent 框架就是没有框架</h2><p>写到这里，我想回到文章开头的问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
+<h2 id="八、成本工程：被忽视的竞争力"><a href="#八、成本工程：被忽视的竞争力" class="headerlink" title="八、成本工程：被忽视的竞争力"></a>八、成本工程：被忽视的竞争力</h2><p>在讨论 Coding Agent 架构时，人们往往关注能力和体验，却忽视了一个现实问题：<strong>每一次 API 调用都是真金白银</strong>。Claude Code 源码中散落着大量的成本优化细节，它们不像核心架构那样引人注目，但积少成多形成了显著的竞争优势。</p>
+<h3 id="8-1-Prompt-Cache-的极致利用"><a href="#8-1-Prompt-Cache-的极致利用" class="headerlink" title="8.1 Prompt Cache 的极致利用"></a>8.1 Prompt Cache 的极致利用</h3><p>前面 3.4 节提到了系统提示的静态&#x2F;动态分离，但 Cache 优化远不止于此：</p>
+<ul>
+<li><strong>Agent 列表位置优化</strong>：将 MCP Agent 列表从工具描述（tool description）移到附件（attachment）中，仅此一项就减少了 <strong>10.2% 的 cache_creation tokens</strong></li>
+<li><strong>Fork 子代理共享 Cache</strong>：子代理继承父代理的完整对话上下文，共享 Prompt Cache，几乎不产生额外的缓存创建成本</li>
+<li><strong>静态提示优先排列</strong>：确保跨会话不变的内容排在最前面，最大化 Cache 命中率</li>
+</ul>
+<h3 id="8-2-后台任务的成本控制"><a href="#8-2-后台任务的成本控制" class="headerlink" title="8.2 后台任务的成本控制"></a>8.2 后台任务的成本控制</h3><p>不是所有 API 调用的重要性都相同。Claude Code 对此做了精细的分级：</p>
+<ul>
+<li><strong>前台任务</strong>（用户在等待的）：529 过载 → 最多重试 3 次，然后降级到备用模型</li>
+<li><strong>后台任务</strong>（摘要生成、分类器等）：529 过载 → <strong>直接放弃不重试</strong>。原因很现实——后台任务的重试会造成 3-10 倍的网关放大效应，一个后台摘要不值得用 3 倍成本去重试</li>
+<li><strong>压缩熔断器</strong>：连续压缩失败 3 次后停止尝试。真实数据显示有 1,279 个 session 出现了 50+ 次连续压缩失败，全局浪费约 <strong>25 万次 API 调用&#x2F;天</strong>。加上熔断器后这些浪费被完全消除</li>
+</ul>
+<h3 id="8-3-成本意识作为工程文化"><a href="#8-3-成本意识作为工程文化" class="headerlink" title="8.3 成本意识作为工程文化"></a>8.3 成本意识作为工程文化</h3><p>这些优化单独看每一个都不起眼，但它们反映了一种工程文化：<strong>在 LLM 应用中，每一个 token 都有成本，每一次 API 调用都值得审视</strong>。对于一个日活数十万的产品，10% 的 token 节省意味着巨额成本差异。</p>
+<p>这也是为什么 Claude Code 选择精确编辑（FileEditTool）而非全文覆写——除了降低幻觉风险，它还能将编辑操作的 token 消耗从”文件总行数”降到”修改行数”。</p>
+<hr>
+<h2 id="九、总结：好的-Agent-框架就是没有框架"><a href="#九、总结：好的-Agent-框架就是没有框架" class="headerlink" title="九、总结：好的 Agent 框架就是没有框架"></a>九、总结：好的 Agent 框架就是没有框架</h2><p>写到这里，我想回到文章开头的问题：<strong>为什么同样是”让 LLM 写代码”，不同架构的体验差距如此之大？</strong></p>
 <p>答案是：<strong>差距不在 LLM 本身，而在 Harness 的深度</strong>。</p>
-<p>一个优秀的 Coding Agent 需要同时做好六件事：</p>
+<p>一个优秀的 Coding Agent 需要同时做好七件事：</p>
 <ol>
 <li><strong>丰富的工具调用</strong>：让 LLM 有足够的”手脚”</li>
 <li><strong>智能的上下文管理</strong>：让 LLM 不会”失忆”</li>
@@ -883,6 +906,7 @@
 <li><strong>高效的执行</strong>：让交互不会”卡顿”</li>
 <li><strong>严密的安全</strong>：让操作不会”失控”</li>
 <li><strong>开放的扩展</strong>：让能力不会”封顶”</li>
+<li><strong>精细的成本控制</strong>：让产品能”活下去”</li>
 </ol>
 <p>LangChain 时代，我们试图用复杂的编排逻辑来弥补模型能力的不足。如今，模型已经足够强大，最好的策略是：</p>
 <blockquote>

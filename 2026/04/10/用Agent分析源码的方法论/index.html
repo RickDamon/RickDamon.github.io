@@ -367,16 +367,16 @@
                     
                     <div class="article-tag">
                         
+                            <a href="/tags/Coding-Agent/">
+                                <span class="chip bg-color">Coding Agent</span>
+                            </a>
+                        
                             <a href="/tags/AI-Agent/">
                                 <span class="chip bg-color">AI Agent</span>
                             </a>
                         
                             <a href="/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
                                 <span class="chip bg-color">源码分析</span>
-                            </a>
-                        
-                            <a href="/tags/Coding-Agent/">
-                                <span class="chip bg-color">Coding Agent</span>
                             </a>
                         
                             <a href="/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/">
@@ -729,8 +729,9 @@
 <p>最好的状态是：<strong>Agent 负责”看见”，人负责”看懂”。</strong></p>
 <p>Agent 帮你在百万行代码中快速找到那些关键的 5%，而你负责将这 5% 编织成一个有观点、有深度、有启发性的故事。</p>
 <hr>
-<h2 id="实战案例：我是如何用-Agent-分析-Claude-Code-源码的"><a href="#实战案例：我是如何用-Agent-分析-Claude-Code-源码的" class="headerlink" title="实战案例：我是如何用 Agent 分析 Claude Code 源码的"></a>实战案例：我是如何用 Agent 分析 Claude Code 源码的</h2><p>前面讲了方法论，这里用一个真实案例来展示<strong>整套流程实际跑起来是什么样的</strong>。</p>
+<h2 id="实战案例-如何用-Agent-分析-Claude-Code-源码的"><a href="#实战案例-如何用-Agent-分析-Claude-Code-源码的" class="headerlink" title="实战案例 如何用 Agent 分析 Claude Code 源码的"></a>实战案例 如何用 Agent 分析 Claude Code 源码的</h2><p>前面讲了方法论，这里用一个真实案例来展示<strong>整套流程实际跑起来是什么样的</strong>。</p>
 <p>我在分析 Claude Code 源码（约 30 万行 TypeScript）时，就是用本文的方法论完成的。以下是我实际采用的 Planner 设计和执行过程。</p>
+<p>整个 planner 的设计哲学就是：<strong>用搜索代替阅读，用并行代替串行，用关键词代替遍历，用”为什么”代替”是什么”</strong></p>
 <h3 id="第一阶段：全局鸟瞰（Top-Down）"><a href="#第一阶段：全局鸟瞰（Top-Down）" class="headerlink" title="第一阶段：全局鸟瞰（Top-Down）"></a>第一阶段：全局鸟瞰（Top-Down）</h3><p><strong>目标：快速建立项目心智模型，不陷入细节。</strong></p>
 <ol>
 <li><p><strong>目录结构扫描</strong> — 用 <code>list_dir</code> 看顶层目录名，从命名推断职责：</p>
@@ -826,7 +827,7 @@
 <li><p><strong>注释 &gt; 代码</strong> — 很多时候注释比代码本身更有价值（issue 编号、数据引用、”why not X”的解释），所以搜索范围始终包含注释</p>
 </li>
 </ol>
-<p>最终，这套流程产出了一篇约 2000 行的源码解析文档，后来浓缩为《从 Claude Code 源码看 Coding Agent 的架构演进之路》这篇博客文章。</p>
+<p>最终，这套流程产出了一篇约 3000 行的源码解析文档，后来根据我更关注的技术角度，浓缩为《从 Claude Code 源码看 Coding Agent 的架构演进之路》这篇文章。</p>
 <hr>
 <h2 id="附录：完整产出链路（以实际项目为例）"><a href="#附录：完整产出链路（以实际项目为例）" class="headerlink" title="附录：完整产出链路（以实际项目为例）"></a>附录：完整产出链路（以实际项目为例）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">某大型项目源码（~30 万行）</span><br><span class="line">       │</span><br><span class="line">       │  Step 1: Agent 全局分析</span><br><span class="line">       │  （熟练后约 3-5 小时，含多次回源验证；首次可能需要 1-2 天）</span><br><span class="line">       │  ┌─ 策略 B: 从核心问题切入，快速建立理解</span><br><span class="line">       │  ├─ 策略 A: 全局扫描补全盲区</span><br><span class="line">       │  ├─ 关键词狩猎: 搜索 edge case / retry / TODO 等</span><br><span class="line">       │  ├─ 并行编排: 4 轮并行搜索 + 读取</span><br><span class="line">       │  └─ 交叉验证: 子 Agent 独立分析后对比</span><br><span class="line">       ↓</span><br><span class="line">源码解析文档（~1000-3000 行 Markdown）</span><br><span class="line">       │</span><br><span class="line">       │  Step 2: 人工选材（约 30-60 分钟）</span><br><span class="line">       │  ┌─ 确定文章定位和目标读者</span><br><span class="line">       │  ├─ 从解析文档中提取支撑主题的素材</span><br><span class="line">       │  └─ 主动忽略与主题无关的内容</span><br><span class="line">       ↓</span><br><span class="line">文章大纲 + 关键素材</span><br><span class="line">       │</span><br><span class="line">       │  Step 3: 人 + Agent 协作（约 3-6 小时）</span><br><span class="line">       │  ┌─ 人定方向 → Agent 扩展</span><br><span class="line">       │  ├─ 人审阅 → Agent 修改/补充</span><br><span class="line">       │  ├─ 发现不够深 → Agent &quot;回源&quot;到原始代码</span><br><span class="line">       │  ├─ 关键路径做动态验证（跑测试/看日志）</span><br><span class="line">       │  └─ 循环直到满意</span><br><span class="line">       ↓</span><br><span class="line">最终技术文章</span><br></pre></td></tr></table></figure>
 
@@ -899,16 +900,16 @@
                     
                         <div class="article-tag">
                             
+                                <a href="/tags/Coding-Agent/">
+                                    <span class="chip bg-color">Coding Agent</span>
+                                </a>
+                            
                                 <a href="/tags/AI-Agent/">
                                     <span class="chip bg-color">AI Agent</span>
                                 </a>
                             
                                 <a href="/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
                                     <span class="chip bg-color">源码分析</span>
-                                </a>
-                            
-                                <a href="/tags/Coding-Agent/">
-                                    <span class="chip bg-color">Coding Agent</span>
                                 </a>
                             
                                 <a href="/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/">
@@ -1011,16 +1012,16 @@
                 
                 <div class="card-action article-tags">
                     
+                    <a href="/tags/Coding-Agent/">
+                        <span class="chip bg-color">Coding Agent</span>
+                    </a>
+                    
                     <a href="/tags/AI-Agent/">
                         <span class="chip bg-color">AI Agent</span>
                     </a>
                     
                     <a href="/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
                         <span class="chip bg-color">源码分析</span>
-                    </a>
-                    
-                    <a href="/tags/Coding-Agent/">
-                        <span class="chip bg-color">Coding Agent</span>
                     </a>
                     
                     <a href="/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/">
@@ -1084,12 +1085,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/LLM/">
-                        <span class="chip bg-color">LLM</span>
-                    </a>
-                    
                     <a href="/tags/Coding-Agent/">
                         <span class="chip bg-color">Coding Agent</span>
+                    </a>
+                    
+                    <a href="/tags/LLM/">
+                        <span class="chip bg-color">LLM</span>
                     </a>
                     
                     <a href="/tags/Claude-Code/">

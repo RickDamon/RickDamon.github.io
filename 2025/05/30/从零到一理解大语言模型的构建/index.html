@@ -599,7 +599,28 @@
 <p>用一个生活中的比喻：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">你去图书馆找书：</span><br><span class="line">  - Query（你的需求）：你想找&quot;关于猫的行为学&quot;的书</span><br><span class="line">  - Key（书的标签）：  每本书都有一个主题标签</span><br><span class="line">  - Value（书的内容）：每本书的实际内容</span><br><span class="line"></span><br><span class="line">过程：</span><br><span class="line">  1. 你拿着你的 Query，和每本书的 Key 比对</span><br><span class="line">  2. 算出每本书和你需求的&quot;匹配度&quot;（Attention 分数）</span><br><span class="line">  3. 匹配度高的书多看点，匹配度低的少看点</span><br><span class="line">  4. 把所有书的内容按匹配度加权混合，就是你的收获</span><br></pre></td></tr></table></figure>
 
-<p>对应到数学计算，假设我们有一个超级简化的例子——只有3个 token，每个向量只有 2 维：</p>
+<h3 id="4-3-1-为什么需要-Q、K、V-三个角色？直接用原始向量不行吗？"><a href="#4-3-1-为什么需要-Q、K、V-三个角色？直接用原始向量不行吗？" class="headerlink" title="4.3.1 为什么需要 Q、K、V 三个角色？直接用原始向量不行吗？"></a>4.3.1 为什么需要 Q、K、V 三个角色？直接用原始向量不行吗？</h3><p>这是很多人看到 QKV 时的第一个疑问：每个 token 已经有一个向量了，为什么不能直接拿这些向量互相算相似度，非要搞出 Q、K、V 三套东西？</p>
+<p><strong>答案是：一个向量承担不了三个不同的职责。</strong></p>
+<p>想象你是”猫”这个词。在一句话中，你可能同时需要：</p>
+<ul>
+<li><strong>提出需求</strong>：”我想找跟我语义相关的词”（比如找到”它”来建立指代关系）</li>
+<li><strong>被别人发现</strong>：”让别人能找到我”（比如让”它”能匹配到我）</li>
+<li><strong>提供信息</strong>：”当别人需要我的信息时，我应该贡献什么内容”</li>
+</ul>
+<p>如果只用一个向量，那”提出需求”和”被发现”用的是同一套表示——但这两件事需要的特征可能完全不同！</p>
+<p>举个更直观的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&quot;猫坐在垫子上，因为它觉得很舒服&quot;</span><br><span class="line"></span><br><span class="line">当处理&quot;它&quot;时：</span><br><span class="line">  - &quot;它&quot;的 Query（需求）= &quot;我要找一个名词性的、之前出现过的、能被指代的实体&quot;</span><br><span class="line">  - &quot;猫&quot;的 Key（标签）= &quot;我是一个名词、动物、句子主语&quot;</span><br><span class="line">  - &quot;猫&quot;的 Value（内容）= &quot;猫的语义信息：动物、毛茸茸、有生命&quot;</span><br><span class="line"></span><br><span class="line">Query 和 Key 匹配上了（&quot;需要找实体&quot; ↔ &quot;我是实体&quot;）</span><br><span class="line">然后用 Value 的内容来更新&quot;它&quot;的表示</span><br></pre></td></tr></table></figure>
+
+<p>如果不分开：</p>
+<ul>
+<li>“猫”的单一向量要同时编码”我是名词主语”（用于被匹配）和”毛茸茸的动物”（用于提供信息）——<strong>一个向量做两件事，互相干扰</strong></li>
+<li>更糟糕的是，”猫”在被”它”查询时和被”坐在”查询时，应该暴露不同的”标签”——但单一向量没法做到这种灵活性</li>
+</ul>
+<p><strong>三个矩阵 Wq、Wk、Wv 就是让模型学会”同一个词在不同角色下应该长什么样”</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">同一个 token &quot;猫&quot; 的原始向量 x：</span><br><span class="line"></span><br><span class="line">  x × Wq = Query向量  → &quot;我在寻找什么&quot;（当猫作为查询者时）</span><br><span class="line">  x × Wk = Key向量    → &quot;我的标签是什么&quot;（当猫被别人查询时）</span><br><span class="line">  x × Wv = Value向量  → &quot;我能提供什么信息&quot;（当猫被选中后贡献的内容）</span><br><span class="line"></span><br><span class="line">三个矩阵是模型在训练中自动学出来的，</span><br><span class="line">它们让模型能灵活地、针对不同角色、提取不同维度的特征。</span><br></pre></td></tr></table></figure>
+
+<p><strong>一句话总结：Q 决定”我想找什么”，K 决定”我是什么”，V 决定”找到我之后能得到什么”。三者解耦，各司其职。</strong></p>
+<p>现在我们用一个超级简化的数学例子，来看看这个过程具体是怎么算的：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">三个 token 的向量：</span><br><span class="line">  &quot;我&quot;  = [1, 0]</span><br><span class="line">  &quot;爱&quot;  = [0, 1]</span><br><span class="line">  &quot;猫&quot;  = [1, 1]</span><br></pre></td></tr></table></figure>
 
 <p><strong>Step 1：每个 token 生成自己的 Q、K、V</strong></p>
@@ -1370,6 +1391,38 @@
 
 </main>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        TeX: {
+            equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"],
+            Macros: {
+                operatorname: "\\mathop{\\mathrm{#1}}\\nolimits"
+            }
+        },
+        "HTML-CSS": {
+            availableFonts: ["TeX"],
+            preferredFont: "TeX",
+            webFont: "TeX",
+            imageFont: null
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
 
 
 
